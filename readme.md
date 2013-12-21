@@ -18,7 +18,7 @@
 	seed : peuple les tables avec des données de base
 
 6. Créez un virtual-host comme ceci :
-	<VirtualHost *:80>
+	<VirtualHost *:*>
 	ServerAdmin webmaster@insearch
 	DocumentRoot "C:\wamp\www\insearch\public"
 	ServerName insearch
@@ -36,7 +36,8 @@
 
 8. Démarrez/redémarrer le serveur
 
-9. On est prêt !!
+9. Testez en chargeant l'URL dans votre navigateur :
+[http://insearch/](http://insearch/)
 
 
 

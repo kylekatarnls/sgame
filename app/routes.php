@@ -14,7 +14,6 @@
 // Pour vérifier votre configuration, décommenter la ligne ci-dessous :
 // phpinfo();exit;
 
-Route::get('/', function()
-{
-	return View::make('hello');
-});
+Route::get('/', 'HomeController@searchBar');
+Route::get('/{page}/{q}', 'HomeController@searchBar');
+Route::post('/', 'HomeController@searchResult');
