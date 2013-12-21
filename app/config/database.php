@@ -1,5 +1,9 @@
 <?php
 
+define('DB_NAME', 'insearch');
+define('DB_USER', 'insearch');
+define('DB_PASS', 'r6y_7|Hj{-SQdf');
+
 return array(
 
 	/*
@@ -26,7 +30,7 @@ return array(
 	|
 	*/
 
-	'default' => 'mysql',
+	'default' => 'pgsql',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -55,9 +59,9 @@ return array(
 		'mysql' => array(
 			'driver'    => 'mysql',
 			'host'      => 'localhost',
-			'database'  => 'database',
-			'username'  => 'root',
-			'password'  => '',
+			'database'  => DB_NAME,
+			'username'  => DB_USER,
+			'password'  => DB_PASS,
 			'charset'   => 'utf8',
 			'collation' => 'utf8_unicode_ci',
 			'prefix'    => '',
@@ -66,9 +70,9 @@ return array(
 		'pgsql' => array(
 			'driver'   => 'pgsql',
 			'host'     => 'localhost',
-			'database' => 'database',
-			'username' => 'root',
-			'password' => '',
+			'database'  => DB_NAME,
+			'username'  => DB_USER,
+			'password'  => DB_PASS,
 			'charset'  => 'utf8',
 			'prefix'   => '',
 			'schema'   => 'public',
@@ -77,9 +81,9 @@ return array(
 		'sqlsrv' => array(
 			'driver'   => 'sqlsrv',
 			'host'     => 'localhost',
-			'database' => 'database',
-			'username' => 'root',
-			'password' => '',
+			'database'  => DB_NAME,
+			'username'  => DB_USER,
+			'password'  => DB_PASS,
 			'prefix'   => '',
 		),
 
