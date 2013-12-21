@@ -10,7 +10,10 @@
 | and give it the Closure to execute when that URI is requested.
 |
 */
-phpinfo();exit;
+
+// Pour vérifier votre configuration, décommenter la ligne ci-dessous :
+// phpinfo();exit;
+
 Route::get('/', function()
 {
 	return View::make('hello');

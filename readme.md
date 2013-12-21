@@ -1,3 +1,45 @@
+## [French] Informations utiles pour InSearch
+
+# Instructions pour l'installation
+
+1. Installer un serveur Web (exemple : Wamp / Mamp) disposant d'Apache et de PHP 5.4 ou + (sous linux, l'installation des paquets apache et php suffit)
+
+2. Installer Memcached et activez l'extension php_memcached
+
+3. Installer PostgreSQL et activez l'extension php_pdo_pgsql
+	- Créez un rôle de connexion user : "insearch", pass : "r6y_7|Hj{-SQdf"
+	- Créez une base de donnée nommée "insearch" dont le rôle "insearch" est propriétaire
+4. (Windows uniquement) Ajoutez php.exe à la variable d'environement PATH
+
+5. Ouvrez la console, allez dans le dossier du projet (le dossier contenant le fichier "artisan") et tapez les commandes suivantes suivies d'Entrée :
+	- php artisan migrate
+	- php artisan seed
+	migrate : créer les tables utiles ou les met à jour le cas échéant
+	seed : peuple les tables avec des données de base
+
+6. Créez un virtual-host comme ceci :
+	<VirtualHost *:80>
+	ServerAdmin webmaster@insearch
+	DocumentRoot "C:\wamp\www\insearch\public"
+	ServerName insearch
+	</VirtualHost>
+
+	Remplacer C:\wamp\www\insearch\public par le chemin correspondant sur votre machine
+	Chemin conseillé sous Mac/Linux : /var/www/insearch/public
+	/!\ Il faut pointer sur le dossier public contenu dans le projet.
+
+7. Modifier C:\Windows\System32\drivers\etc (sous Windows) ou /etc/hosts (sous Linux et Mac) pour ajouter l'URL insearch :
+	Remplacer la ligne :
+		127.0.0.1       localhost
+	Par
+		127.0.0.1       localhost insearch
+
+8. Démarrez/redémarrer le serveur
+
+9. On est prêt !!
+
+
+
 ## Laravel PHP Framework
 
 [![Latest Stable Version](https://poser.pugx.org/laravel/framework/version.png)](https://packagist.org/packages/laravel/framework) [![Total Downloads](https://poser.pugx.org/laravel/framework/d/total.png)](https://packagist.org/packages/laravel/framework) [![Build Status](https://travis-ci.org/laravel/framework.png)](https://travis-ci.org/laravel/framework)
