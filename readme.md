@@ -1,6 +1,6 @@
-## [French] Informations utiles pour InSearch
+# [French] Informations utiles pour InSearch
 
-# Instructions pour l'installation
+## Instructions pour l'installation
 
 1. Installer un serveur Web (exemple : Wamp / Mamp) disposant d'Apache et de PHP 5.4 ou + (sous linux, l'installation des paquets apache et php suffit)
 
