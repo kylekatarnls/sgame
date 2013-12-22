@@ -2,22 +2,36 @@
 
 ## Instructions pour l'installation
 
-1. Installer un serveur Web (exemple : Wamp / Mamp) disposant d'Apache et de PHP 5.4 ou + (sous linux, l'installation des paquets apache et php suffit)
+1. Il est vivement conseillé d'installer le projet en utilisant Git (installez-le si vous ne l'avez pas encore, sous Linux et Mac, il est installé par défaut, sous Windows il faut installer msysgit et choisir l'option "Ajouter à votre variable d'environement..." lorsque l'installateur la propose).
 
-2. Installer Memcached et activez l'extension php_memcached
+2. Créez un dossier de travail "insearch" où vous le souhaitez puis en tapez les commandes suivantes :
+	cd /chemin/vers/le/dossier/insearch
+	git clone https://github.com/kylekatarnls/insearch.git .
+	git config --global push.default matching
+	git config --global user.name "Votre prénom"
+	git config --global user.email "votre-pseudo-github@github.com"
 
-3. Installer PostgreSQL et activez l'extension php_pdo_pgsql
+	Exemple de configuration :
+	git config --global user.name "Bastien"
+	git config --global user.email "kylekatarnls@github.com"
+
+3. Installer un serveur Web (exemple : Wamp / Mamp) disposant d'Apache et de PHP 5.4 ou + (sous linux, l'installation des paquets apache et php suffit)
+
+4. Installer Memcached et activez l'extension php_memcached
+
+5. Installer PostgreSQL et activez l'extension php_pdo_pgsql
 	- Créez un rôle de connexion user : "insearch", pass : "r6y_7|Hj{-SQdf"
 	- Créez une base de donnée nommée "insearch" dont le rôle "insearch" est propriétaire
-4. (Windows uniquement) Ajoutez php.exe à la variable d'environement PATH
 
-5. Ouvrez la console, allez dans le dossier du projet (le dossier contenant le fichier "artisan") et tapez les commandes suivantes suivies d'Entrée :
+6. (Windows uniquement) Ajoutez php.exe à la variable d'environement PATH
+
+7. Ouvrez la console, allez dans le dossier du projet (le dossier contenant le fichier "artisan") et tapez les commandes suivantes suivies d'Entrée :
 	- php artisan migrate
 	- php artisan seed
 	migrate : créer les tables utiles ou les met à jour le cas échéant
 	seed : peuple les tables avec des données de base
 
-6. Créez un virtual-host comme ceci :
+8. Créez un virtual-host comme ceci :
 	<VirtualHost *:*>
 	ServerAdmin webmaster@insearch
 	DocumentRoot "C:\wamp\www\insearch\public"
@@ -28,15 +42,15 @@
 	Chemin conseillé sous Mac/Linux : /var/www/insearch/public
 	/!\ Il faut pointer sur le dossier public contenu dans le projet.
 
-7. Modifier C:\Windows\System32\drivers\etc (sous Windows) ou /etc/hosts (sous Linux et Mac) pour ajouter l'URL insearch :
+9. Modifier C:\Windows\System32\drivers\etc (sous Windows) ou /etc/hosts (sous Linux et Mac) pour ajouter l'URL insearch :
 	Remplacer la ligne :
 		127.0.0.1       localhost
 	Par
 		127.0.0.1       localhost insearch
 
-8. Démarrez/redémarrer le serveur
+10. Démarrez/redémarrer le serveur
 
-9. Testez en chargeant l'URL dans votre navigateur :
+11. Testez en chargeant l'URL dans votre navigateur :
 [http://insearch/](http://insearch/)
 
 
