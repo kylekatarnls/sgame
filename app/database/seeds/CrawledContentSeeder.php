@@ -9,11 +9,17 @@ class CrawledContentSeeder extends Seeder {
 	 */
 	public function run()
 	{
-		CrawledContent::create([
-			'url' => 'http://test.com/page.php',
-			'title' => 'Super site',
-			'content' => 'Contenu html, strip tagé.'
-		]);
+		$file = explode("\n", file_get_contents(substr(__FILE__, 0, -4).'.csv'));
+		$headers = array_map('trim', explode("\t", trim($file[0])));
+		unset($file[0]);
+		foreach ($file as $line)
+		{
+			$line = array_map('trim', explode("\t", trim($line)));
+			if(count($headers) === count($line))
+			{
+				CrawledContent::create(array_combine($headers, $line));
+			}
+		}
 	}
 
 }
