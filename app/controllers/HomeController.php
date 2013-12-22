@@ -4,6 +4,12 @@ class HomeController extends BaseController {
 
 	const DEFAULT_RESULLTS_PER_PAGE = 10;
 	const ENUM_RESULLTS_PER_PAGE = '10,50,100,500';
+
+	protected function getChoiceResultsPerPage($value='')
+	{
+		return array_map('intval', explode(',', self::ENUM_RESULLTS_PER_PAGE));
+	}
+
 	/*
 	|--------------------------------------------------------------------------
 	| Default Home Controller
@@ -15,14 +21,17 @@ class HomeController extends BaseController {
 
 	public function searchBar()
 	{
-		return View::make('home');
+		return View::make('home')->with([
+			'resultsPerPageUrl' => '#',
+			'choiceResultsPerPage' => self::getChoiceResultsPerPage()
+		]);
 	}
 
 	public function searchResult($page = 1, $resultsPerPage = null, $q = null)
 	{
 		$q = is_null($q) ? Request::get('q', '') : urldecode($q);
 		$resultsPerPage = is_null($resultsPerPage) ? Request::get('resultsPerPage', self::DEFAULT_RESULLTS_PER_PAGE) : $resultsPerPage;
-		$choice = array_map('intval', explode(',', self::ENUM_RESULLTS_PER_PAGE));
+		$choice = self::getChoiceResultsPerPage();
 		if(!in_array($resultsPerPage, $choice))
 		{
 			$resultsPerPage = self::ENUM_RESULLTS_PER_PAGE;

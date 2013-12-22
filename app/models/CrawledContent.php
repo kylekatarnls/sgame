@@ -7,6 +7,7 @@ class CrawledContent extends Eloquent {
 
 	protected $collection = 'crawled_content';
 	protected $softDelete = true;
+	protected $fillable = ['url', 'title', 'content'];
 
 	static public function search($value = '')
 	{
