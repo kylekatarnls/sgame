@@ -1,0 +1,11 @@
+
+body {
+	padding-top: 60px;
+}
+
+.square {
+	margin-left: -1px;
+	border-radius: 0;
+	-webkit-border-radius: 0;
+	-moz-border-radius: 0;
+}
