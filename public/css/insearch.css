@@ -9,3 +9,8 @@ body {
 	-webkit-border-radius: 0;
 	-moz-border-radius: 0;
 }
+
+a.source {
+	color: silver;
+	font-size: 0.85em;
+}

@@ -12,9 +12,13 @@
 	@include('includes.searchbar')
 
 	@foreach ($results as $result)
-		<h2>{{ e($result->title) }}</h2>
-		<p><a href="/out/{{ urlencode($q) }}/{{ $result->id }}">{{ e($result->url) }}</a></p>
-		<p>{{ e($result->content) }}</p>
+		<h3>
+			<a href="{{ $result->outgoingLink }}">{{ e($result->title) }}</a>
+		</h3>
+		<p>
+			{{ e($result->content) }}<br>
+			<a href="{{ $result->outgoingLink }}" class="source">{{ e($result->url) }}</a>
+		</p>
 	@endforeach
 
 	@include('includes.pagination')

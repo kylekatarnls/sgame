@@ -36,10 +36,12 @@ class HomeController extends BaseController {
 		{
 			$resultsPerPage = self::ENUM_RESULLTS_PER_PAGE;
 		}
-		$results = CrawledContent::search($q)->get();
-		$nbResults = count($results);
+		$nbResults = CrawledContent::search($q)->count();
 		$nbPages = ceil($nbResults / $resultsPerPage);
 		$keepResultsPerPage = $resultsPerPage == self::ENUM_RESULLTS_PER_PAGE ? '' : $resultsPerPage.'/';
+		$results = CrawledContent::search($q)
+			->forPage($page, $resultsPerPage)
+			->get();
 
 		return View::make('result')->with([
 			'q' => $q,
