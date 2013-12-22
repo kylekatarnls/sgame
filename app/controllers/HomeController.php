@@ -45,4 +45,25 @@ class HomeController extends BaseController {
 		]);
 	}
 
+	public function goOut($search_query = '', $id = 1)
+	{
+		$result = CrawledContent::find($id);
+		if(!$result)
+		{
+			App::abort(404);
+		}
+		try
+		{
+			LogOutgoingLink::create([
+				'search_query' => $search_query,
+				'crawled_content_id' => $id
+			]);
+		}
+		catch(Exception $e)
+		{
+			throw $e;
+		}
+		return Redirect::to($result->url);
+	}
+
 }

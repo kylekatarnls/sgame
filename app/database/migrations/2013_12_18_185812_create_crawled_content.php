@@ -12,15 +12,25 @@ class CreateCrawledContent extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create(self::TALE_NAME, function($table)
-        {
-            $table->increments('id');
-            $table->string('url');
-            $table->string('title');
-            $table->string('content');
-            $table->timestamps();
-        });
-        DB::statement('ALTER TABLE `'.self::TALE_NAME.'` ADD FULLTEXT search(url, title, content)');
+		if(!Schema::hasTable(self::TALE_NAME))
+		{
+			Schema::create(self::TALE_NAME, function($table)
+			{
+				$table->increments('id');
+				$table->string('url');
+				$table->string('title');
+				$table->string('content');
+				$table->timestamps();
+			});
+			try
+			{
+				DB::statement('ALTER TABLE `'.self::TALE_NAME.'` ADD FULLTEXT search(url, title, content)');
+			}
+			catch(Illuminate\Database\QueryException $e)
+			{
+				echo "FULLTEXT is not supported.\n";
+			}
+		}
 	}
 
 	/**

@@ -25,3 +25,13 @@ Route::get('/{q}', 'HomeController@searchResult');
 Route::get('/{page}/{q}', 'HomeController@searchResult');
 Route::get('/{page}/{resultsPerPage}/{q}', 'HomeController@searchResult')
 	->where('resultsPerPage', '[1-9][0-9]*');
+
+// Clic sur un lien sortant
+Route::pattern('id', '[1-9][0-9]*');
+Route::get('/out/{q}/{id}', 'HomeController@goOut');
+
+// Gestion de l'erreur 404
+App::missing(function ()
+{
+	return View::make('errors.notFound');
+});

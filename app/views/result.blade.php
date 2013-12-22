@@ -13,7 +13,7 @@
 
 	@foreach ($results as $result)
 		<h2>{{ e($result->title) }}</h2>
-		<p><a href="/out/{{ urlencode($result->url) }}">{{ e($result->url) }}</a></p>
+		<p><a href="/out/{{ urlencode($q) }}/{{ $result->id }}">{{ e($result->url) }}</a></p>
 		<p>{{ e($result->content) }}</p>
 	@endforeach
 
