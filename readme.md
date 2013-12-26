@@ -63,6 +63,21 @@
 [http://insearch/](http://insearch/)
 
 
+## Récupérer les mises à jour du projet
+Ouvrez un terminal, placez-vous dans le dossier du projet et exécutez :
+	git pull
+
+
+## Envoyer vos modifications
+Ouvrez un terminal, placez-vous dans le dossier du projet et exécutez :
+	git add *
+	git commit -m "Décrivez vos modifications"
+	git push
+
+N'hésitez pas à être très précis dans vos descriptions et si possible ne poussez (git push) que des modifications opérationnelles, sinon précisez dans la description ce qu'il reste à faire pour les rendre opérationnelles.
+
+Vous pouvez faire plusieurs commit au fur et à mesure que vous codez pour séparer plusieurs modifications puis pousser (git push) plusieurs modifications d'un coup, ça ne pose pas de problème.
+
 
 ## Laravel PHP Framework
 
