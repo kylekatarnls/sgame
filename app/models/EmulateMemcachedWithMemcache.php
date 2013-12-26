@@ -2,7 +2,6 @@
 
 if(!class_exists('Memcache') && class_exists('Memcached'))
 {
-	echo 'ici';
 	class Memcached extends Memcached
 	{
 		protected $resultCode = -1;

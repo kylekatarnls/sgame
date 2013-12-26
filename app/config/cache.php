@@ -1,4 +1,9 @@
 <?php
+var_dump(
+	class_exists('Memcached'),
+	class_exists('Memcache')
+);
+
 return array(
 
 	/*
