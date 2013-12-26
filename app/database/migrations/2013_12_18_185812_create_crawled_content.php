@@ -35,7 +35,7 @@ class CreateCrawledContent extends Migration {
 	 */
 	public function up()
 	{
-		$this>createTable(self::TALE_NAME);
+		$this->createTable(self::TALE_NAME);
 	}
 
 	/**
