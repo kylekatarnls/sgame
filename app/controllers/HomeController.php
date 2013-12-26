@@ -21,10 +21,10 @@ class HomeController extends BaseController {
 
 	public function searchBar()
 	{
-		return View::make('home')->with([
+		return View::make('home')->with(array(
 			'resultsPerPageUrl' => '#',
 			'choiceResultsPerPage' => self::getChoiceResultsPerPage()
-		]);
+		]));
 	}
 
 	public function searchResult($page = 1, $resultsPerPage = null, $q = null)
@@ -46,7 +46,7 @@ class HomeController extends BaseController {
 			->forPage($page, $resultsPerPage)
 			->get();
 
-		return View::make('result')->with([
+		return View::make('result')->with(array(
 			'q' => $q,
 			'nbPages' => (int) $nbPages,
 			'currentPage' => (int) $page,
@@ -56,7 +56,7 @@ class HomeController extends BaseController {
 			'nbResults' => (int) $nbResults,
 			'resultsPerPage' => (int) $resultsPerPage,
 			'choiceResultsPerPage' => $choice
-		]);
+		));
 	}
 
 	public function goOut($search_query = '', $id = 1)
@@ -68,10 +68,10 @@ class HomeController extends BaseController {
 		}
 		try
 		{
-			LogOutgoingLink::create([
+			LogOutgoingLink::create(array(
 				'search_query' => $search_query,
 				'crawled_content_id' => $id
-			]);
+			));
 		}
 		catch(Exception $e)
 		{
