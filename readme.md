@@ -17,7 +17,7 @@
 
 3. Installer un serveur Web (exemple : Wamp / Mamp) disposant d'Apache et de PHP 5.4 ou + (sous linux, l'installation des paquets apache et php suffit)
 
-4. Installer Memcached et activez l'extension php_memcached
+4. (Facultatif) Installer Memcached et activez l'extension php_memcached
 
 5. Installer PostgreSQL et activez l'extension php_pdo_pgsql
 	- Créez un rôle de connexion user : "insearch", pass : "r6y_7|Hj{-SQdf"
