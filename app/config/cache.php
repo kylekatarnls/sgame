@@ -15,7 +15,16 @@ return array(
 	|
 	*/
 
-	'driver' => 'memcached',
+	'driver' => (
+		(class_exists('Memcached') ?
+			'memcached' :
+		(class_exists('Memcache') ?
+			(new EmulateMemcachedWithMemcache)->proceed() :
+		(function_exists('apc_store') ?
+			'apc' :
+		// default
+			'file'
+	)))),
 
 	/*
 	|--------------------------------------------------------------------------

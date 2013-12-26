@@ -5,6 +5,8 @@
  */
 class CrawledContent extends Eloquent {
 
+	const REMEMBER = 10;
+
 	protected $collection = 'crawled_content';
 	protected $softDelete = true;
 	protected $fillable = array('url', 'title', 'content');
@@ -17,13 +19,20 @@ class CrawledContent extends Eloquent {
 		$like = 'LIKE '.DB::getPdo()->quote('%'.addcslashes(strtolower($value), '_%').'%');
 		return self::whereRaw('LOWER(content)'.$like)
 					->orWhereRaw('LOWER(title)'.$like)
-					->orWhereRaw('LOWER(url)'.$like);
+					->orWhereRaw('LOWER(url)'.$like)
+					->remember(self::REMEMBER);
 	}
 
 	public function getOutgoingLinkAttribute()
 	{
 		return '/out/'. self::$lastQuerySearch . '/' . $this->id;
 	}
+
+	public function getCountAttribute()
+	{
+		return Cache::get('crawled_content_id:'.$this->id.'_log_outgoing_link_count', $this->attributes['count']);
+	}
+
 }
 
 ?>

@@ -72,6 +72,16 @@ class HomeController extends BaseController {
 				'search_query' => $search_query,
 				'crawled_content_id' => $id
 			));
+			$count = Cache::get('crawled_content_id:'.$id.'_log_outgoing_link_count');
+			if($count)
+			{
+				$count = LogOutgoingLink::where('crawled_content_id', $id)->count();
+			}
+			else
+			{
+				$count++;
+			}
+			Cache::put('crawled_content_id:'.$id.'_log_outgoing_link_count', $count, CrawledContent::REMEMBER);
 		}
 		catch(Exception $e)
 		{
