@@ -1,10 +1,4 @@
 <?php
-new EmulateMemcachedWithMemcache;
-var_dump(
-	class_exists('Memcached')
-);
-exit;
-
 return array(
 
 	/*
