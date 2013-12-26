@@ -24,7 +24,7 @@ class HomeController extends BaseController {
 		return View::make('home')->with(array(
 			'resultsPerPageUrl' => '#',
 			'choiceResultsPerPage' => self::getChoiceResultsPerPage()
-		]));
+		));
 	}
 
 	public function searchResult($page = 1, $resultsPerPage = null, $q = null)

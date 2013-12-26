@@ -25,7 +25,9 @@
 						<span class="icon-bar"></span>
 					</a>
  
-					<a class="brand" href="#">Laravel</a>
+					<a class="brand" href="#">
+						<img src="/img/advanced-search.png" alt="InSearch">
+					</a>
  
 					<div class="nav-collapse collapse">
 						<ul class="nav">
