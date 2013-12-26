@@ -66,6 +66,7 @@
 ## Récupérer les mises à jour du projet
 Ouvrez un terminal, placez-vous dans le dossier du projet et exécutez :
 	git pull
+	php artisan migrate
 
 
 ## Envoyer vos modifications
