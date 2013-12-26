@@ -1,6 +1,6 @@
 <?php
 
-if(!class_exists('Memcache') && class_exists('Memcached'))
+if(!class_exists('Memcached') && class_exists('Memcache'))
 {
 	class Memcached extends Memcached
 	{
