@@ -1,13 +1,13 @@
 
-{{ Form::open([
+{{ Form::open(array(
 	'url' => '/',
 	'method' => 'post'
-]) }}
+)) }}
 	<div class="input-group">
-		{{ Form::text('q', $q, [
+		{{ Form::text('q', $q, array(
 			'class' => 'form-control',
 			'placeholder' => 'Search a page'
-		]) }}
+		)) }}
 		<!--
 		<div class="input-group-btn">
 			<button type="button" class="btn btn-default square dropdown-toggle" data-toggle="dropdown">
