@@ -10,7 +10,7 @@ class CreateCrawledContent extends Migration {
 	{
 		if(!Schema::hasTable($tableName))
 		{
-			Schema::create($tableName, function($table)
+			Schema::create($tableName, function(Blueprint $table)
 			{
 				$table->increments('id');
 				$table->string('url');

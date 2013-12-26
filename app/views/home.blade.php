@@ -4,6 +4,6 @@
 
 	<h1>InSearch</h1>
 
-	@include('includes.searchbar', ['q' => ''])
+	@include('includes.searchbar', array('q' => ''))
 
 @stop
