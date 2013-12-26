@@ -2,7 +2,7 @@
 
 if(!class_exists('Memcache') && class_exists('Memcached'))
 {
-	class \Memcached extends Memcached
+	class Memcached extends Memcached
 	{
 		protected $resultCode = -1;
 
