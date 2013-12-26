@@ -48,9 +48,18 @@
 	Par
 		127.0.0.1       localhost insearch
 
-10. Démarrez/redémarrer le serveur
+10. Installez composer en vous mettant dans le dossier du projet puis en exécutant :
+	curl -sS https://getcomposer.org/installer | php
 
-11. Testez en chargeant l'URL dans votre navigateur :
+11. Installez les dépendances du projet avec composer en exécutant :
+	php composer.phar update
+
+12. (Linux/Mac Uniquement) changer le CHMOD du dossier storage :
+	chmod -R 0777 app/storage
+
+12. Démarrez/redémarrer le serveur
+
+13. Testez en chargeant l'URL dans votre navigateur :
 [http://insearch/](http://insearch/)
 
 

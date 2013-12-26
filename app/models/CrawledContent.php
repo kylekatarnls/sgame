@@ -20,9 +20,9 @@ class CrawledContent extends Eloquent {
 					->orWhereRaw('LOWER(url)'.$like);
 	}
 
-	public function getOutgoingLink()
+	public function getOutgoingLinkAttribute()
 	{
-		return '/out/'. self::lastQuerySearch . '/' . $this->id;
+		return '/out/'. self::$lastQuerySearch . '/' . $this->id;
 	}
 }
 

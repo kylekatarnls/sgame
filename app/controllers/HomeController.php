@@ -40,6 +40,9 @@ class HomeController extends BaseController {
 		$nbPages = ceil($nbResults / $resultsPerPage);
 		$keepResultsPerPage = $resultsPerPage == self::ENUM_RESULLTS_PER_PAGE ? '' : $resultsPerPage.'/';
 		$results = CrawledContent::search($q)
+			->select('crawled_contents.id', 'url', 'title', 'content', DB::raw('COUNT(log_outgoing_links.id) AS count'))
+			->leftJoin('log_outgoing_links', 'log_outgoing_links.crawled_content_id', '=', 'crawled_contents.id')
+        	->groupBy('crawled_contents.id')
 			->forPage($page, $resultsPerPage)
 			->get();
 
