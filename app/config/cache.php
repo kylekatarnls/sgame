@@ -18,8 +18,8 @@ return array(
 	'driver' => (
 		(class_exists('Memcached') ?
 			'memcached' :
-		(class_exists('Memcache') ?
-			(new EmulateMemcachedWithMemcache)->proceed() :
+		(class_exists('Memcache') && ($emulator = new EmulateMemcachedWithMemcache) ?
+			$emulator->proceed() :
 		(function_exists('apc_store') ?
 			'apc' :
 		// default
