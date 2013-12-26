@@ -25,7 +25,7 @@ if(!class_exists('Memcached') && class_exists('Memcache'))
 		public function set($key, $value, $seconds)
 		{
 			parent::set(
-				$this->prefix.$key,
+				$key,
 				$value,
 				strlen($value) > 512 ? MEMCACHE_COMPRESSED : 0,
 				$seconds
