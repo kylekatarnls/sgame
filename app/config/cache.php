@@ -1,7 +1,7 @@
 <?php
+new EmulateMemcachedWithMemcache;
 var_dump(
-	class_exists('Memcached'),
-	class_exists('Memcache')
+	class_exists('Memcached')
 );
 exit;
 
