@@ -6,7 +6,7 @@
 
 @section('content')
 
-	<h1>{{ §('global.results.count', $nbResults, array( 'title' => §('global.title') )) }}</h1>
+	<h1 class="results">{{ §('global.results.count', $nbResults, array( 'title' => §('global.title') )) }}</h1>
 
 	@include('includes.searchbar')
 

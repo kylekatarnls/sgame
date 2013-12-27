@@ -8,6 +8,7 @@
 			'class' => 'form-control',
 			'placeholder' => §('global.search.placeholder')
 		)) }}
+		{{ Form::hidden('resultsPerPage', $resultsPerPage) }}
 		<div class="input-group-btn">
 			<button class="btn btn-default" type="button">
 				<span class="glyphicon glyphicon-search"></span>

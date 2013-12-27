@@ -5,9 +5,25 @@ class HomeController extends BaseController {
 	const DEFAULT_RESULLTS_PER_PAGE = 10;
 	const ENUM_RESULLTS_PER_PAGE = '10,50,100,500';
 
-	protected function getChoiceResultsPerPage($value='')
+	protected function getChoiceResultsPerPage()
 	{
 		return array_map('intval', explode(',', self::ENUM_RESULLTS_PER_PAGE));
+	}
+
+	protected function getResultsPerPage($resultsPerPage = null)
+	{
+		$defaultResultsPerPage = (int) Cookie::get('resultsPerPage', self::DEFAULT_RESULLTS_PER_PAGE);
+		$resultsPerPage = (int) Input::get(
+			'resultsPerPage',
+			is_null($resultsPerPage) || $resultsPerPage < 1 ?
+				Request::get('resultsPerPage', $defaultResultsPerPage) :
+				$resultsPerPage
+		);
+		if($resultsPerPage !== $defaultResultsPerPage)
+		{
+			Cookie::queue('resultsPerPage', $resultsPerPage, 60);
+		}
+		return $resultsPerPage;
 	}
 
 	/*
@@ -23,6 +39,7 @@ class HomeController extends BaseController {
 	{
 		return View::make('home')->with(array(
 			'resultsPerPageUrl' => '#',
+			'resultsPerPage' => self::getResultsPerPage(),
 			'choiceResultsPerPage' => self::getChoiceResultsPerPage()
 		));
 	}
@@ -30,12 +47,7 @@ class HomeController extends BaseController {
 	public function searchResult($page = 1, $resultsPerPage = null, $q = null)
 	{
 		$q = is_null($q) ? Request::get('q', '') : urldecode($q);
-		$defaultResultsPerPage = (int) Cookie::get('resultsPerPage', self::DEFAULT_RESULLTS_PER_PAGE);
-		$resultsPerPage = (int) (is_null($resultsPerPage) ? Request::get('resultsPerPage', $defaultResultsPerPage) : $resultsPerPage);
-		if($resultsPerPage !== $defaultResultsPerPage)
-		{
-			Cookie::queue('resultsPerPage', $resultsPerPage, 60);
-		}
+		$resultsPerPage = self::getResultsPerPage($resultsPerPage);
 		$choice = self::getChoiceResultsPerPage();
 		if(!in_array($resultsPerPage, $choice))
 		{

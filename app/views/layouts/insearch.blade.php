@@ -27,7 +27,7 @@
 							<ul class="dropdown-menu" role="menu" aria-labelledby="choice-per-page">
 								<li class="dropdown-header">{{ §('global.results-per-page') }}</li>
 								@foreach ($choiceResultsPerPage as $choice)
-									<li><a href="{{ str_replace('%d', $choice, $resultsPerPageUrl) }}">{{ $choice }}</a></li>
+									<li><a data-value="{{ $choice }}" href="{{ str_replace('%d', $choice, $resultsPerPageUrl) }}">{{ $choice }}</a></li>
 								@endforeach
 							</ul>
 						</div>
