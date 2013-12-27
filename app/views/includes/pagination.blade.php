@@ -2,7 +2,7 @@
 @if ($nbPages > 1)
 <ul class="pagination">
 	<li{{ $currentPage == 1 ? ' class="disabled"' : '' }}>
-		<a href="{{ str_replace('%d', $currentPage-1, $pageUrl) }}">{{ _('pagination.previous') }} </a>
+		<a href="{{ str_replace('%d', $currentPage-1, $pageUrl) }}">{{ §('pagination.previous') }} </a>
 	</li>
 	@for ($i = 1; $i <= $nbPages; $i++)
 		<li{{ $currentPage == $i ? ' class="active"' : '' }}>
@@ -10,7 +10,7 @@
 		</li>
 	@endfor
 	<li{{ $currentPage == $nbPages ? ' class="disabled"' : '' }}>
-		<a href="{{ str_replace('%d', $currentPage+1, $pageUrl) }}">{{ _('pagination.next') }} </a>
+		<a href="{{ str_replace('%d', $currentPage+1, $pageUrl) }}">{{ §('pagination.next') }} </a>
 	</li>
 </ul>
 @endif

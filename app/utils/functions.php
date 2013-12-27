@@ -1,6 +1,6 @@
 <?php
 
-function _()
+function §()
 {
 	$args = func_get_args();
 	if(isset($args[1]) && is_numeric($args[1]))

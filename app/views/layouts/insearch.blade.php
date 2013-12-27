@@ -5,7 +5,7 @@
 	<head>
 		<title>
 			@section('title')
-			{{ _('global.title'); }}
+			{{ §('global.title'); }}
 			@show
 		</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -25,7 +25,7 @@
 						</a>
 						<div class="header-option">
 							<ul class="dropdown-menu" role="menu" aria-labelledby="choice-per-page">
-								<li class="dropdown-header">{{ _('global.results-per-page') }}</li>
+								<li class="dropdown-header">{{ §('global.results-per-page') }}</li>
 								@foreach ($choiceResultsPerPage as $choice)
 									<li><a href="{{ str_replace('%d', $choice, $resultsPerPageUrl) }}">{{ $choice }}</a></li>
 								@endforeach
@@ -34,12 +34,12 @@
 					</div>
  
 					<a class="brand" href="#">
-						<img src="/img/advanced-search.png" alt="{{ _('global.title'); }}">
+						<img src="/img/advanced-search.png" alt="{{ §('global.title'); }}">
 					</a>
  
 					<div class="nav-collapse collapse">
 						<ul class="nav">
-							<li><a href="{{{ URL::to('') }}}">{{ _('global.home'); }}</a></li>
+							<li><a href="{{{ URL::to('') }}}">{{ §('global.home'); }}</a></li>
 						</ul>
 					</div>
 				</div>

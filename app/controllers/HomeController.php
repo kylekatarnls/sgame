@@ -80,11 +80,11 @@ class HomeController extends BaseController {
 			$count = Cache::get('crawled_content_id:'.$id.'_log_outgoing_link_count');
 			if($count)
 			{
-				$count = LogOutgoingLink::where('crawled_content_id', $id)->count();
+				$count++;
 			}
 			else
 			{
-				$count++;
+				$count = LogOutgoingLink::where('crawled_content_id', $id)->count();
 			}
 			Cache::put('crawled_content_id:'.$id.'_log_outgoing_link_count', $count, CrawledContent::REMEMBER);
 		}
