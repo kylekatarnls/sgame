@@ -32,6 +32,9 @@ Route::get('/{page}/{resultsPerPage}/{q}', 'HomeController@searchResult')
 Route::pattern('id', '[1-9][0-9]*');
 Route::get('/out/{q}/{id}', 'HomeController@goOut');
 
+// Ajout manuel d'une URL
+Route::post('/add-url', 'HomeController@addUrl');
+
 // Gestion de l'erreur 404
 App::missing(function ()
 {

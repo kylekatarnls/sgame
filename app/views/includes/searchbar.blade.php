@@ -10,7 +10,7 @@
 		)) }}
 		{{ Form::hidden('resultsPerPage', $resultsPerPage) }}
 		<div class="input-group-btn">
-			<button class="btn btn-default" type="button">
+			<button class="btn btn-default" type="submit">
 				<span class="glyphicon glyphicon-search"></span>
 			</button>
 		</div>

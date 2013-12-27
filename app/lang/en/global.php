@@ -6,6 +6,8 @@ return array(
 	'search' => array(
 		'placeholder' => 'Search a page'
 	),
+	'add-url' => 'Add an URL',
+	'url-added' => 'URL added : :url',
 	'results' => array(
 		'title' => ':title - Results',
 		'count' => '{0} :title - Any result|{1}:title - One result|[2,Inf]:title - :count results'

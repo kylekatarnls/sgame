@@ -1,6 +1,8 @@
 <?php
 
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\QueryException;
 
 class CreateCrawledContent extends Migration {
 
@@ -15,14 +17,14 @@ class CreateCrawledContent extends Migration {
 				$table->increments('id');
 				$table->string('url');
 				$table->string('title');
-				$table->string('content');
+				$table->longtext('content');
 				$table->timestamps();
 			});
 			try
 			{
 				DB::statement('ALTER TABLE `'.$tableName.'` ADD FULLTEXT search(url, title, content)');
 			}
-			catch(Illuminate\Database\QueryException $e)
+			catch(QueryException $e)
 			{
 				echo "FULLTEXT is not supported.\n";
 			}

@@ -12,7 +12,7 @@ body {
 
 .dropdown-menu {
 	float: right;
-	margin: 6px 0 0 -156px;
+	margin: 4px 0 0 -156px;
 }
 
 a.source {
@@ -21,6 +21,10 @@ a.source {
 }
 
 .header-option {
+	margin: 3px 0 -2px;
+}
+
+.header-option, .option-panel {
 	float: right;
 	position: relative;
 }
@@ -31,4 +35,16 @@ a.source {
 
 .header-option:hover {
 	color: #586999;
+}
+
+.option-panel {
+	width: 50%;
+}
+
+.option-panel form {
+	display: none;
+	position: relative;
+	left: -2px;
+	top: 8px;
+	overflow: hidden;
 }

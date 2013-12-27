@@ -32,6 +32,27 @@
 							</ul>
 						</div>
 					</div>
+					<div class="option-panel">
+						<a class="btn header-option">
+							<span class="glyphicon glyphicon-plus-sign"></span>
+						</a>
+						{{ Form::open(array(
+							'url' => '/add-url',
+							'method' => 'post'
+						)) }}
+							<div class="input-group">
+								{{ Form::text('url', '', array(
+									'class' => 'form-control',
+									'placeholder' => §('global.add-url')
+								)) }}
+								<div class="input-group-btn">
+									<button class="btn btn-default" type="submit">
+										<span class="glyphicon glyphicon-plus"></span>
+									</button>
+								</div>
+							</div>
+						{{ Form::close() }}
+					</div>
  
 					<a class="brand" href="#">
 						<img src="/img/advanced-search.png" alt="{{ §('global.title'); }}">
