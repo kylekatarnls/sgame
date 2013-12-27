@@ -30,7 +30,12 @@ class HomeController extends BaseController {
 	public function searchResult($page = 1, $resultsPerPage = null, $q = null)
 	{
 		$q = is_null($q) ? Request::get('q', '') : urldecode($q);
-		$resultsPerPage = is_null($resultsPerPage) ? Request::get('resultsPerPage', self::DEFAULT_RESULLTS_PER_PAGE) : $resultsPerPage;
+		$defaultResultsPerPage = (int) Cookie::get('resultsPerPage', self::DEFAULT_RESULLTS_PER_PAGE);
+		$resultsPerPage = (int) (is_null($resultsPerPage) ? Request::get('resultsPerPage', $defaultResultsPerPage) : $resultsPerPage);
+		if($resultsPerPage !== $defaultResultsPerPage)
+		{
+			Cookie::queue('resultsPerPage', $resultsPerPage, 60);
+		}
 		$choice = self::getChoiceResultsPerPage();
 		if(!in_array($resultsPerPage, $choice))
 		{

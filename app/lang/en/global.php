@@ -2,6 +2,7 @@
 return array(
 	'title' => 'InSearch',
 	'home' => 'Home',
+	'results-per-page' => 'Results per page',
 	'search' => array(
 		'placeholder' => 'Search a page'
 	),

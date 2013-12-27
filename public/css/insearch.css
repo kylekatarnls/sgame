@@ -10,7 +10,25 @@ body {
 	-moz-border-radius: 0;
 }
 
+.dropdown-menu {
+	float: right;
+	margin: 6px 0 0 -156px;
+}
+
 a.source {
 	color: silver;
 	font-size: 0.85em;
+}
+
+.header-option {
+	float: right;
+	position: relative;
+}
+
+.header-option .glyphicon {
+	font-size: 2em;
+}
+
+.header-option:hover {
+	color: #586999;
 }
