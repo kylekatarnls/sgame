@@ -1,11 +1,11 @@
 <!doctype html>
-<html lang="en">
+<html lang="{{ Lang::locale() }}">
 <head>
 	<meta charset="UTF-8">
 	<head>
 		<title>
 			@section('title')
-			InSearch
+			{{ _('global.title'); }}
 			@show
 		</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -26,12 +26,12 @@
 					</a>
  
 					<a class="brand" href="#">
-						<img src="/img/advanced-search.png" alt="InSearch">
+						<img src="/img/advanced-search.png" alt="{{ _('global.title'); }}">
 					</a>
  
 					<div class="nav-collapse collapse">
 						<ul class="nav">
-							<li><a href="{{{ URL::to('') }}}">Home</a></li>
+							<li><a href="{{{ URL::to('') }}}">{{ _('global.home'); }}</a></li>
 						</ul>
 					</div>
 				</div>

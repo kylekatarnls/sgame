@@ -2,7 +2,7 @@
 
 @section('content')
 
-	<h1>InSearch</h1>
+	<h1>{{ _('global.title') }}</h1>
 
 	@include('includes.searchbar', array('q' => ''))
 

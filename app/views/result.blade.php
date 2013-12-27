@@ -1,13 +1,12 @@
 @extends('layouts.insearch')
 
 @section('title')
-	@parent
-	- Result
+	{{ _('global.results.title', array('title' => _('global.title'))) }}
 @stop
 
 @section('content')
 
-	<h1>InSearch - {{ $nbResults.' '.str_plural('result', $nbResults) }}</h1>
+	<h1>{{ _('global.results.count', $nbResults, array( 'title' => _('global.title') )) }}</h1>
 
 	@include('includes.searchbar')
 

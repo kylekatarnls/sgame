@@ -16,14 +16,12 @@ return array(
 
 	'driver' => (
 		(class_exists('Memcached') ?
-			'memcached' :
-		(class_exists('Memcache') && ($emulator = new EmulateMemcachedWithMemcache) ?
-			$emulator->proceed() :
+			'memcached' : // émulé par Memcache si Memcached est absent et que Memcache est disponible
 		(function_exists('apc_store') ?
 			'apc' :
-		// default
+		// à défaut de driver de cache, on utilisera des fichiers
 			'file'
-	)))),
+	))),
 
 	/*
 	|--------------------------------------------------------------------------

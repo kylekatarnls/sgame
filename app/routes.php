@@ -11,6 +11,8 @@
 |
 */
 
+require_once __DIR__ . DIRECTORY_SEPARATOR . 'utils' . DIRECTORY_SEPARATOR . 'functions.php';
+
 // Pour vérifier votre configuration, décommenter la ligne ci-dessous :
 // phpinfo();exit;
 

@@ -6,7 +6,7 @@
 	<div class="input-group">
 		{{ Form::text('q', $q, array(
 			'class' => 'form-control',
-			'placeholder' => 'Search a page'
+			'placeholder' => _('global.search.placeholder')
 		)) }}
 		<!--
 		<div class="input-group-btn">
