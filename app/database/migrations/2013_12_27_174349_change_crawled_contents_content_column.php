@@ -23,11 +23,11 @@ class ChangeCrawledContentsContentColumn extends Migration {
 				$connection->getSchemaGrammar();
 				$print = new Blueprint(self::TABLE_NAME, function(Blueprint $table)
 				{
-					$table->longtext(self::COLUMN_NAME);
+					$table->longtext('toReplace');
 				});
 				$statement = str_ireplace(
-					array(' add ', ' not null'),
-					array(' modify ', ''),
+					array('toReplace', ' add ', ' not null'),
+					array(self::COLUMN_NAME, ' modify ', ''),
 					array_get($print->toSql($connection, $connection->getSchemaGrammar()), 0)
 				);
 				DB::statement($statement);
