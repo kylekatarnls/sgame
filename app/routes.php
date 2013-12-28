@@ -12,7 +12,7 @@
 */
 
 // Pour vérifier votre configuration, décommenter la ligne ci-dessous :
-// phpinfo();exit;
+phpinfo();exit;
 
 // Accueil
 Route::get('/', 'HomeController@searchBar');

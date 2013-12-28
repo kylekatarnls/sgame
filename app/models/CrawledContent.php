@@ -28,6 +28,11 @@ class CrawledContent extends Eloquent {
 		return $this->belongsToMany('KeyWord');
 	}
 
+	public function scan()
+	{
+		scanUrl($this->attributes['url']);
+	}
+
 	public function getOutgoingLinkAttribute()
 	{
 		return '/out/'. self::$lastQuerySearch . '/' . $this->id;
@@ -55,5 +60,20 @@ class CrawledContent extends Eloquent {
 	}
 
 }
+
+/**
+ * Observateur des contenus enregistrés
+ */
+class CrawledContentObserver {
+
+	public function saved($contentCrawled)
+	{
+		preg_match_all('#<strong>(.+)</strong>#sU', $contentCrawled->content, $matches);
+		var_dump($matches[1]);
+	}
+
+}
+
+CrawledContent::observe(new CrawledContentObserver);
 
 ?>

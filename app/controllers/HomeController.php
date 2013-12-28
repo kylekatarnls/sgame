@@ -5,6 +5,12 @@ class HomeController extends BaseController {
 	const DEFAULT_RESULLTS_PER_PAGE = 10;
 	const ENUM_RESULLTS_PER_PAGE = '10,50,100,500';
 
+	/*
+	|--------------------------------------------------------------------------
+	| PROTECTED
+	|--------------------------------------------------------------------------
+	*/
+
 	protected function getChoiceResultsPerPage()
 	{
 		return array_map('intval', explode(',', self::ENUM_RESULLTS_PER_PAGE));
@@ -28,11 +34,8 @@ class HomeController extends BaseController {
 
 	/*
 	|--------------------------------------------------------------------------
-	| Default Home Controller
+	| PUBLIC
 	|--------------------------------------------------------------------------
-	|
-	| 
-	|
 	*/
 
 	public function searchBar()
