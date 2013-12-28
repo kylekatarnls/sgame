@@ -1,6 +1,6 @@
 <?php
 
-/*
+/**
  * Contenu récupéré par le crawler
  */
 class CrawledContent extends Eloquent {
@@ -21,6 +21,11 @@ class CrawledContent extends Eloquent {
 					->orWhereRaw('LOWER(title)'.$like)
 					->orWhereRaw('LOWER(url)'.$like)
 					->remember(self::REMEMBER);
+	}
+
+	public function keyWords()
+	{
+		return $this->belongsToMany('KeyWord');
 	}
 
 	public function getOutgoingLinkAttribute()

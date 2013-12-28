@@ -5,17 +5,36 @@ function §()
 	$args = func_get_args();
 	if(isset($args[1]) && is_numeric($args[1]))
 	{
-		return call_user_func_array(array('Lang', 'choice'), $args);
+		return call_user_func_array('trans_choice', $args);
 	}
-	return call_user_func_array(array('Lang', 'get'), $args);
+	return call_user_func_array('trans', $args);
 }
 
-function getDataFromUrl($url, $recursions = 0)
+function normalize($string, $lowerCase = false)
+{
+	$a = 'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûýýþÿŔŕ';
+	$b = 'aaaaaaaceeeeiiiidnoooooouuuuybsaaaaaaaceeeeiiiidnoooooouuuyybyRr';
+	$string = utf8_decode($string);
+	$string = strtr($string, utf8_decode($a), $b);
+	$string = strtolower($string);
+	if($lowerCase)
+	{
+		$string = strtolower($string);
+	}
+	$string = utf8_encode($string);
+	return $string;
+} 
+
+function getDataFromUrl($url, $recursions = 0, $followLinks = false)
 {
 	$fileGetContents = file_get_contents($url);
 	$title = preg_match('#<title.*>(.+)</title>#isU', $fileGetContents, $match) ?
 		trim(strip_tags($match[1])) :
 		e($url);
+	if($followLinks)
+	{
+
+	}
 	if($recursions > 10)
 	{
 		$content = '';
@@ -48,9 +67,9 @@ function getDataFromUrl($url, $recursions = 0)
 	);
 }
 
-function scanUrl($url)
+function scanUrl($url, $followLinks = false)
 {
-	$data = getDataFromUrl($url);
+	$data = getDataFromUrl($url, 0, $followLinks);
 	$crawledContent = CrawledContent::where('url', $url)->first();
 	if($crawledContent)
 	{

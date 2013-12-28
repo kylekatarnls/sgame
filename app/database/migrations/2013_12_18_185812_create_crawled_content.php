@@ -19,6 +19,7 @@ class CreateCrawledContent extends Migration {
 				$table->string('title');
 				$table->longtext('content');
 				$table->timestamps();
+				$table->softDeletes();
 			});
 			try
 			{

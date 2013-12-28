@@ -1,7 +1,7 @@
 <?php
 
 // Chargement des fonctions supplémentaires
-require_once __DIR__ . '../app/utils/functions.php';
+require_once __DIR__ . '/../utils/functions.php';
 
 /*
 |--------------------------------------------------------------------------
