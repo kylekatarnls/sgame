@@ -134,7 +134,7 @@ class HomeController extends BaseController {
 		foreach(CrawledContent::all() as $crawledContent)
 		{
 			$urlCount++;
-			scanUrl($crawledContent->url);
+			scanUrl($crawledContent->url, true);
 		}
 		$urlCount += Crawler::countLinks();
 		echo §('crawler.crawled-url', $urlCount);

@@ -9,6 +9,31 @@ class Crawler {
 
 	static protected $links = array();
 
+	static protected function realLink($from, $to)
+	{
+		switch(substr($to, 0, 1))
+		{
+			case '':
+			case '#':
+				return $from;
+			case '/':
+				return preg_replace('#^([a-z0-9]+://[^/]+)(/.*)$#i', '$1', $from).$to;
+			case '?':
+				return preg_replace('#^([^\?]+)(\?.*)$#i', '$1', $from).$to;
+			default:
+				if(substr_count($from, '/') < 3)
+				{
+					$from .= '/';
+				}
+				$to = preg_replace('#[^/]+$#i', '', $from).$to;
+				$to = explode('?', $to);
+				$to[0] = str_replace('/.', '', $to[0]);
+				$to[0] = preg_replace('#(?<![^/]/)[^/]+/\.\.#', '', $to[0]);
+				$to = implode('?', $to);
+				return $to;
+		}
+	}
+
 	static public function getDataFromUrl($url, $recursions = 0, $followLinks = false)
 	{
 		$fileGetContents = file_get_contents($url);
@@ -26,6 +51,7 @@ class Crawler {
 				preg_match_all('#<a[^>]*href\s*=\s*[\'"](.+)[\'"]#isU', $fileGetContents, $matches);
 				foreach($matches[1] as $link)
 				{
+					$link = self::realLink($url, $link);
 					if(!in_array($link, self::$links))
 					{
 						self::$links[] = $link;
