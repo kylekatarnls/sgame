@@ -65,7 +65,7 @@ return array(
 	|
 	*/
 
-	'key' => '_Yh6#sqsmlkx@sqlkze!/.sqdij;5qsufd;?§!sqdzadkdUDZg424d_96',
+	'key' => 'o4EB229LvGMngWPNB9KosElfeym0c6wd',
 
 	/*
 	|--------------------------------------------------------------------------

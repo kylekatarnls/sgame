@@ -40,6 +40,10 @@ class HomeController extends BaseController {
 
 	public function searchBar()
 	{
+		// $e = new Exception("Error Processing Request", 1);
+		// var_dump($e->getTrace());
+		// exit();
+
 		return View::make('home')->with(array(
 			'resultsPerPageUrl' => '#',
 			'resultsPerPage' => self::getResultsPerPage(),
