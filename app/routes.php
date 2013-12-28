@@ -17,6 +17,9 @@
 // Accueil
 Route::get('/', 'HomeController@searchBar');
 
+// Lancement du crawling
+Route::get('/crawl', 'HomeController@crawl');
+
 // Résultats
 Route::post('/', 'HomeController@searchResult');
 Route::pattern('q', '[^/]*');

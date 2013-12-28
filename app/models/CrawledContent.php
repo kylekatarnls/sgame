@@ -15,6 +15,10 @@ class CrawledContent extends Eloquent {
 
 	static public function search($value = '')
 	{
+		if($value === '')
+		{
+			return self::whereRaw('1=0');
+		}
 		self::$lastQuerySearch = urlencode($value);
 		$like = 'LIKE '.DB::getPdo()->quote('%'.addcslashes(strtolower($value), '_%').'%');
 		return self::whereRaw('LOWER(content)'.$like)
@@ -69,7 +73,20 @@ class CrawledContentObserver {
 	public function saved($contentCrawled)
 	{
 		preg_match_all('#<strong>(.+)</strong>#sU', $contentCrawled->content, $matches);
-		var_dump($matches[1]);
+		$words = explode(' ', preg_replace('#\s+#', ' ', implode(' ', $matches[1])));
+		$ids = array();
+		foreach($words as $word)
+		{
+			$word = preg_replace('#[^a-z0-9_-]#', '', normalize($word, true));
+			if($word !== '')
+			{
+				$keyWord = KeyWord::firstOrCreate(array(
+					'word' => $word
+				));
+				$ids[] = $keyWord->id;
+			}
+		}
+		$contentCrawled->keyWords()->sync($ids);
 	}
 
 }

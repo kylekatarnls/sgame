@@ -17,16 +17,16 @@ class CreateKeyWordsTable extends Migration {
 		Schema::create('key_words', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->string('word');
+			$table->string('word')->unique();
 			$table->timestamps();
 		});
-		Schema::create('key_word_crawled_content', function(Blueprint $table)
+		Schema::create('crawled_content_key_word', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->integer('key_word_id');
-			$table->foreign('key_word_id')->references('id')->on('key_words');
 			$table->integer('crawled_content_id');
 			$table->foreign('crawled_content_id')->references('id')->on('crawled_contents');
+			$table->integer('key_word_id');
+			$table->foreign('key_word_id')->references('id')->on('key_words');
 		});
 	}
 
@@ -38,7 +38,7 @@ class CreateKeyWordsTable extends Migration {
 	public function down()
 	{
 		Schema::dropIfExists('key_words');
-		Schema::dropIfExists('key_word_crawled_content');
+		Schema::dropIfExists('crawled_content_key_word');
 	}
 
 }

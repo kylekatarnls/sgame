@@ -53,6 +53,7 @@ class HomeController extends BaseController {
 
 	public function searchResult($page = 1, $resultsPerPage = null, $q = null)
 	{
+		$page = (int) max(1, $page);
 		$q = is_null($q) ? Request::get('q', '') : urldecode($q);
 		$resultsPerPage = self::getResultsPerPage($resultsPerPage);
 		$choice = self::getChoiceResultsPerPage();
@@ -125,6 +126,18 @@ class HomeController extends BaseController {
 			'resultsPerPage' => self::getResultsPerPage(),
 			'choiceResultsPerPage' => self::getChoiceResultsPerPage()
 		));
+	}
+
+	public function crawl()
+	{
+		$urlCount = 0;
+		foreach(CrawledContent::all() as $crawledContent)
+		{
+			$urlCount++;
+			scanUrl($crawledContent->url);
+		}
+		$urlCount += Crawler::countLinks();
+		echo §('crawler.crawled-url', $urlCount);
 	}
 
 }
