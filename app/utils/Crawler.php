@@ -90,6 +90,11 @@ class Crawler {
 	static public function scanUrl($url, $followLinks = false)
 	{
 		$data = self::getDataFromUrl($url, 0, $followLinks);
+		if(!mb_check_encoding($data['content'], 'UTF-8'))
+		{
+			$data['title'] = utf8_encode($data['title']);
+			$data['content'] = utf8_encode($data['content']);
+		}
 		$crawledContent = CrawledContent::where('url', $url)->first();
 		if($crawledContent)
 		{

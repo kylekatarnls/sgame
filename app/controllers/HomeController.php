@@ -54,6 +54,7 @@ class HomeController extends BaseController {
 	public function searchResult($page = 1, $resultsPerPage = null, $q = null)
 	{
 		$page = (int) max(1, $page);
+		var_dump($page);
 		$q = is_null($q) ? Request::get('q', '') : urldecode($q);
 		$resultsPerPage = self::getResultsPerPage($resultsPerPage);
 		$choice = self::getChoiceResultsPerPage();
