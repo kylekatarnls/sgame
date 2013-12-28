@@ -15,7 +15,7 @@ class CreateCrawledContent extends Migration {
 			Schema::create($tableName, function(Blueprint $table)
 			{
 				$table->increments('id');
-				$table->string('url');
+				$table->string('url')->unique();
 				$table->string('title');
 				$table->longtext('content');
 				$table->timestamps();

@@ -110,7 +110,7 @@ class HomeController extends BaseController {
 	public function addUrl()
 	{
 		$url = Input::get('url');
-		$added = addUrl($url);
+		$added = scanUrl($url);
 		return View::make('home')->with(array(
 			'url' => $url,
 			'added' => $added,
