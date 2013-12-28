@@ -59,6 +59,10 @@ class HomeController extends BaseController {
 		}
 		$nbResults = CrawledContent::search($q)->count();
 		$nbPages = ceil($nbResults / $resultsPerPage);
+		if($page > $nbPages)
+		{
+			$page = 1;
+		}
 		$keepResultsPerPage = $resultsPerPage == self::ENUM_RESULLTS_PER_PAGE ? '' : '/' . $resultsPerPage;
 		$results = CrawledContent::search($q)
 			->select('crawled_contents.id', 'url', 'title', 'content', DB::raw('COUNT(log_outgoing_links.id) AS count'))

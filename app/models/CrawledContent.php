@@ -21,9 +21,12 @@ class CrawledContent extends Eloquent {
 		}
 		self::$lastQuerySearch = urlencode($value);
 		$like = 'LIKE '.DB::getPdo()->quote('%'.addcslashes(strtolower($value), '_%').'%');
-		return self::whereRaw('LOWER(content)'.$like)
+		//$value = preg_split('#\s+#', $value);
+		$result = self::whereRaw('LOWER(content)'.$like)
 					->orWhereRaw('LOWER(title)'.$like)
-					->orWhereRaw('LOWER(url)'.$like)
+					->orWhereRaw('LOWER(url)'.$like);
+		// Insérer ici le tri par pertinence et la jointure avec la table key_words
+		return $result->orderBy('score', 'desc')
 					->remember(self::REMEMBER);
 	}
 

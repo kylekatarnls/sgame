@@ -10,7 +10,7 @@
 
 	@include('includes.searchbar')
 
-	@foreach ($results as $result)
+	@foreach($results as $result)
 		<h3>
 			<a href="{{ $result->outgoingLink }}">{{ $result->title }}</a>
 		</h3>
