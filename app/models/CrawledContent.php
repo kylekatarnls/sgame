@@ -33,6 +33,22 @@ class CrawledContent extends Eloquent {
 		return Cache::get('crawled_content_id:'.$this->id.'_log_outgoing_link_count', $this->attributes['count']);
 	}
 
+	public function getContentAttribute()
+	{
+		$content = trim(Cache::get('CrawledContent-'.$this->id.'-content', $this->attributes['content']));
+		if(strlen($content) > 800)
+		{
+			$content = substr($content, 0, 800);
+			$content = substr($content, 0, strrpos($content, ' ')).'...';
+		}
+		return $content;
+	}
+
+	public function getTitleAttribute()
+	{
+		return Cache::get('CrawledContent-'.$this->id.'-title', $this->attributes['title']);
+	}
+
 }
 
 ?>

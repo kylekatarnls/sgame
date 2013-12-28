@@ -110,18 +110,10 @@ class HomeController extends BaseController {
 	public function addUrl()
 	{
 		$url = Input::get('url');
-		$fileGetContents = file_get_contents($url);
-		preg_match('#<title.*>(.+)</title>#isU', $fileGetContents, $match);
-		$title = trim(strip_tags($match[1]));
-		preg_match('#<body.*>(.+)</body>#isU', $fileGetContents, $match);
-		$content = trim(strip_tags($match[1]));
-		CrawledContent::create(array(
-			'url' => $url,
-			'title' => $title,
-			'content' => $content
-		));
+		$added = addUrl($url);
 		return View::make('home')->with(array(
 			'url' => $url,
+			'added' => $added,
 			'resultsPerPageUrl' => '#',
 			'resultsPerPage' => self::getResultsPerPage(),
 			'choiceResultsPerPage' => self::getChoiceResultsPerPage()

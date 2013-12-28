@@ -6,7 +6,7 @@
 
 	@if(isset($url))
 		<div class="alert alert-success">
-			{{ §('global.url-added', array('url' => '<strong>' . $url . '</strong>' )) }}
+			{{ §('global.url-'.($added ? 'added' : 'updated'), array('url' => '<strong>' . $url . '</strong>' )) }}
 		</div>
 	@endif
 
