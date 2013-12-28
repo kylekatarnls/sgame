@@ -47,10 +47,10 @@ class HomeController extends BaseController {
 		));
 	}
 
-	public function searchResult($page = 1, $resultsPerPage = null, $q = null)
+	public function searchResult($page = 1, $q = null, $resultsPerPage = null)
 	{
+		var_dump($page, $resultsPerPage, $q);
 		$page = (int) max(1, $page);
-		var_dump($page);
 		$q = is_null($q) ? Request::get('q', '') : urldecode($q);
 		$resultsPerPage = self::getResultsPerPage($resultsPerPage);
 		$choice = self::getChoiceResultsPerPage();
@@ -60,7 +60,7 @@ class HomeController extends BaseController {
 		}
 		$nbResults = CrawledContent::search($q)->count();
 		$nbPages = ceil($nbResults / $resultsPerPage);
-		$keepResultsPerPage = $resultsPerPage == self::ENUM_RESULLTS_PER_PAGE ? '' : $resultsPerPage.'/';
+		$keepResultsPerPage = $resultsPerPage == self::ENUM_RESULLTS_PER_PAGE ? '' : '/' . $resultsPerPage;
 		$results = CrawledContent::search($q)
 			->select('crawled_contents.id', 'url', 'title', 'content', DB::raw('COUNT(log_outgoing_links.id) AS count'))
 			->leftJoin('log_outgoing_links', 'log_outgoing_links.crawled_content_id', '=', 'crawled_contents.id')
@@ -72,8 +72,8 @@ class HomeController extends BaseController {
 			'q' => $q,
 			'nbPages' => (int) $nbPages,
 			'currentPage' => (int) $page,
-			'pageUrl' => '/%d/'.$keepResultsPerPage.urlencode($q),
-			'resultsPerPageUrl' => '/'.$page.'/%d/'.urlencode($q),
+			'pageUrl' => '/%d/'.urlencode($q).$keepResultsPerPage,
+			'resultsPerPageUrl' => '/'.$page.'/'.urlencode($q).'/%d',
 			'results' => $results,
 			'nbResults' => (int) $nbResults,
 			'resultsPerPage' => (int) $resultsPerPage,

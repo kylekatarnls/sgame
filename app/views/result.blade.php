@@ -12,11 +12,11 @@
 
 	@foreach ($results as $result)
 		<h3>
-			<a href="{{ $result->outgoingLink }}">{{ e($result->title) }}</a>
+			<a href="{{ $result->outgoingLink }}">{{ $result->title }}</a>
 		</h3>
 		<p>
 			<span class="badge">{{ $result->count }}</span>
-			{{ e($result->content) }}<br>
+			{{ $result->content }}<br>
 			<a href="{{ $result->outgoingLink }}" class="source">{{ e($result->url) }}</a>
 		</p>
 	@endforeach
