@@ -6,6 +6,9 @@
 class Crawler {
 
 	const RECURSION_LIMIT = 6;
+	const ADDED = 0x01;
+	const UPDATED = 0x02;
+	const NOT_FOUND = 0xff;
 
 	static protected $links = array();
 
@@ -36,7 +39,14 @@ class Crawler {
 
 	static public function getDataFromUrl($url, $recursions = 0, $followLinks = false)
 	{
-		$fileGetContents = file_get_contents($url);
+		try
+		{
+			$fileGetContents = file_get_contents($url);
+		}
+		catch(ErrorException $e)
+		{
+			return null;
+		}
 		$title = preg_match('#<title.*>(.+)</title>#isU', $fileGetContents, $match) ?
 			trim(strip_tags($match[1])) :
 			e($url);
@@ -59,8 +69,9 @@ class Crawler {
 					}
 				}
 			}
-			$fileGetContents = preg_replace('#(<\/?)(h[1-6]|b|em|strong)([^a-z0-9][^>]*)?>#isU', '$1strong>', $fileGetContents);
+			$fileGetContents = preg_replace('#(<\/?)(h[1-6]|b|em|strong)([^a-z0-9][^>]*)?>#isU', ' $1strong> ', $fileGetContents);
 			// Remplace les balises importantes (h1...h6, em, b, strong) avec ou sans paramètres par une balise <strong> sans paramètres
+			// On rajoute au passage des espaces autour de la balise pour que l'index FULLTEXT repère correctement les séparation de mots
 			$fileGetContents = str_replace('><', '> <', $fileGetContents);
 			$fileGetContents = preg_replace('#<img\s.*alt\s*=\s*[\'"](.+)[\'"].*>#isU', '$1', $fileGetContents);
 			$fileGetContents = preg_replace('#<script[^>]*>.+</script>#isU', '', $fileGetContents);
@@ -69,7 +80,8 @@ class Crawler {
 				'#<i?frame[^>]*src\s*=\s*[\'"](.+)[\'"][^>]*>.+</i?frame>#isU',
 				function ($match) use($recursions)
 				{
-					return array_get(self::getDataFromUrl($match[1], $recursions + 1), 'content');
+					$data = self::getDataFromUrl($match[1], $recursions + 1);
+					return is_null($data) ? '' : array_get($data, 'content');
 				},
 				$fileGetContents
 			);
@@ -91,6 +103,10 @@ class Crawler {
 	static public function scanUrl($url, $followLinks = false)
 	{
 		$data = self::getDataFromUrl($url, 0, $followLinks);
+		if(is_null($data))
+		{
+			return self::NOT_FOUND;
+		}
 		if(!mb_check_encoding($data['content'], 'UTF-8'))
 		{
 			$data['title'] = utf8_encode($data['title']);
@@ -106,12 +122,12 @@ class Crawler {
 			$crawledContent->save();
 			Cache::put('CrawledContent-'.$crawledContent->id.'-title', $title, CrawledContent::REMEMBER);
 			Cache::put('CrawledContent-'.$crawledContent->id.'-content', $content, CrawledContent::REMEMBER);
-			return false;
+			return self::UPDATED;
 		}
 		else
 		{
 			CrawledContent::create($data);
-			return true;
+			return self::ADDED;
 		}
 	}
 

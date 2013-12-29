@@ -23,7 +23,20 @@ function normalize($string, $lowerCase = false)
 	}
 	$string = utf8_encode($string);
 	return $string;
-} 
+}
+
+function array_maps($maps, array $array)
+{
+	if(!is_array($maps))
+	{
+		$maps = explode(',', $maps);
+	}
+	foreach($maps as $map)
+	{
+		$array = array_map($map, $array);
+	}
+	return $array;
+}
 
 function scanUrl($url, $followLinks = false)
 {

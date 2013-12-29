@@ -3,45 +3,43 @@
 /**
  * Contenu récupéré par le crawler
  */
-class CrawledContent extends Eloquent {
-
-	const REMEMBER = 10;
+class CrawledContent extends Searchable {
 
 	protected $collection = 'crawled_content';
 	protected $softDelete = true;
 	protected $fillable = array('url', 'title', 'content');
 
-	static protected $lastQuerySearch = '';
-
-	static public function search($value = '')
+	static public function getSearchResult($query, $page = null, $resultsPerPage = null)
 	{
-		if($value === '')
+		$result = self::search($query, $values) // $values contient les mots contenus dans la chaîne $query sous forme d'array
+			->select(
+				'crawled_contents.id',
+				'url', 'title', 'content',
+				DB::raw('COUNT(log_outgoing_links.id) AS count'),
+				DB::raw('
+					COUNT(DISTINCT key_words.id) * ' . self::KEY_WORD_SCORE . ' +
+					1 * ' . self::COMPLETE_QUERY_SCORE . ' +
+					1 * ' . self::ONE_WORD_SCORE . '
+					AS score
+				')
+				/*-
+				 * Ici, il reste à complérer le calcul du score en y incluant :
+				 *  - la détection de la recherche complète (si la recherche contient plusieurs mots)
+				 *  - la détection de chaque mot
+				 * Le tout devra si possible être compatible avec PostgreSQL, MySQL, SQLite et Oracle
+				 */
+			)
+			->leftJoin('log_outgoing_links', 'log_outgoing_links.crawled_content_id', '=', 'crawled_contents.id')
+			->leftJoin('crawled_content_key_word', 'crawled_content_key_word.crawled_content_id', '=', 'crawled_contents.id')
+			->leftJoin('key_words', 'crawled_content_key_word.key_word_id', '=', 'key_words.id')
+			->whereIn('key_words.word', array_maps('normalize,strtolower', $values))
+			->orderBy('score', 'desc')
+        	->groupBy('crawled_contents.id');
+		if(!is_null($resultsPerPage))
 		{
-			return self::whereRaw('1=0');
+			$result = $result->forPage($page, $resultsPerPage);
 		}
-		self::$lastQuerySearch = urlencode($value);
-		$like = 'LIKE '.DB::getPdo()->quote('%'.addcslashes(strtolower($value), '_%').'%');
-		$values = preg_split('#\s+#', $value);
-		$result = self::whereRaw('LOWER(content)'.$like)
-					->orWhereRaw('LOWER(title)'.$like)
-					->orWhereRaw('LOWER(url)'.$like);
-
-		// Si la recherche contient plusieurs mots
-		if(count($values) > 1)
-		{
-		    foreach($values as $value)
-		    {
-		        $like = 'LIKE '.DB::getPdo()->quote('%'.addcslashes(strtolower($value), '_%').'%');
-	        	$result
-	        	    ->orWhereRaw('LOWER(content)'.$like)
-    				->orWhereRaw('LOWER(title)'.$like)
-    				->orWhereRaw('LOWER(url)'.$like);
-		    }
-		}
-		// Insérer ici le tri par pertinence et la jointure avec la table key_words
-		return $result
-			//->orderBy('score', 'desc')
-			->remember(self::REMEMBER);
+		return $result->get();
 	}
 
 	public function keyWords()
@@ -90,7 +88,7 @@ class CrawledContentObserver {
 	public function saved($contentCrawled)
 	{
 		preg_match_all('#<strong>(.+)</strong>#sU', $contentCrawled->content, $matches);
-		$words = explode(' ', preg_replace('#\s+#', ' ', implode(' ', $matches[1])));
+		$words = array_unique(explode(' ', preg_replace('#\s+#', ' ', trim(implode(' ', $matches[1])))));
 		$ids = array();
 		foreach($words as $word)
 		{

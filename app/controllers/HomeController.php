@@ -57,19 +57,14 @@ class HomeController extends BaseController {
 		{
 			$resultsPerPage = self::ENUM_RESULLTS_PER_PAGE;
 		}
-		$nbResults = CrawledContent::search($q)->count();
+		$nbResults = CrawledContent::searchCount($q);
 		$nbPages = ceil($nbResults / $resultsPerPage);
 		if($page > $nbPages)
 		{
 			$page = 1;
 		}
 		$keepResultsPerPage = $resultsPerPage == self::ENUM_RESULLTS_PER_PAGE ? '' : '/' . $resultsPerPage;
-		$results = CrawledContent::search($q)
-			->select('crawled_contents.id', 'url', 'title', 'content', DB::raw('COUNT(log_outgoing_links.id) AS count'))
-			->leftJoin('log_outgoing_links', 'log_outgoing_links.crawled_content_id', '=', 'crawled_contents.id')
-        	->groupBy('crawled_contents.id')
-			->forPage($page, $resultsPerPage)
-			->get();
+		$results = CrawledContent::getSearchResult($q, $page, $resultsPerPage);
 
 		return View::make('result')->with(array(
 			'q' => $q,
@@ -118,10 +113,10 @@ class HomeController extends BaseController {
 	public function addUrl()
 	{
 		$url = Input::get('url');
-		$added = scanUrl($url);
+		$state = scanUrl($url);
 		return View::make('home')->with(array(
 			'url' => $url,
-			'added' => $added,
+			'state' => $state,
 			'resultsPerPageUrl' => '#',
 			'resultsPerPage' => self::getResultsPerPage(),
 			'choiceResultsPerPage' => self::getChoiceResultsPerPage()
