@@ -6,6 +6,7 @@ return array(
 	'search' => array(
 		'placeholder' => 'Search a page'
 	),
+	'popularity' => 'Popularity',
 	'add-url' => 'Add an URL',
 	'url-added' => 'URL added : :url',
 	'url-updated' => 'URL updated : :url',

@@ -69,8 +69,9 @@ class Crawler {
 					}
 				}
 			}
-			$fileGetContents = preg_replace('#(<\/?)(h[1-6]|b|em|strong)([^a-z0-9][^>]*)?>#isU', '$1strong>', $fileGetContents);
+			$fileGetContents = preg_replace('#(<\/?)(h[1-6]|b|em|strong)([^a-z0-9][^>]*)?>#isU', ' $1strong> ', $fileGetContents);
 			// Remplace les balises importantes (h1...h6, em, b, strong) avec ou sans paramètres par une balise <strong> sans paramètres
+			// On rajoute au passage des espaces autour de la balise pour que l'index FULLTEXT repère correctement les séparation de mots
 			$fileGetContents = str_replace('><', '> <', $fileGetContents);
 			$fileGetContents = preg_replace('#<img\s.*alt\s*=\s*[\'"](.+)[\'"].*>#isU', '$1', $fileGetContents);
 			$fileGetContents = preg_replace('#<script[^>]*>.+</script>#isU', '', $fileGetContents);

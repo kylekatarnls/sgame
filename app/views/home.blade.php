@@ -6,7 +6,7 @@
 
 	@if(isset($url))
 		@if($state === Crawler::NOT_FOUND)
-			<div class="alert alert-error">
+			<div class="alert alert-danger">
 				{{ §('global.url-not-found', array('url' => '<strong>' . $url . '</strong>' )) }}
 			</div>
 		@else

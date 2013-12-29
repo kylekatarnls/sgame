@@ -25,16 +25,10 @@ class CrawledContent extends Searchable {
 			)
 			->leftJoin('log_outgoing_links', 'log_outgoing_links.crawled_content_id', '=', 'crawled_contents.id')
 			->leftJoin('crawled_content_key_word', 'crawled_content_key_word.crawled_content_id', '=', 'crawled_contents.id')
-			->leftJoin('key_words', function($join) use($values)
-			{
-				$join->on('crawled_content_key_word.key_word_id', '=', 'key_words.id')
-					->where('key_words.word', '=', DB::raw('(' .
-						implode(', ', array_map(array('self', 'quote'), array_map('strtolower', $values))) .
-					')'));
-			})
+			->leftJoin('key_words', 'crawled_content_key_word.key_word_id', '=', 'key_words.id')
+			->whereIn('key_words.word', array_maps('normalize,strtolower', $values))
 			->orderBy('score', 'desc')
         	->groupBy('crawled_contents.id');
-		// Insérer ici le tri par pertinence et la jointure avec la table key_words
 		if(!is_null($resultsPerPage))
 		{
 			$result = $result->forPage($page, $resultsPerPage);
@@ -88,7 +82,7 @@ class CrawledContentObserver {
 	public function saved($contentCrawled)
 	{
 		preg_match_all('#<strong>(.+)</strong>#sU', $contentCrawled->content, $matches);
-		$words = array_unique(explode(' ', preg_replace('#\s+#', ' ', implode(' ', $matches[1]))));
+		$words = array_unique(explode(' ', preg_replace('#\s+#', ' ', trim(implode(' ', $matches[1])))));
 		$ids = array();
 		foreach($words as $word)
 		{

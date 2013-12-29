@@ -5,7 +5,9 @@
  */
 abstract class Searchable extends Eloquent {
 
-	const REMEMBER = 10;
+	const REMEMBER = false;
+	// Entrer une valeur en minutes pour la durée de mise en cache des requêtes SQL
+	// ou false pour ne pas mettre les résultats de requêtes SQL en cache
 	const KEY_WORD_SCORE = 10;
 	const COMPLETE_QUERY_SCORE = 5;
 	const ONE_WORD_SCORE = 1;
@@ -36,13 +38,14 @@ abstract class Searchable extends Eloquent {
 				$result->orWhereRaw($where) :
 				self::whereRaw($where);
 		}
-		return $result->remember(self::REMEMBER);
+		return $result;
 	}
 
 	static protected function eachLike(&$result = null, $value='')
 	{
 		$like = 'LIKE ' . self::quote('%' . addcslashes(strtolower($value), '_%') . '%');
-		$self = new self;
+		$class = get_called_class();
+		$self = new $class;
 		foreach($self->fillable as $column)
 		{
 			$result = is_null($result) ?
@@ -57,7 +60,7 @@ abstract class Searchable extends Eloquent {
 		{
 			self::eachLike($result, $value);
 		}
-		return $result->remember(self::REMEMBER);
+		return $result;
 	}
 
 	static public function search($value = '', &$values = null)
@@ -68,9 +71,14 @@ abstract class Searchable extends Eloquent {
 			return self::whereRaw('1 = 0');
 		}
 		self::$lastQuerySearch = urlencode($value);
-		return self::isPostgresql() ?
+		$result = self::isPostgresql() ?
 			self::pgSearch($values) :
 			self::likeSearch($values);
+		if(self::REMEMBER)
+		{
+			$result = $result->remember(self::REMEMBER);
+		}
+		return $result;
 	}
 
 	static public function searchCount($query)
