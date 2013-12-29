@@ -13,21 +13,80 @@ class CrawledContent extends Eloquent {
 
 	static protected $lastQuerySearch = '';
 
-	static public function search($value = '')
+	static public function pgSearch($value)
 	{
 		if($value === '')
 		{
-			return self::whereRaw('1=0');
+			return self::whereRaw('1 = 0');
 		}
 		self::$lastQuerySearch = urlencode($value);
-		$like = 'LIKE '.DB::getPdo()->quote('%'.addcslashes(strtolower($value), '_%').'%');
-		//$value = preg_split('#\s+#', $value);
-		$result = self::whereRaw('LOWER(content)'.$like)
-					->orWhereRaw('LOWER(title)'.$like)
-					->orWhereRaw('LOWER(url)'.$like);
+		$values = preg_split('#\s+#', $value);
+		foreach($values as $value)
+		{
+			$where = "searchtext @@ to_tsquery(" . DB::getPdo()->quote($value) . ")";
+			$result = isset($result) ?
+				$result->orWhereRaw($where) :
+				self::whereRaw($where);
+		}
 		// Insérer ici le tri par pertinence et la jointure avec la table key_words
-		return $result->orderBy('score', 'desc')
-					->remember(self::REMEMBER);
+		return $result
+			//->orderBy('score', 'desc')
+			->remember(self::REMEMBER);
+	}
+
+	static protected function eachLike(&$result = null, $value='')
+	{
+		$like = 'LIKE ' . DB::getPdo()->quote('%' . addcslashes(strtolower($value), '_%') . '%');
+		$self = new self;
+		foreach($self->fillable as $column)
+		{
+			$result = is_null($result) ?
+				self::whereRaw('LOWER(' . $column . ')' . $like) :
+				$result->orWhereRaw('LOWER(' . $column . ')' . $like);	
+		}
+	}
+
+	static public function likeSearch($value)
+	{
+		if($value === '')
+		{
+			return self::whereRaw('1 = 0');
+		}
+		self::$lastQuerySearch = urlencode($value);
+		$values = preg_split('#\s+#', $value);
+		foreach($values as $value)
+		{
+			self::eachLike($result, $value);
+		}
+		return $result
+			->remember(self::REMEMBER);
+	}
+
+	static public function search($value = '')
+	{
+		return Config::get('database.default') === 'pgsql' ?
+			self::pgSearch($value) :
+			self::likeSearch($value);
+	}
+
+	static public function getSearchResult($query, $page = null, $resultsPerPage = null)
+	{
+		$result = self::search($query)
+			->select('crawled_contents.id', 'url', 'title', 'content', DB::raw('COUNT(log_outgoing_links.id) AS count'))
+			->leftJoin('log_outgoing_links', 'log_outgoing_links.crawled_content_id', '=', 'crawled_contents.id')
+			//->orderBy('score', 'desc')
+        	->groupBy('crawled_contents.id');
+		// Insérer ici le tri par pertinence et la jointure avec la table key_words
+		if(!is_null($resultsPerPage))
+		{
+			$result = $result->forPage($page, $resultsPerPage);
+		}
+		return $result->get();
+	}
+
+	static public function searchCount($query)
+	{
+		return self::search($query)->count();
 	}
 
 	public function keyWords()
