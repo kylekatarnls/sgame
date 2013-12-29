@@ -30,7 +30,12 @@ return array(
 	|
 	*/
 
-	'default' => 'sqlite',
+	'default' => (file_exists(__DIR__ . '/../../../sqlite') ?
+	    'sqlite' : (file_exists(__DIR__ . '/../../../mysql') ?
+            'mysql' :
+            'pgsql'
+        )
+    ),
 
 	/*
 	|--------------------------------------------------------------------------
@@ -52,7 +57,7 @@ return array(
 
 		'sqlite' => array(
 			'driver'   => 'sqlite',
-			'database' => __DIR__.'/../database/production.sqlite',
+			'database' => __DIR__.'/../../../database/production.sqlite',
 			'prefix'   => '',
 		),
 
