@@ -15,7 +15,7 @@
 			<a href="{{ $result->outgoingLink }}">{{ $result->title }}</a>
 		</h3>
 		<p>
-			<span class="badge">{{ $result->count }}</span>
+			<span class="badge">{{ $result->count . ' - ' . $result->score }}</span>
 			{{ $result->content }}<br>
 			<a href="{{ $result->outgoingLink }}" class="source">{{ e($result->url) }}</a>
 		</p>

@@ -113,10 +113,10 @@ class HomeController extends BaseController {
 	public function addUrl()
 	{
 		$url = Input::get('url');
-		$added = scanUrl($url);
+		$state = scanUrl($url);
 		return View::make('home')->with(array(
 			'url' => $url,
-			'added' => $added,
+			'state' => $state,
 			'resultsPerPageUrl' => '#',
 			'resultsPerPage' => self::getResultsPerPage(),
 			'choiceResultsPerPage' => self::getChoiceResultsPerPage()
