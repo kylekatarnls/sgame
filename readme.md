@@ -20,10 +20,10 @@
 4. (Facultatif) Installer Memcached et activez l'extension php_memcached
 
 5. Installer PostgreSQL et activez l'extension php_pdo_pgsql
-	- Créez un rôle de connexion user : "insearch", pass : "r6y_7|Hj{-SQdf"
-	- Créez une base de donnée nommée "insearch" dont le rôle "insearch" est propriétaire
+	- Créer un rôle de connexion user : "insearch", pass : "r6y_7|Hj{-SQdf"
+	- Créer une base de donnée nommée "insearch" dont le rôle "insearch" est propriétaire
 
-6. (Windows uniquement) Ajoutez php.exe à la variable d'environement PATH
+6. (Windows uniquement) Ajouter php.exe à la variable d'environement PATH
 
 7. Ouvrez la console, allez dans le dossier du projet (le dossier contenant le fichier "artisan") et tapez les commandes suivantes suivies d'Entrée :
 	- php artisan migrate
@@ -31,7 +31,7 @@
 	migrate : créer les tables utiles ou les met à jour le cas échéant
 	seed : peuple les tables avec des données de base
 
-8. Créez un virtual-host comme ceci :
+8. Créer un virtual-host comme ceci :
 	<VirtualHost *:*>
 	ServerAdmin webmaster@insearch
 	DocumentRoot "C:\wamp\www\insearch\public"
@@ -48,18 +48,18 @@
 	Par
 		127.0.0.1       localhost insearch
 
-10. Installez composer en vous mettant dans le dossier du projet puis en exécutant :
+10. Installer composer en vous mettant dans le dossier du projet puis en exécutant :
 	curl -sS https://getcomposer.org/installer | php
 
-11. Installez les dépendances du projet avec composer en exécutant :
+11. Installer les dépendances du projet avec composer en exécutant :
 	php composer.phar update
 
 12. (Linux/Mac Uniquement) changer le CHMOD du dossier storage :
 	chmod -R 0777 app/storage
 
-12. Démarrez/redémarrer le serveur
+12. Démarrer/redémarrer le serveur
 
-13. Testez en chargeant l'URL dans votre navigateur :
+13. Tester en chargeant l'URL dans votre navigateur :
 [http://insearch/](http://insearch/)
 
 
