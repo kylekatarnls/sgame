@@ -49,8 +49,8 @@ class HomeController extends BaseController {
 
 	public function searchResult($page = 1, $q = null, $resultsPerPage = null)
 	{
+		$q = is_null($q) ? Request::get('q', $page) : urldecode($q);
 		$page = (int) max(1, $page);
-		$q = is_null($q) ? Request::get('q', '') : urldecode($q);
 		$resultsPerPage = self::getResultsPerPage($resultsPerPage);
 		$choice = self::getChoiceResultsPerPage();
 		if(!in_array($resultsPerPage, $choice))

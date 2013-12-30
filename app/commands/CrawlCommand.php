@@ -33,7 +33,7 @@ class CrawlCommand extends Command {
 	/**
 	 * Execute the console command.
 	 *
-	 * @return mixed
+	 * @return void
 	 */
 	public function fire()
 	{
