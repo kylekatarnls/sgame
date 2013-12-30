@@ -123,16 +123,4 @@ class HomeController extends BaseController {
 		));
 	}
 
-	public function crawl()
-	{
-		$urlCount = 0;
-		foreach(CrawledContent::all() as $crawledContent)
-		{
-			$urlCount++;
-			scanUrl($crawledContent->url, true);
-		}
-		$urlCount += Crawler::countLinks();
-		echo §('crawler.crawled-url', $urlCount);
-	}
-
 }
