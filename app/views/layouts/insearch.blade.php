@@ -54,10 +54,24 @@
 						{{ Form::close() }}
 					</div>
  
-					<a class="brand" href="#">
+					<a class="brand" href="/" style="float:left;">
 						<img src="/img/advanced-search.png" alt="{{ §('global.title'); }}">
 					</a>
  
+					{{ Form::open(array(
+						'url' => '/',
+						'method' => 'post',
+						'style' => 'float: left; margin: 7px 0 0 10px;'
+					)) }}
+						<select name="language" class="form-control" onchange="this.form.submit();">
+							@foreach(array(
+								'en' => 'English',
+								'fr' => 'Français'
+							) as $code => $language)
+								<option value="{{ $code }}"{{ Lang::locale() === $code ? ' selected="selected"' : '' }}>{{ $language }}</option>
+							@endforeach
+						</select>
+					{{ Form::close() }}
 					<div class="nav-collapse collapse">
 						<ul class="nav">
 							<li><a href="{{{ URL::to('') }}}">{{ §('global.home'); }}</a></li>

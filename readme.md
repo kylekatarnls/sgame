@@ -80,6 +80,15 @@ N'hésitez pas à être très précis dans vos descriptions et si possible ne po
 Vous pouvez faire plusieurs commit au fur et à mesure que vous codez pour séparer plusieurs modifications puis pousser (git push) plusieurs modifications d'un coup, ça ne pose pas de problème.
 
 
+## Fonctionnalités additionnelles
+
+Ci-dessous la liste des fonctionnalités qui peuvent compter pour les 10 points bonus du barème :
+- À côté de chaque résultat, un compteur (gellule grise) indique le nombre clics effectué sur ce lien (combien de fois les utilisateurs ont cliqué sur ce résultat).
+- Le Crawler convertit les contenus ISO en UTF-8 pour un affichage uniforme des résultats.
+- Le Crawler détecte les contenus duppliqué pour éviter les doublons.
+- Internationalisation (français, anglais, traduction en d'autres langues aisée)
+
+
 ## Laravel PHP Framework
 
 [![Latest Stable Version](https://poser.pugx.org/laravel/framework/version.png)](https://packagist.org/packages/laravel/framework) [![Total Downloads](https://poser.pugx.org/laravel/framework/d/total.png)](https://packagist.org/packages/laravel/framework) [![Build Status](https://travis-ci.org/laravel/framework.png)](https://travis-ci.org/laravel/framework)

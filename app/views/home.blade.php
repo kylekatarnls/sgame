@@ -6,13 +6,11 @@
 
 	@if(isset($url))
 		@if($state === Crawler::NOT_FOUND)
-			<div class="alert alert-danger">
-				{{ §('global.url-not-found', array('url' => '<strong>' . $url . '</strong>' )) }}
-			</div>
+			@include('includes.alert', array('type' => 'danger', 'message' => 'global.url-not-found', 'replace' => array('url' => '<strong>' . $url . '</strong>' )))
+		@elseif($state === Crawler::DUPLICATED)
+			@include('includes.alert', array('type' => 'warning', 'message' => 'global.duplicated-content', 'replace' => array('url' => '<strong>' . $url . '</strong>' )))
 		@else
-			<div class="alert alert-success">
-				{{ §('global.url-'.($state === Crawler::ADDED ? 'added' : 'updated'), array('url' => '<strong>' . $url . '</strong>' )) }}
-			</div>
+			@include('includes.alert', array('message' => 'global.url-' . ($state === Crawler::ADDED ? 'added' : 'updated'), 'replace' => array('url' => '<strong>' . $url . '</strong>' )))
 		@endif
 	@endif
 

@@ -8,6 +8,7 @@ class Crawler {
 	const RECURSION_LIMIT = 6;
 	const ADDED = 0x01;
 	const UPDATED = 0x02;
+	const DUPLICATED = 0x03;
 	const NOT_FOUND = 0xff;
 
 	static protected $links = array();
@@ -112,8 +113,7 @@ class Crawler {
 			$data['title'] = utf8_encode($data['title']);
 			$data['content'] = utf8_encode($data['content']);
 		}
-		$crawledContent = CrawledContent::where('url', $url)->first();
-		if($crawledContent)
+		if($crawledContent = CrawledContent::where('url', $url)->first())
 		{
 			$title = $data['title'];
 			$content = $data['content'];
@@ -123,6 +123,10 @@ class Crawler {
 			Cache::put('CrawledContent-'.$crawledContent->id.'-title', $title, CrawledContent::REMEMBER);
 			Cache::put('CrawledContent-'.$crawledContent->id.'-content', $content, CrawledContent::REMEMBER);
 			return self::UPDATED;
+		}
+		elseif(CrawledContent::where('content', $data['content'])->where('title', $data['title'])->exists())
+		{
+			return self::DUPLICATED;
 		}
 		else
 		{
