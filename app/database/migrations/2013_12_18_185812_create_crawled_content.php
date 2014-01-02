@@ -18,6 +18,7 @@ class CreateCrawledContent extends Migration {
 				$table->string('url')->unique();
 				$table->string('title');
 				$table->longtext('content');
+				$table->string('language')->nullable();
 				$table->timestamps();
 				$table->softDeletes();
 			});

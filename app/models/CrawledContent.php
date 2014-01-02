@@ -7,14 +7,14 @@ class CrawledContent extends Searchable {
 
 	protected $collection = 'crawled_content';
 	protected $softDelete = true;
-	protected $fillable = array('url', 'title', 'content');
+	protected $fillable = array('url', 'title', 'content', 'language');
 
 	static public function getSearchResult($query, $page = null, $resultsPerPage = null)
 	{
 		$result = self::search($query, $values) // $values contient les mots contenus dans la chaîne $query sous forme d'array
 			->select(
 				'crawled_contents.id',
-				'url', 'title', 'content',
+				'url', 'title', 'content', 'language',
 				DB::raw('COUNT(log_outgoing_links.id) AS count'),
 				DB::raw('
 					COUNT(DISTINCT key_words.id) * ' . self::KEY_WORD_SCORE . ' +

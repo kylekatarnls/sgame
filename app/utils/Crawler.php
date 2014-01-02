@@ -22,9 +22,15 @@ class Crawler {
 				return $from;
 			case '/':
 				return preg_replace('#^([a-z0-9]+://[^/]+)(/.*)$#i', '$1', $from).$to;
+			case ':':
+				return preg_replace('#^([a-z0-9]+):.*$#i', '$1', $from).$to;
 			case '?':
 				return preg_replace('#^([^\?]+)(\?.*)$#i', '$1', $from).$to;
 			default:
+				if(preg_match('#^[a-z0-9]+:#', $to))
+				{
+					return $to;
+				}
 				if(substr_count($from, '/') < 3)
 				{
 					$from .= '/';
@@ -38,8 +44,9 @@ class Crawler {
 		}
 	}
 
-	static public function getDataFromUrl($url, $recursions = 0, $followLinks = false)
+	static public function getDataFromUrl($url, $followLinks = false, $recursions = 0)
 	{
+		self::$links[] = $url;
 		try
 		{
 			$fileGetContents = file_get_contents($url);
@@ -48,9 +55,16 @@ class Crawler {
 		{
 			return null;
 		}
+		if(stripos($fileGetContents, '<html') === false)
+		{
+			return null;
+		}
 		$title = preg_match('#<title.*>(.+)</title>#isU', $fileGetContents, $match) ?
 			trim(strip_tags($match[1])) :
 			e($url);
+		$language = preg_match('#(?<![a-z-])lang\s*=\s*([a-z-]+|"[^"]+"|\'[^\']+\')#is', $fileGetContents, $match) ?
+			trim(strip_tags($match[1]), '\'"') :
+			null;
 		if($recursions > self::RECURSION_LIMIT)
 		{
 			$content = '';
@@ -65,8 +79,7 @@ class Crawler {
 					$link = self::realLink($url, $link);
 					if(!in_array($link, self::$links))
 					{
-						self::$links[] = $link;
-						self::scanUrl($link, $recursions + 1, true);
+						self::scanUrl($link, true, $recursions + 1);
 					}
 				}
 			}
@@ -82,7 +95,7 @@ class Crawler {
 				'#<i?frame[^>]*src\s*=\s*[\'"](.+)[\'"][^>]*>.+</i?frame>#isU',
 				function ($match) use($recursions, $self)
 				{
-					$data = $self::getDataFromUrl($match[1], $recursions + 1);
+					$data = $self::getDataFromUrl($match[1], false, $recursions + 1);
 					return is_null($data) ? '' : array_get($data, 'content');
 				},
 				$fileGetContents
@@ -98,13 +111,14 @@ class Crawler {
 		return array(
 			'url' => $url,
 			'title' => $title,
-			'content' => $content
+			'content' => $content,
+			'language' => $language
 		);
 	}
 
-	static public function scanUrl($url, $followLinks = false)
+	static public function scanUrl($url, $followLinks = false, $recursions = 0)
 	{
-		$data = self::getDataFromUrl($url, 0, $followLinks);
+		$data = self::getDataFromUrl($url, $followLinks, $recursions);
 		if(is_null($data))
 		{
 			return self::NOT_FOUND;
@@ -120,6 +134,7 @@ class Crawler {
 			$content = $data['content'];
 			$crawledContent->title = $title;
 			$crawledContent->content = $content;
+			$crawledContent->language = $data['language'];
 			$crawledContent->save();
 			Cache::put('CrawledContent-'.$crawledContent->id.'-title', $title, CrawledContent::REMEMBER);
 			Cache::put('CrawledContent-'.$crawledContent->id.'-content', $content, CrawledContent::REMEMBER);

@@ -38,9 +38,9 @@ function array_maps($maps, array $array)
 	return $array;
 }
 
-function scanUrl($url, $followLinks = false)
+function scanUrl($url, $followLinks = false, $recursions = 0)
 {
-	return Crawler::scanUrl($url, $followLinks);
+	return Crawler::scanUrl($url, $followLinks, $recursions);
 }
 
 if(!function_exists('http_negotiate_language'))

@@ -44,7 +44,7 @@ class CrawlCommand extends Command {
 			scanUrl($crawledContent->url, true);
 		}
 		$urlCount += Crawler::countLinks();
-		echo §('crawler.crawled-url', $urlCount);
+		echo §('crawler.crawled-url', $urlCount)."\n";
 	}
 
 }

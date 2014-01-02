@@ -18,6 +18,7 @@
 		<p>
 			<span class="badge" title="{{ §('global.popularity') }}">{{ $result->count }}</span>
 			{{ $result->content }}<br>
+			{{ $result->language }}<br>
 			<a href="{{ $result->outgoingLink }}" class="source">{{ e($result->url) }}</a>
 		</p>
 	@endforeach
