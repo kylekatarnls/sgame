@@ -60,17 +60,19 @@
  
 					{{ Form::open(array(
 						'url' => '/',
-						'method' => 'post',
-						'style' => 'float: left; margin: 7px 0 0 10px;'
+						'method' => 'post'
 					)) }}
-						<select name="language" class="form-control" onchange="this.form.submit();">
-							@foreach(array(
-								'en' => 'English',
-								'fr' => 'Français'
-							) as $code => $language)
-								<option value="{{ $code }}"{{ Lang::locale() === $code ? ' selected="selected"' : '' }}>{{ $language }}</option>
-							@endforeach
-						</select>
+						<div class="btn-group" id="languages">
+							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+								{{ array_get($languages, Lang::locale(), head($languages)) }}
+								<span class="caret"></span>
+							</button>
+							<ul class="dropdown-menu">
+								@foreach($languages as $code => $language)
+									<li><a href="{{ isset($q) ? $q : '' }}?language={{ $code }}"{{ Lang::locale() === $code ? ' selected="selected"' : '' }}>{{ $language }}</option>
+								@endforeach
+							</ul>
+						</div>
 					{{ Form::close() }}
 					<div class="nav-collapse collapse">
 						<ul class="nav">

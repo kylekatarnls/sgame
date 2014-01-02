@@ -2,9 +2,9 @@
 
 ## Instructions pour l'installation
 
-1. Il est vivement conseillé d'installer le projet en utilisant Git (installez-le si vous ne l'avez pas encore, sous Linux et Mac, il est installé par défaut, sous Windows il faut installer msysgit et choisir l'option "Ajouter à votre variable d'environement..." lorsque l'installateur la propose).
+1. Il est vivement conseillé d'installer le projet en utilisant Git (installer-le si vous ne l'avez pas encore, sous Linux et Mac, il est installé par défaut, sous Windows il faut installer msysgit et choisir l'option "Ajouter à votre variable d'environement..." lorsque l'installateur la propose).
 
-2. Créez un dossier de travail "insearch" où vous le souhaitez puis en tapez les commandes suivantes :
+2. Créer un dossier de travail "insearch" taper les commandes suivantes :
 	cd /chemin/vers/le/dossier/insearch
 	git clone https://github.com/kylekatarnls/insearch.git .
 	git config --global push.default matching
@@ -17,15 +17,15 @@
 
 3. Installer un serveur Web (exemple : Wamp / Mamp) disposant d'Apache et de PHP 5.4 ou + (sous linux, l'installation des paquets apache et php suffit)
 
-4. (Facultatif) Installer Memcached et activez l'extension php_memcached
+4. (Facultatif) Installer Memcached et activer l'extension php_memcached
 
-5. Installer PostgreSQL et activez l'extension php_pdo_pgsql
+5. Installer PostgreSQL et activer l'extension php_pdo_pgsql
 	- Créer un rôle de connexion user : "insearch", pass : "r6y_7|Hj{-SQdf"
 	- Créer une base de donnée nommée "insearch" dont le rôle "insearch" est propriétaire
 
 6. (Windows uniquement) Ajouter php.exe à la variable d'environement PATH
 
-7. Ouvrez la console, allez dans le dossier du projet (le dossier contenant le fichier "artisan") et tapez les commandes suivantes suivies d'Entrée :
+7. Ouvrir la console, aller dans le dossier du projet (le dossier contenant le fichier "artisan") et taper les commandes suivantes suivies d'Entrée :
 	- php artisan migrate
 	- php artisan seed
 	migrate : créer les tables utiles ou les met à jour le cas échéant
@@ -64,13 +64,13 @@
 
 
 ## Récupérer les mises à jour du projet
-Ouvrez un terminal, placez-vous dans le dossier du projet et exécutez :
+Ouvrir un terminal, se placer dans le dossier du projet et exécuter :
 	git pull
 	php artisan migrate
 
 
 ## Envoyer vos modifications
-Ouvrez un terminal, placez-vous dans le dossier du projet et exécutez :
+Ouvrir un terminal, se placer dans le dossier du projet et exécuter :
 	git add *
 	git commit -m "Décrivez vos modifications"
 	git push
@@ -87,6 +87,7 @@ Ci-dessous la liste des fonctionnalités qui peuvent compter pour les 10 points 
 - Le Crawler convertit les contenus ISO en UTF-8 pour un affichage uniforme des résultats.
 - Le Crawler détecte les contenus duppliqué pour éviter les doublons.
 - Internationalisation (français, anglais, traduction en d'autres langues aisée)
+- Détection de la langue la plus appropriée en fonction des préférences de l'utilisateur et des traductions disponibles
 
 
 ## Laravel PHP Framework

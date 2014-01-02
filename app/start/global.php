@@ -83,3 +83,38 @@ App::down(function()
 */
 
 require app_path().'/filters.php';
+
+
+/*
+|--------------------------------------------------------------------------
+| Liste des langues (disponible sur toutes les vues)
+|--------------------------------------------------------------------------
+*/
+
+$languages = array(
+	'en' => 'English',
+	'fr' => 'Français'
+);
+
+if(Input::has('language'))
+{
+	$language = Input::get('language');
+	if(isset($languages[$language]))
+	{
+		Cookie::queue('language', $language, 144000);
+	}
+	else
+	{
+		unset($language);
+	}
+}
+
+if(!isset($language))
+{
+	$language = Cookie::get('language', http_negotiate_language(array_keys($languages)));
+}
+
+Lang::setLocale($language);
+
+View::share('languages', $languages);
+

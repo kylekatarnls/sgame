@@ -5,12 +5,18 @@ body {
 
 .square {
 	margin-left: -1px;
-	border-radius: 0;
 	-webkit-border-radius: 0;
 	-moz-border-radius: 0;
+	border-radius: 0;
 }
 
-.dropdown-menu {
+#languages {
+	float: left;
+	margin: 8px 0 0 12px;
+	position: relative;
+}
+
+.header-option .dropdown-menu {
 	float: right;
 	margin: 4px 0 0 -156px;
 }
