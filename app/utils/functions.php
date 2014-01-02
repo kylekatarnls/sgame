@@ -80,7 +80,7 @@ if(!function_exists('http_negotiate_language'))
 				$bestqval = $qvalue;
 			}
 			else if(in_array($langprefix, $available_languages) && (($qvalue*0.9) > $bestqval))
-			{ 
+			{
 				$bestlang = $langprefix;
 				$bestqval = $qvalue*0.9;
 			}

@@ -54,3 +54,15 @@ a.source {
 	top: 8px;
 	overflow: hidden;
 }
+
+h3 a .glyphicon {
+	display: block;
+	float: left;
+	color: silver;
+	font-size: 17px;
+	margin: 6px 8px 0 0;
+}
+
+h3 a:visited .glyphicon {
+	color: blue;
+}

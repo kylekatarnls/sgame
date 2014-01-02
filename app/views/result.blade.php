@@ -12,6 +12,7 @@
 
 	@foreach($results as $result)
 		<h3>
+			<a class="visited" href="{{ $result->url }}"><span class="glyphicon glyphicon-eye-open"></span></a>
 			<a href="{{ $result->outgoingLink }}">{{ $result->title }}</a>
 		</h3>
 		<p>

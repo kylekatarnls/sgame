@@ -77,11 +77,12 @@ class Crawler {
 			$fileGetContents = preg_replace('#<img\s.*alt\s*=\s*[\'"](.+)[\'"].*>#isU', '$1', $fileGetContents);
 			$fileGetContents = preg_replace('#<script[^>]*>.+</script>#isU', '', $fileGetContents);
 			$fileGetContents = preg_replace('#<style[^>]*>.+</style>#isU', '', $fileGetContents);
+			$self = __CLASS__;
 			$fileGetContents = preg_replace_callback(
 				'#<i?frame[^>]*src\s*=\s*[\'"](.+)[\'"][^>]*>.+</i?frame>#isU',
-				function ($match) use($recursions)
+				function ($match) use($recursions, $self)
 				{
-					$data = self::getDataFromUrl($match[1], $recursions + 1);
+					$data = $self::getDataFromUrl($match[1], $recursions + 1);
 					return is_null($data) ? '' : array_get($data, 'content');
 				},
 				$fileGetContents

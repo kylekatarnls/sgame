@@ -88,6 +88,7 @@ Ci-dessous la liste des fonctionnalités qui peuvent compter pour les 10 points 
 - Le Crawler détecte les contenus duppliqué pour éviter les doublons.
 - Internationalisation (français, anglais, traduction en d'autres langues aisée)
 - Détection de la langue la plus appropriée en fonction des préférences de l'utilisateur et des traductions disponibles
+- Oeil gris ou bleu devant les lien pour indiquer lesquels ont déjà été visités
 
 
 ## Laravel PHP Framework
