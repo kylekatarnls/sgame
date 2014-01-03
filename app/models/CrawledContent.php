@@ -9,6 +9,9 @@ class CrawledContent extends Searchable {
 	protected $softDelete = true;
 	protected $fillable = array('url', 'title', 'content', 'language');
 
+	const SAME_LANGUAGE = 8;
+	const SAME_PRIMARY_LANGUAGE = 4;
+
 	static public function getSearchResult($query, $page = null, $resultsPerPage = null)
 	{
 		$result = self::search($query, $values) // $values contient les mots contenus dans la chaîne $query sous forme d'array
@@ -17,6 +20,8 @@ class CrawledContent extends Searchable {
 				'url', 'title', 'content', 'language',
 				DB::raw('COUNT(log_outgoing_links.id) AS count'),
 				DB::raw('
+					(CASE language WHEN \'' . Lang::locale() . '\' THEN ' . self::SAME_LANGUAGE . ' ELSE 0 END) +
+					(CASE SUBSTR(language, 0, 3) WHEN \'' . substr(Lang::locale(), 0, 2) . '\' THEN ' . self::SAME_PRIMARY_LANGUAGE . ' ELSE 0 END) +
 					COUNT(DISTINCT key_words.id) * ' . self::KEY_WORD_SCORE . ' +
 					1 * ' . self::COMPLETE_QUERY_SCORE . ' +
 					1 * ' . self::ONE_WORD_SCORE . '
@@ -33,8 +38,8 @@ class CrawledContent extends Searchable {
 			->leftJoin('crawled_content_key_word', 'crawled_content_key_word.crawled_content_id', '=', 'crawled_contents.id')
 			->leftJoin('key_words', 'crawled_content_key_word.key_word_id', '=', 'key_words.id')
 			->whereIn('key_words.word', array_maps('normalize,strtolower', $values))
-			->orderBy('score', 'desc')
-        	->groupBy('crawled_contents.id');
+        	->groupBy('crawled_contents.id')
+			->orderBy('score', 'desc');
 		if(!is_null($resultsPerPage))
 		{
 			$result = $result->forPage($page, $resultsPerPage);

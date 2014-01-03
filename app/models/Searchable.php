@@ -29,32 +29,29 @@ abstract class Searchable extends Eloquent {
 		return is_array($value) ? $value : preg_split('#\s+#', $value);
 	}
 
-	static public function pgSearch($values)
+	static public function pgSearch(&$result, $values)
 	{
 		foreach($values as $value)
 		{
-			$where = "searchtext @@ to_tsquery(" . self::quote($value) . ")";
-			$result = isset($result) ?
-				$result->orWhereRaw($where) :
-				self::whereRaw($where);
+			$result->orWhereRaw("searchtext @@ to_tsquery(" . self::quote($value) . ")");
 		}
 		return $result;
 	}
 
-	static protected function eachLike(&$result = null, $value='')
+	static protected function eachLike(&$result, $value = '')
 	{
-		$like = 'LIKE ' . self::quote('%' . addcslashes(strtolower($value), '_%') . '%');
 		$class = get_called_class();
 		$self = new $class;
 		foreach($self->fillable as $column)
 		{
-			$result = is_null($result) ?
-				self::whereRaw('LOWER(' . $column . ')' . $like) :
-				$result->orWhereRaw('LOWER(' . $column . ')' . $like);	
+			$result->orWhereRaw(
+				'LOWER(' . $column . ') LIKE ' .
+				self::quote('%' . addcslashes(strtolower($value), '_%') . '%')
+			);	
 		}
 	}
 
-	static public function likeSearch($values)
+	static public function likeSearch(&$result, $values)
 	{
 		foreach($values as $value)
 		{
@@ -78,9 +75,13 @@ abstract class Searchable extends Eloquent {
 			return self::whereRaw('1 = 0');
 		}
 		self::$lastQuerySearch = urlencode($value);
-		$result = self::isPostgresql() ?
-			self::pgSearch($values) :
-			self::likeSearch($values);
+		$self =get_called_class();
+		$result = self::where(function ($query) use($self, $values)
+		{
+			$self::isPostgresql() ?
+				$self::pgSearch($query, $values) :
+				$self::likeSearch($query, $values);
+		});
 		if(self::REMEMBER)
 		{
 			$result = $result->remember(self::REMEMBER);
