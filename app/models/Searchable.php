@@ -14,9 +14,58 @@ abstract class Searchable extends Eloquent {
 
 	static protected $lastQuerySearch = '';
 
-	static protected function isPostgresql()
+	static public function crossDriver($method, array $methods)
 	{
-		return Config::get('database.default') === 'pgsql';
+		$driver = DB::getDefaultConnection();
+		if(!isset($methods[$driver]))
+		{
+			$driver = 'default';
+			if(!isset($methods[$driver]))
+			{
+				return head($methods);
+			}
+		}
+		return $methods[$driver];
+	}
+
+	static public function substr($string, $offset, $length = null)
+	{
+		return DB::raw(
+			static::crossDriver('substr', array(
+				'sqlite' => 'SUBSTR',
+				'default' => 'SUBSTRING'
+			)) .
+			'(' . $string . ', ' . $offset . (is_null($length) ? '' : ', ' . $length) . ')'
+		);
+	}
+
+	static public function substring($string, $offset, $length = null)
+	{
+		return static::substr($string, $offset, $length);
+	}
+
+	static public function caseWhen($case, $when = null, $else = null)
+	{
+		if(is_array($case))
+		{
+			$else = $when;
+			$when = $case;
+			$case = null;
+		}
+		$return = '(CASE ' . strval($case) . ' ';
+		if(!empty($when) && is_array($when))
+		{
+			foreach($when as $if => $then)
+			{
+				$return .= 'WHEN ' . strval($if) . ' THEN ' . strval($then) . ' ';
+			}
+		}
+		if(!is_null($else))
+		{
+			$return .= 'ELSE ' . strval($else) . ' ';
+		}
+		$return .= 'END)';
+		return DB::raw($return);
 	}
 
 	static protected function quote($value)
@@ -29,35 +78,9 @@ abstract class Searchable extends Eloquent {
 		return is_array($value) ? $value : preg_split('#\s+#', $value);
 	}
 
-	static public function pgSearch(&$result, $values)
+	public function getFillable()
 	{
-		foreach($values as $value)
-		{
-			$result->orWhereRaw("searchtext @@ to_tsquery(" . self::quote($value) . ")");
-		}
-		return $result;
-	}
-
-	static protected function eachLike(&$result, $value = '')
-	{
-		$class = get_called_class();
-		$self = new $class;
-		foreach($self->fillable as $column)
-		{
-			$result->orWhereRaw(
-				'LOWER(' . $column . ') LIKE ' .
-				self::quote('%' . addcslashes(strtolower($value), '_%') . '%')
-			);	
-		}
-	}
-
-	static public function likeSearch(&$result, $values)
-	{
-		foreach($values as $value)
-		{
-			self::eachLike($result, $value);
-		}
-		return $result;
+		return $this->fillable;
 	}
 
     /**
@@ -74,17 +97,44 @@ abstract class Searchable extends Eloquent {
 		{
 			return self::whereRaw('1 = 0');
 		}
-		self::$lastQuerySearch = urlencode($value);
-		$self =get_called_class();
-		$result = self::where(function ($query) use($self, $values)
+		static::$lastQuerySearch = urlencode($value);
+		$static = new static;
+		$result = static::where(function ($result) use($values, $static)
 		{
-			$self::isPostgresql() ?
-				$self::pgSearch($query, $values) :
-				$self::likeSearch($query, $values);
+			return call_user_func(
+				$static::crossDriver(
+					'globalSearch',
+					array(
+						'pgsql' => function () use($result, $values, $static)
+						{
+							foreach($values as $value)
+							{
+								$result->orWhereRaw("searchtext @@ to_tsquery(" . $static::quote($value) . ")");
+							}
+							return $result;
+						},
+						'default' => function () use($result, $values, $static)
+						{
+							$fillable = $static->getFillable();
+							foreach($values as $value)
+							{
+								foreach($fillable as $column)
+								{
+									$result->orWhereRaw(
+										'LOWER(' . $column . ') LIKE ' .
+										$static::quote('%' . addcslashes(strtolower($value), '_%') . '%')
+									);
+								}
+							}
+							return $result;
+						}
+					)
+				)
+			);
 		});
-		if(self::REMEMBER)
+		if(static::REMEMBER)
 		{
-			$result = $result->remember(self::REMEMBER);
+			$result = $result->remember(static::REMEMBER);
 		}
 		return $result;
 	}

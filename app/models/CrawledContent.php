@@ -14,14 +14,19 @@ class CrawledContent extends Searchable {
 
 	static public function getSearchResult($query, $page = null, $resultsPerPage = null)
 	{
+		$calledClass = get_called_class();
 		$result = self::search($query, $values) // $values contient les mots contenus dans la chaîne $query sous forme d'array
 			->select(
 				'crawled_contents.id',
 				'url', 'title', 'content', 'language',
 				DB::raw('COUNT(log_outgoing_links.id) AS count'),
-				DB::raw('
-					(CASE language WHEN \'' . Lang::locale() . '\' THEN ' . self::SAME_LANGUAGE . ' ELSE 0 END) +
-					(CASE SUBSTR(language, 0, 3) WHEN \'' . substr(Lang::locale(), 0, 2) . '\' THEN ' . self::SAME_PRIMARY_LANGUAGE . ' ELSE 0 END) +
+				DB::raw(
+					self::caseWhen('language', array(
+						"'" . Lang::locale() . "'" => self::SAME_LANGUAGE
+					), 0) . ' + ' .
+					self::caseWhen(self::substr('language', 1, 2), array(
+						"'" . substr(Lang::locale(), 0, 2) . "'" => self::SAME_PRIMARY_LANGUAGE
+					), 0) . ' +
 					COUNT(DISTINCT key_words.id) * ' . self::KEY_WORD_SCORE . ' +
 					1 * ' . self::COMPLETE_QUERY_SCORE . ' +
 					1 * ' . self::ONE_WORD_SCORE . '
@@ -36,8 +41,11 @@ class CrawledContent extends Searchable {
 			)
 			->leftJoin('log_outgoing_links', 'log_outgoing_links.crawled_content_id', '=', 'crawled_contents.id')
 			->leftJoin('crawled_content_key_word', 'crawled_content_key_word.crawled_content_id', '=', 'crawled_contents.id')
-			->leftJoin('key_words', 'crawled_content_key_word.key_word_id', '=', 'key_words.id')
-			->whereIn('key_words.word', array_maps('normalize,strtolower', $values))
+			->leftJoin('key_words', function ($join) use($calledClass, $values)
+			{
+				$join->on('crawled_content_key_word.key_word_id', '=', 'key_words.id')
+					->on('key_words.word', 'in', DB::raw('(' . implode(', ', array_maps(array('normalize', 'strtolower', array($calledClass, 'quote')), $values)) . ')'));
+			})
         	->groupBy('crawled_contents.id')
 			->orderBy('score', 'desc');
 		if(!is_null($resultsPerPage))
