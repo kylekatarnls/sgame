@@ -116,5 +116,9 @@ if(!isset($language))
 
 Lang::setLocale($language);
 
-View::share('languages', $languages);
-
+View::share(array(
+	'languages' => $languages,
+	'resultsPerPageUrl' => '#',
+	'resultsPerPage' => ResultsPerPage::getChoice(),
+	'choiceResultsPerPage' => ResultsPerPage::getChoices()
+));

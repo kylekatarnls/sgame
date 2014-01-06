@@ -2,60 +2,20 @@
 
 class HomeController extends BaseController {
 
-	const DEFAULT_RESULLTS_PER_PAGE = 10;
-	const ENUM_RESULLTS_PER_PAGE = '10,50,100,500';
-
-	/*
-	|--------------------------------------------------------------------------
-	| PROTECTED
-	|--------------------------------------------------------------------------
-	*/
-
-	protected function getChoiceResultsPerPage()
-	{
-		return array_map('intval', explode(',', self::ENUM_RESULLTS_PER_PAGE));
-	}
-
-	protected function getResultsPerPage($resultsPerPage = null)
-	{
-		$defaultResultsPerPage = (int) Cookie::get('resultsPerPage', self::DEFAULT_RESULLTS_PER_PAGE);
-		$resultsPerPage = (int) Input::get(
-			'resultsPerPage',
-			is_null($resultsPerPage) || $resultsPerPage < 1 ?
-				Request::get('resultsPerPage', $defaultResultsPerPage) :
-				$resultsPerPage
-		);
-		if($resultsPerPage !== $defaultResultsPerPage)
-		{
-			Cookie::queue('resultsPerPage', $resultsPerPage, 60);
-		}
-		return $resultsPerPage;
-	}
-
-	/*
-	|--------------------------------------------------------------------------
-	| PUBLIC
-	|--------------------------------------------------------------------------
-	*/
-
 	public function searchBar()
 	{
-		return View::make('home')->with(array(
-			'resultsPerPageUrl' => '#',
-			'resultsPerPage' => self::getResultsPerPage(),
-			'choiceResultsPerPage' => self::getChoiceResultsPerPage()
-		));
+		return View::make('home');
 	}
 
 	public function searchResult($page = 1, $q = null, $resultsPerPage = null)
 	{
 		$q = is_null($q) ? Request::get('q', $page) : urldecode($q);
 		$page = (int) max(1, $page);
-		$resultsPerPage = self::getResultsPerPage($resultsPerPage);
-		$choice = self::getChoiceResultsPerPage();
+		$resultsPerPage = ResultsPerPage::getChoice($resultsPerPage);
+		$choice = ResultsPerPage::getChoices();
 		if(!in_array($resultsPerPage, $choice))
 		{
-			$resultsPerPage = self::ENUM_RESULLTS_PER_PAGE;
+			$resultsPerPage = ResultsPerPage::DEFAULT_CHOICE;
 		}
 		$nbResults = CrawledContent::searchCount($q);
 		$nbPages = ceil($nbResults / $resultsPerPage);
@@ -63,7 +23,7 @@ class HomeController extends BaseController {
 		{
 			$page = 1;
 		}
-		$keepResultsPerPage = $resultsPerPage == self::ENUM_RESULLTS_PER_PAGE ? '' : '/' . $resultsPerPage;
+		$keepResultsPerPage = $resultsPerPage == ResultsPerPage::DEFAULT_CHOICE ? '' : '/' . $resultsPerPage;
 		$results = CrawledContent::getSearchResult($q, $page, $resultsPerPage);
 
 		return View::make('result')->with(array(
@@ -79,7 +39,7 @@ class HomeController extends BaseController {
 		));
 	}
 
-	public function goOut($search_query = '', $id = 1)
+	public function goOut($search_query, $id)
 	{
 		$result = CrawledContent::find($id);
 		if(!$result)
@@ -116,10 +76,7 @@ class HomeController extends BaseController {
 		$state = scanUrl($url);
 		return View::make('home')->with(array(
 			'url' => $url,
-			'state' => $state,
-			'resultsPerPageUrl' => '#',
-			'resultsPerPage' => self::getResultsPerPage(),
-			'choiceResultsPerPage' => self::getChoiceResultsPerPage()
+			'state' => $state
 		));
 	}
 

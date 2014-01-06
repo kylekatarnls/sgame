@@ -75,7 +75,33 @@ abstract class Searchable extends Eloquent {
 
 	static protected function words($value)
 	{
-		return is_array($value) ? $value : preg_split('#\s+#', $value);
+		if(!is_array($value))
+		{
+			if(count($tab = explode('"', $value)) > 2)
+			{
+				$value = array();
+				foreach($tab as $i => $val)
+				{
+					$val = trim($val);
+					if(!empty($val))
+					{
+						if($i & 1)
+						{
+							$value[] = $val;
+						}
+						else
+						{
+							$value = array_merge($value, preg_split('#\s+#', $val));
+						}
+					}
+				}
+			}
+			else
+			{
+				$value = preg_split('#\s+#', $value);
+			}
+		}
+		return $value;
 	}
 
 	public function getFillable()

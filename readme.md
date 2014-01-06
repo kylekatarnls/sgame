@@ -90,6 +90,7 @@ Ci-dessous la liste des fonctionnalités qui peuvent compter pour les 10 points 
 - Détection de la langue la plus appropriée en fonction des préférences de l'utilisateur et des traductions disponibles
 - Oeil gris ou bleu devant les lien pour indiquer lesquels ont déjà été visités
 - Affichage prioritaire des pages dans la langue de l'utilisateur (à score égal, les pages françaises sont affichées avant les pages en d'autres langues si l'utilisateur est français)
+- Recherche de phrases (mots groupés en les mettant entre guillements)
 
 
 ## Laravel PHP Framework
