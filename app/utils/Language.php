@@ -41,7 +41,7 @@ class Language {
 		return $language;
 	}
 
-	static public setLocale()
+	static public function setLocale()
 	{
 		Lang::setLocale(self::getChoice());
 	}
