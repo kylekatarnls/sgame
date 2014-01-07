@@ -87,37 +87,21 @@ require app_path().'/filters.php';
 
 /*
 |--------------------------------------------------------------------------
-| Liste des langues (disponible sur toutes les vues)
+| Calcul de la langue à utiliser pour l'affichage des textes
 |--------------------------------------------------------------------------
 */
 
-$languages = array(
-	'en' => 'English',
-	'fr' => 'Français'
-);
+Language::setLocale();
 
-if(Input::has('language'))
-{
-	$language = Input::get('language');
-	if(isset($languages[$language]))
-	{
-		Cookie::queue('language', $language, 144000);
-	}
-	else
-	{
-		unset($language);
-	}
-}
 
-if(!isset($language))
-{
-	$language = Cookie::get('language', http_negotiate_language(array_keys($languages)));
-}
-
-Lang::setLocale($language);
+/*
+|--------------------------------------------------------------------------
+| Récupération des données partagées à toutes les vues
+|--------------------------------------------------------------------------
+*/
 
 View::share(array(
-	'languages' => $languages,
+	'languages' => Language::getChoices(),
 	'resultsPerPageUrl' => '#',
 	'resultsPerPage' => ResultsPerPage::getChoice(),
 	'choiceResultsPerPage' => ResultsPerPage::getChoices()

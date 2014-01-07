@@ -2,9 +2,11 @@
 
 ## Instructions pour l'installation
 
-1. Il est vivement conseillé d'installer le projet en utilisant Git (installer-le si vous ne l'avez pas encore, sous Linux et Mac, il est installé par défaut, sous Windows il faut installer msysgit et choisir l'option "Ajouter à votre variable d'environement..." lorsque l'installateur la propose).
+1. Il est vivement conseillé d'installer le projet en utilisant Git (installez le si vous ne l'avez pas encore, sous Linux et Mac, il est installé par défaut, sous Windows il faut installer msysgit et choisir l'option "Ajouter à votre variable d'environement..." lorsque l'installateur la propose).
 
-2. Créer un dossier de travail "insearch" taper les commandes suivantes :
+2. Installer un serveur Web (exemple : Wamp / Mamp) disposant d'Apache et de PHP 5.4 ou + (sous linux, l'installation des paquets apache et php suffit)
+
+3. Créer un dossier de travail "insearch" (dans htdocs de wamp) taper les commandes suivantes :
 	cd /chemin/vers/le/dossier/insearch
 	git clone https://github.com/kylekatarnls/insearch.git .
 	git config --global push.default matching
@@ -15,23 +17,33 @@
 	git config --global user.name "Bastien"
 	git config --global user.email "kylekatarnls@github.com"
 
-3. Installer un serveur Web (exemple : Wamp / Mamp) disposant d'Apache et de PHP 5.4 ou + (sous linux, l'installation des paquets apache et php suffit)
+4. Installer composer en vous mettant dans le dossier du projet puis en exécutant :
+	curl -sS https://getcomposer.org/installer | php
 
-4. (Facultatif) Installer Memcached et activer l'extension php_memcached
+5. Installer les dépendances du projet avec composer en exécutant :
+	php composer.phar update
 
-5. Installer PostgreSQL et activer l'extension php_pdo_pgsql
+6. (Linux/Mac Uniquement) changer le CHMOD du dossier storage :
+	chmod -R 0777 app/storage
+
+7. (Facultatif) Installer Memcached et activer l'extension php_memcached
+
+8. Installer PostgreSQL et activer l'extension php_pdo_pgsql
+    !! Attention !!
+        Ne pas installer StackBuilder
 	- Créer un rôle de connexion user : "insearch", pass : "r6y_7|Hj{-SQdf"
 	- Créer une base de donnée nommée "insearch" dont le rôle "insearch" est propriétaire
 
-6. (Windows uniquement) Ajouter php.exe à la variable d'environement PATH
+9. (Windows uniquement) Ajouter php.exe à la variable d'environement PATH (wamp est dans "c:\" )
 
-7. Ouvrir la console, aller dans le dossier du projet (le dossier contenant le fichier "artisan") et taper les commandes suivantes suivies d'Entrée :
+10. Ouvrir la console, aller dans le dossier du projet (le dossier contenant le fichier "artisan") et taper les commandes suivantes suivies d'Entrée :
+    (seulement quand postgre est installé bien sûr)
 	- php artisan migrate
 	- php artisan seed
 	migrate : créer les tables utiles ou les met à jour le cas échéant
 	seed : peuple les tables avec des données de base
 
-8. Créer un virtual-host comme ceci :
+11. Créer un virtual-host comme ceci :
 	<VirtualHost *:*>
 	ServerAdmin webmaster@insearch
 	DocumentRoot "C:\wamp\www\insearch\public"
@@ -42,24 +54,15 @@
 	Chemin conseillé sous Mac/Linux : /var/www/insearch/public
 	/!\ Il faut pointer sur le dossier public contenu dans le projet.
 
-9. Modifier C:\Windows\System32\drivers\etc (sous Windows) ou /etc/hosts (sous Linux et Mac) pour ajouter l'URL insearch :
+12. Modifier C:\Windows\System32\drivers\etc (sous Windows) ou /etc/hosts (sous Linux et Mac) pour ajouter l'URL insearch :
 	Remplacer la ligne :
 		127.0.0.1       localhost
 	Par
 		127.0.0.1       localhost insearch
 
-10. Installer composer en vous mettant dans le dossier du projet puis en exécutant :
-	curl -sS https://getcomposer.org/installer | php
+13. Démarrer/redémarrer le serveur
 
-11. Installer les dépendances du projet avec composer en exécutant :
-	php composer.phar update
-
-12. (Linux/Mac Uniquement) changer le CHMOD du dossier storage :
-	chmod -R 0777 app/storage
-
-12. Démarrer/redémarrer le serveur
-
-13. Tester en chargeant l'URL dans votre navigateur :
+14. Tester en chargeant l'URL dans votre navigateur :
 [http://insearch/](http://insearch/)
 
 
