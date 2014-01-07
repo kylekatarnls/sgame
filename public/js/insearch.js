@@ -17,3 +17,42 @@ if(!$('h1').is('.results')) {
 		return false;
 	});
 }
+
+function resize() {
+	var screenWidth = $('body').width();
+	// Desktop
+	if(screenWidth > 640) {
+		$('.navbar-inner .input-group').removeClass('input-group-sm');
+		$('.navbar-inner .btn-group').removeClass('btn-group-sm');
+	}
+	// Mobile
+	else {
+		$('.navbar-inner .input-group').addClass('input-group-sm');
+		$('.navbar-inner .btn-group').addClass('btn-group-sm');
+	}
+	// Très étroit (mobile en portrait)
+	if(screenWidth < 420) {
+		$('.navbar-inner .btn-group').css({
+			clear: 'right',
+			float: 'right',
+			margin: '11px 0 -70px'
+		});
+		$('h1').css({
+			marginTop: '0',
+			fontSize: '22px'
+		});
+	}
+	else {
+		$('.navbar-inner .btn-group').css({
+			clear: '',
+			float: '',
+			margin: ''
+		});
+		$('h1').css({
+			marginTop: '',
+			fontSize: ''
+		});
+	}
+}
+resize();
+$(window).resize(resize);
