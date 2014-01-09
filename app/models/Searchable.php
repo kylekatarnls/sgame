@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Database\Query\Expression;
 /**
  * Modèle abstrait doté d'outils de recherche
  */
@@ -28,6 +29,28 @@ abstract class Searchable extends Eloquent {
 		return $methods[$driver];
 	}
 
+	static public function findAndCount($whereToFind, $wordsToFind)
+	{
+		if(!is_array($wordsToFind))
+		{
+			$wordsToFind = array($wordsToFind);
+		}
+		$replace = self::quote($whereToFind);
+		$static = new static;
+		return DB::raw(
+			'(' . implode(' + ', array_map(function ($word) use($replace, $static)
+			{
+				return '(
+					(
+						LENGTH(' . $replace . ') -
+						LENGTH(REPLACE(LOWER(' . $replace . '), LOWER(' . $static::quote($word) . '), \'\'))
+					)
+					/ ' . strlen($word) .'
+				)';
+			}, $wordsToFind)) . ')'
+		);
+	}
+
 	static public function substr($string, $offset, $length = null)
 	{
 		return DB::raw(
@@ -35,7 +58,7 @@ abstract class Searchable extends Eloquent {
 				'sqlite' => 'SUBSTR',
 				'default' => 'SUBSTRING'
 			)) .
-			'(' . $string . ', ' . $offset . (is_null($length) ? '' : ', ' . $length) . ')'
+			'(' . self::quote($string) . ', ' . self::quote($offset) . (is_null($length) ? '' : ', ' . self::quote($length)) . ')'
 		);
 	}
 
@@ -52,17 +75,17 @@ abstract class Searchable extends Eloquent {
 			$when = $case;
 			$case = null;
 		}
-		$return = '(CASE ' . strval($case) . ' ';
+		$return = '(CASE ' . self::quote($case) . ' ';
 		if(!empty($when) && is_array($when))
 		{
 			foreach($when as $if => $then)
 			{
-				$return .= 'WHEN ' . strval($if) . ' THEN ' . strval($then) . ' ';
+				$return .= 'WHEN ' . self::quote($if) . ' THEN ' . self::quote($then) . ' ';
 			}
 		}
 		if(!is_null($else))
 		{
-			$return .= 'ELSE ' . strval($else) . ' ';
+			$return .= 'ELSE ' . self::quote($else) . ' ';
 		}
 		$return .= 'END)';
 		return DB::raw($return);
@@ -70,6 +93,10 @@ abstract class Searchable extends Eloquent {
 
 	static protected function quote($value)
 	{
+		if(is_int($value) || is_float($value) || $value instanceof Expression)
+		{
+			return strval($value);
+		}
 		return DB::getPdo()->quote($value);
 	}
 

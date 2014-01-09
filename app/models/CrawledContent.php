@@ -21,23 +21,17 @@ class CrawledContent extends Searchable {
 				'url', 'title', 'content', 'language',
 				DB::raw('COUNT(log_outgoing_links.id) AS count'),
 				DB::raw(
-					self::caseWhen('language', array(
-						"'" . Lang::locale() . "'" => self::SAME_LANGUAGE
+					self::caseWhen(DB::raw('language'), array(
+						Lang::locale() => self::SAME_LANGUAGE
 					), 0) . ' + ' .
-					self::caseWhen(self::substr('language', 1, 2), array(
-						"'" . substr(Lang::locale(), 0, 2) . "'" => self::SAME_PRIMARY_LANGUAGE
+					self::caseWhen(self::substr(DB::raw('language'), 1, 2), array(
+						substr(Lang::locale(), 0, 2) => self::SAME_PRIMARY_LANGUAGE
 					), 0) . ' +
-					COUNT(DISTINCT key_words.id) * ' . self::KEY_WORD_SCORE . ' +
-					1 * ' . self::COMPLETE_QUERY_SCORE . ' +
-					1 * ' . self::ONE_WORD_SCORE . '
+					COUNT(DISTINCT key_words.id) * ' . self::KEY_WORD_SCORE . ' + ' .
+					self::findAndCount(DB::raw('content'), $query).' * ' . self::COMPLETE_QUERY_SCORE . ' + '.
+					self::findAndCount(DB::raw('content'), $values).' * ' . self::ONE_WORD_SCORE . '
 					AS score
 				')
-				/*-
-				 * Ici, il reste à complérer le calcul du score en y incluant :
-				 *  - la détection de la recherche complète (si la recherche contient plusieurs mots)
-				 *  - la détection de chaque mot
-				 * Le tout devra si possible être compatible avec PostgreSQL, MySQL, SQLite et Oracle
-				 */
 			)
 			->leftJoin('log_outgoing_links', 'log_outgoing_links.crawled_content_id', '=', 'crawled_contents.id')
 			->leftJoin('crawled_content_key_word', 'crawled_content_key_word.crawled_content_id', '=', 'crawled_contents.id')

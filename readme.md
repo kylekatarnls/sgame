@@ -21,6 +21,7 @@
 	curl -sS https://getcomposer.org/installer | php
 
 5. Installer les dépendances du projet avec composer en exécutant :
+    (installer/activer openssl si manquant et décommenter la ligne ";extension=openssl.dll" de php.ini)
 	php composer.phar update
 
 6. (Linux/Mac Uniquement) changer le CHMOD du dossier storage :
@@ -28,7 +29,7 @@
 
 7. (Facultatif) Installer Memcached et activer l'extension php_memcached
 
-8. Installer PostgreSQL et activer l'extension php_pdo_pgsql
+8. Installer PostgreSQL et activer l'extension php_pdo_pgsql dans php.ini 
     !! Attention !!
         Ne pas installer StackBuilder
 	- Créer un rôle de connexion user : "insearch", pass : "r6y_7|Hj{-SQdf"
@@ -39,7 +40,7 @@
 10. Ouvrir la console, aller dans le dossier du projet (le dossier contenant le fichier "artisan") et taper les commandes suivantes suivies d'Entrée :
     (seulement quand postgre est installé bien sûr)
 	- php artisan migrate
-	- php artisan seed
+	- php artisan db:seed
 	migrate : créer les tables utiles ou les met à jour le cas échéant
 	seed : peuple les tables avec des données de base
 
@@ -64,6 +65,7 @@
 
 14. Tester en chargeant l'URL dans votre navigateur :
 [http://insearch/](http://insearch/)
+    (pour voir la config modifier le fichier app/routes.php, et commenter-décommenter la ligne phpinfo();exit;)
 
 
 ## Récupérer les mises à jour du projet
