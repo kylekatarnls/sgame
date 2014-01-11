@@ -8,12 +8,11 @@
 			{{ §('global.title'); }}
 			@show
 		</title>
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, target-densitydpi=device-dpi" />
-		<meta name="apple-mobile-web-app-capable" content="yes" />
-		<meta name="format-detection" content="telephone=no" />
-		{{ HTML::style('css/bootstrap.css') }}
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, target-densitydpi=device-dpi">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no">
+		{{ HTML::style('css/bootstrap.min.css') }}
 		{{ HTML::style('css/insearch.css') }}
-		{{ HTML::style('css/bootstrap-responsive.css') }}
 		<link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
 	</head>
  
