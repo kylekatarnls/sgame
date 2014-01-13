@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\QueryException;
 
 class AddLanguageColumnToCrawledContentsTable extends Migration {
 
@@ -14,10 +15,17 @@ class AddLanguageColumnToCrawledContentsTable extends Migration {
 	{
 		if(!Schema::hasColumn('crawled_contents', 'language'))
 		{
-			Schema::table('crawled_contents', function(Blueprint $table)
+			try
 			{
-				$table->string('language')->nullable();
-			});
+				Schema::table('crawled_contents', function(Blueprint $table)
+				{
+					$table->string('language')->nullable();
+				});
+			}
+			catch (QueryException $e)
+			{
+				echo "Can not add language column, it probably already exists.\n";
+			}
 		}
 	}
 
