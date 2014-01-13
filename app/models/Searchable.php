@@ -15,7 +15,7 @@ abstract class Searchable extends Eloquent {
 
 	static protected $lastQuerySearch = '';
 
-	static public function crossDriver($method, array $methods)
+	static public function crossDriver(array $methods)
 	{
 		$driver = DB::getDefaultConnection();
 		if(!isset($methods[$driver]))
@@ -54,11 +54,21 @@ abstract class Searchable extends Eloquent {
 	static public function substr($string, $offset, $length = null)
 	{
 		return DB::raw(
-			static::crossDriver('substr', array(
+			static::crossDriver(array(
 				'sqlite' => 'SUBSTR',
 				'default' => 'SUBSTRING'
 			)) .
 			'(' . self::quote($string) . ', ' . self::quote($offset) . (is_null($length) ? '' : ', ' . self::quote($length)) . ')'
+		);
+	}
+
+	static public function now()
+	{
+		return DB::raw(
+			static::crossDriver(array(
+				'sqlite' => 'datetime(\'now\')',
+				'default' => 'NOW()'
+			))
 		);
 	}
 
@@ -156,7 +166,6 @@ abstract class Searchable extends Eloquent {
 		{
 			return call_user_func(
 				$static::crossDriver(
-					'globalSearch',
 					array(
 						'pgsql' => function () use($result, $values)
 						{
