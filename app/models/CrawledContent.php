@@ -18,7 +18,7 @@ class CrawledContent extends Searchable {
 		$result = self::search($query, $values) // $values contient les mots contenus dans la chaîne $query sous forme d'array
 			->select(
 				'crawled_contents.id',
-				'url', 'title', 'content', 'language',
+				'url', 'title', 'content', 'language', 'deleted_at',
 				DB::raw('COUNT(log_outgoing_links.id) AS count'),
 				DB::raw(
 					self::caseWhen(DB::raw('language'), array(
