@@ -64,12 +64,10 @@ abstract class Searchable extends Eloquent {
 
 	static public function now()
 	{
-		return DB::raw(
-			static::crossDriver(array(
-				'sqlite' => 'datetime(\'now\')',
-				'default' => 'NOW()'
-			))
-		);
+		return static::crossDriver(array(
+			'sqlite' => date('Y-m-d H:i:s'),
+			'default' => DB::raw('NOW()')
+		));
 	}
 
 	static public function substring($string, $offset, $length = null)
