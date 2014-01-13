@@ -36,6 +36,9 @@ Route::post('/add-url', 'HomeController@addUrl');
 // Résultats les plus populaires
 Route::get('/most-popular/{page}/{resultsPerPage?}', 'HomeController@mostPopular');
 
+// Résultats les plus populaires
+Route::get('/history/{page}/{resultsPerPage?}', 'HomeController@history');
+
 // Auto-complétion
 Route::post('/autocomplete', function ()
 {

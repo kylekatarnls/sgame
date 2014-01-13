@@ -106,6 +106,29 @@ class HomeController extends BaseController {
 		$data = self::paginateResults(
 			$page,
 			$resultsPerPage,
+			LogSearch::mine()->count(),
+			function ($page, $resultsPerPage)
+			{
+				return LogSearch::mine()
+					->forPage($page, $resultsPerPage)
+					->get();
+			}
+		);
+		return View::make('result')->with(array_merge(
+			$data,
+			array(
+				'q' => '',
+				'pageUrl' => '/history/%d'.$data['keepResultsPerPage'],
+				'resultsPerPageUrl' => '/history/'.$page.'/%d'
+			)
+		));
+	}
+
+	public function history($page, $resultsPerPage = null)
+	{
+		$data = self::paginateResults(
+			$page,
+			$resultsPerPage,
 			CrawledContent::leftJoin('log_outgoing_links', 'log_outgoing_links.crawled_content_id', '=', 'crawled_contents.id')
 				->whereNotNull('log_outgoing_links.id')
 				->count(DB::raw('DISTINCT crawled_contents.id')),

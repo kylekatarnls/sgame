@@ -96,7 +96,7 @@
 			<p>
 				{{ §('global.footer') }}<br>
 				<a href="/most-popular/1">{{ §('global.most-popular') }}</a> |
-				<a href="#">Autre lien</a>
+				<a href="/history/1">{{ §('global.history') }}</a>
 			</p>
 		</div>
 

@@ -58,7 +58,9 @@ resize();
 $(window).resize(resize);
 
 $('[name="q"]').autocomplete(function(query, callback) {
-	if(!query.length) return callback();
+	if(!query.length) {
+		return callback();
+	}
 	$.ajax({
 		url: '/autocomplete',
 		type: 'POST',
