@@ -19,7 +19,7 @@ class LogSearch extends Eloquent {
 			'search_query' => $searchQuery,
 			'ip' => ip2bin(),
 			'results' => $results,
-			'created_at' => date('Y-m-d H:i:s')
+			'created_at' => now()
 		));
 	}
 

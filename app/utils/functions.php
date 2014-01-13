@@ -52,6 +52,11 @@ function ip2bin($ip = null)
 	return bin2hex(inet_pton($ip));
 }
 
+function now($time = null)
+{
+	return date('Y-m-d H:i:s', $time);
+}
+
 if(!function_exists('http_negotiate_language'))
 {
 	function http_negotiate_language($available_languages, &$result = null)
