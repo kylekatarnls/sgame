@@ -2,6 +2,15 @@ $('.dropdown-toggle').click(function () {
 	$('[aria-labelledby="'+$(this).attr('id')+'"]').slideToggle();
 });
 
+(function () {
+    var string = $('h1').html();
+    var index = string.indexOf("-");
+    if (index !== -1)
+    {
+        $('h1').html("<span class='mobile-hidden'>" + string.substr(0, index + 1) + "</span>" + string.substr(index + 1));
+    }
+})();
+
 (function ($panel) {
 	var $form = $panel.find('form');
 	$panel.find('a.btn').click(function () {
@@ -41,6 +50,7 @@ function resize() {
 			marginTop: '0',
 			fontSize: '22px'
 		});
+		$('.mobile-hidden').hide();
 	}
 	else {
 		$('.navbar-inner .btn-group').css({
@@ -52,6 +62,7 @@ function resize() {
 			marginTop: '',
 			fontSize: ''
 		});
+		$('.mobile-hidden').show();
 	}
 }
 resize();
