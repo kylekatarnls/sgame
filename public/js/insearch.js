@@ -7,7 +7,11 @@ $('.dropdown-toggle').click(function () {
     var index = string.indexOf("-");
     if (index !== -1)
     {
+<<<<<<< HEAD
         $('h1').html("<span class='mobile-hidden'>" + string.substr(0, index + 1) + "</span>" + string.substr(index + 1));
+=======
+        $('h1').html("<span class='mobile-hidden'>" + string.substr(0, index+1) + "</span>" + string.substr(index+1));
+>>>>>>> 4982f402b86a5cc7fb8aecc50d4035859d31eea0
     }
 })();
 
