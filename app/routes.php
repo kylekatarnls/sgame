@@ -26,11 +26,21 @@ Route::get('/{q}', 'HomeController@searchResult');
 Route::get('/{page}/{q}/{resultsPerPage?}', 'HomeController@searchResult');
 
 // Clic sur un lien sortant
-Route::model('id', 'CrawledContent');
+//Route::model('id', 'CrawledContent');
+Route::pattern('id', '[1-9][0-9]*');
 Route::get('/out/{q}/{id}', 'HomeController@goOut');
 
 // Ajout manuel d'une URL
 Route::post('/add-url', 'HomeController@addUrl');
+
+// Résultats les plus populaires
+Route::get('/most-popular/{page}/{resultsPerPage?}', 'HomeController@mostPopular');
+
+// Auto-complétion
+Route::post('/autocomplete', function ()
+{
+	return LogSearch::startWith(Input::get('q'));
+});
 
 // Gestion de l'erreur 404
 App::missing(function ()

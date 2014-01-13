@@ -158,11 +158,14 @@ abstract class Searchable extends Eloquent {
 				$static::crossDriver(
 					'globalSearch',
 					array(
-						'pgsql' => function () use($result, $values, $static)
+						'pgsql' => function () use($result, $values)
 						{
 							foreach($values as $value)
 							{
-								$result->orWhereRaw("searchtext @@ to_tsquery(" . $static::quote($value) . ")");
+								$result->orWhereRaw(
+									"searchtext @@ to_tsquery(?)",
+									array($value)
+								);
 							}
 							return $result;
 						},
@@ -174,8 +177,8 @@ abstract class Searchable extends Eloquent {
 								foreach($fillable as $column)
 								{
 									$result->orWhereRaw(
-										'LOWER(' . $column . ') LIKE ' .
-										$static::quote('%' . addcslashes(strtolower($value), '_%') . '%')
+										'LOWER(' . $column . ') LIKE ?',
+										array('%' . addcslashes(strtolower($value), '_%') . '%')
 									);
 								}
 							}

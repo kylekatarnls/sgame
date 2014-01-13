@@ -56,3 +56,21 @@ function resize() {
 }
 resize();
 $(window).resize(resize);
+
+$('[name="q"]').autocomplete(function(query, callback) {
+	if(!query.length) return callback();
+	$.ajax({
+		url: '/autocomplete',
+		type: 'POST',
+		dataType: 'json',
+		data: {
+			q: query
+		},
+		error: function() {
+			callback();
+		},
+		success: function(res) {
+			callback(res);
+		}
+	});
+});

@@ -43,6 +43,15 @@ function scanUrl($url, $followLinks = false, $recursions = 0)
 	return Crawler::scanUrl($url, $followLinks, $recursions);
 }
 
+function ip2bin($ip = null)
+{
+	if(is_null($ip))
+	{
+		$ip = Request::getClientIp();
+	}
+	return bin2hex(inet_pton($ip));
+}
+
 if(!function_exists('http_negotiate_language'))
 {
 	function http_negotiate_language($available_languages, &$result = null)

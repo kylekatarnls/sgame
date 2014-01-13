@@ -1,3 +1,7 @@
+html,
+body {
+	height: 100%;
+}
 
 body {
 	padding-top: 60px;
@@ -30,7 +34,8 @@ a.source {
 	margin: 3px 0 -2px;
 }
 
-.header-option, .option-panel {
+.header-option,
+.option-panel {
 	float: right;
 	position: relative;
 }
@@ -65,4 +70,46 @@ h3 a .glyphicon {
 
 h3 a:visited .glyphicon {
 	color: blue;
+}
+
+#wrap {
+	min-height: 100%;
+	height: auto !important;
+	height: 100%;
+	margin: 0 auto -60px;
+	padding: 0 0 60px;
+}
+
+#footer {
+	height: 60px;
+	background-color: #e8e8e8;
+}
+
+#footer p {
+	padding: 10px;
+	text-align: center;
+}
+
+.autocomplete {
+	display: block;
+	position: absolute;
+	top: 36px;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+	-webkit-box-shadow: 0 1px 3px silver;
+	-moz-box-shadow: 0 1px 3px silver;
+	box-shadow: 0 1px 3px silver;
+	z-index: 1;
+}
+
+.autocomplete span {
+	display: block;
+	padding: 3px 7px;
+	background: white;
+	cursor: pointer;
+}
+
+.autocomplete span:hover {
+	background: #8ae;
 }
