@@ -37,6 +37,11 @@ if(!$('h1').is('.results')) {
 	});
 }
 
+// La fonction resize est exécuté à chaque fois que les dimensions de la fenêtre changent, cela inclut :
+// - Redimension à la main par l'utilisateur 
+// - Zoom de type Control + Molette
+// - Rotation de l'appareil (passage de smartphone/tablette à l'horizontal/vertical)
+// - etc.
 function resize() {
 	var screenWidth = $('body').width();
 	// Desktop
@@ -78,6 +83,9 @@ function resize() {
 resize();
 $(window).resize(resize);
 
+
+// Auto-complétion : lorsqu'on tape dans la barre de recherche, des solutions possibles
+// sont proposées à l'utilisateur
 $('[name="q"]').autocomplete(function(query, callback) {
 	if(!query.length) {
 		return callback();
