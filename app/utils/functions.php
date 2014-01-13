@@ -45,16 +45,7 @@ function scanUrl($url, $followLinks = false, $recursions = 0)
 
 function ip2bin($ip = null)
 {
-	if(is_null($ip))
-	{
-		$ip = Request::getClientIp();
-	}
-	return bin2hex(inet_pton($ip));
-}
-
-function now($time = null)
-{
-	return date('Y-m-d H:i:s', is_null($time) ? time() : $time);
+	return bin2hex(inet_pton(is_null($ip) ? Request::getClientIp() : $ip));
 }
 
 if(!function_exists('http_negotiate_language'))

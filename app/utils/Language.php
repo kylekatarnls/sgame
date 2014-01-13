@@ -43,7 +43,13 @@ class Language {
 
 	static public function setLocale()
 	{
-		Lang::setLocale(self::getChoice());
+		$choice = self::getChoice();
+		Lang::setLocale($choice);
+		$choice = strtr($choice, '-', '_');
+		if(strpos('_', $choice)) {
+			$choice = $choice . '_' . strtoupper($choice);
+		}
+		setlocale(LC_ALL, $choice);
 	}
 }
 
