@@ -1,7 +1,12 @@
+// Menus déroulant au clic
+// Exemple : lorsqu'on clique sur le bouton tout en haut à droite,
+// La liste des choix possibles pour le nombre de résultats par page se déroule
 $('.dropdown-toggle').click(function () {
 	$('[aria-labelledby="'+$(this).attr('id')+'"]').slideToggle();
 });
 
+
+// Insertion dynamique du début du titre dans un <span> dans le but de l'afficher/masquer ultérieurement
 (function () {
     var string = $('h1').html();
     var index = string.indexOf("-");
@@ -11,6 +16,9 @@ $('.dropdown-toggle').click(function () {
     }
 })();
 
+// Afficher/masquer les formulaires en fondu lors du clic sur un bouton
+// Exemple : lorsqu'on clique sur le bouton + en haut à droite,
+// Le formulaire pour ajouter une URL apparaît
 (function ($panel) {
 	var $form = $panel.find('form');
 	$panel.find('a.btn').click(function () {
@@ -18,6 +26,8 @@ $('.dropdown-toggle').click(function () {
 	});
 })($('.option-panel'));
 
+// Si on N'est PAS sur une page de résultats (résultats de recherche / les plus populaires / historique)
+// Alors, 
 if(!$('h1').is('.results')) {
 	var $choicePerPage = $('[aria-labelledby="choice-per-page"]');
 	$choicePerPage.find('a[data-value]').click(function () {
