@@ -10,7 +10,7 @@ class LogSearch extends Eloquent {
 	// ou false pour ne pas mettre les résultats de requêtes SQL en cache
 
 	protected $collection = 'log_search';
-	protected $fillable = array('search_query', 'ip', 'results');
+	protected $fillable = array('search_query', 'ip', 'results', 'created_at');
 	public $timestamps = false;
 
 	static public function log($searchQuery = '', $results = 0)
