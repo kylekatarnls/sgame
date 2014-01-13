@@ -54,7 +54,7 @@ function ip2bin($ip = null)
 
 function now($time = null)
 {
-	return date('Y-m-d H:i:s', $time);
+	return date('Y-m-d H:i:s', is_null($time) ? time() : $time);
 }
 
 if(!function_exists('http_negotiate_language'))
