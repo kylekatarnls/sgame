@@ -19,7 +19,7 @@ class LogSearch extends Eloquent {
 			'search_query' => $searchQuery,
 			'ip' => ip2bin(),
 			'results' => $results,
-			'created_at' => Searchable::now()
+			'created_at' => date('Y-m-d H:i:s')
 		));
 	}
 
@@ -32,7 +32,7 @@ class LogSearch extends Eloquent {
 
 	static public function startWith($searchQuery = '')
 	{
-		$result = static::select('search_query', 'results', DB::raw('COUNT(id) AS count'))
+		$result = static::select('search_query', 'results', DB::raw('COUNT(DISTINCT ip) AS count'))
 			->whereRaw('LOWER(search_query) LIKE ?', array(addcslashes(strtolower($searchQuery), '_%') . '%'))
 			->where('results', '>', 0)
 			->groupBy('search_query')
