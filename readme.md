@@ -70,15 +70,22 @@
 
 ## Récupérer les mises à jour du projet
 Ouvrir un terminal, se placer dans le dossier du projet et exécuter :
-	git pull
-	php artisan migrate
+- git pull
+- php artisan migrate
+
+
+## Avant d'envoyer vos modifications
+Avant d'envoyer vos modifications, vérifiez-les avec git status et git diff
+- git status : Cette commande vous montre les fichiers modifiés (en vert, ce qui sont prêt à être commités et en rouge ceux qui doivent d'abord être ajoutés)
+- git diff : Cette commande vous montre les modifications pas encore ajoutées (fichiers rouges de git status)
+Dans la mesure du possible, n'ajoutez que les modifications que vous avez faites
 
 
 ## Envoyer vos modifications
 Ouvrir un terminal, se placer dans le dossier du projet et exécuter :
-	git add *
-	git commit -m "Décrivez vos modifications"
-	git push
+- git add . ("." ajoute tous les fichiers modifiés, sinon vous pouvez préciser des dossiers et des fichiers)
+- git commit -m "Décrivez vos modifications"
+- git push
 
 N'hésitez pas à être très précis dans vos descriptions et si possible ne poussez (git push) que des modifications opérationnelles, sinon précisez dans la description ce qu'il reste à faire pour les rendre opérationnelles.
 
