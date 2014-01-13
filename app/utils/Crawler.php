@@ -13,6 +13,11 @@ class Crawler {
 
 	static protected $links = array();
 
+    /**
+     *  Transforme une URL relative en URL complete
+     *  @Return url complete
+     *  ex: realLink("http://www.google.com/contact", "/home")="http://www.google.com/home"
+     */
 	static protected function realLink($from, $to)
 	{
 		switch(substr($to, 0, 1))
@@ -44,6 +49,9 @@ class Crawler {
 		}
 	}
 
+    /**
+     *  Recupere les informations utiles d'une page
+     */
 	static public function getDataFromUrl($url, $followLinks = false, $recursions = 0)
 	{
 		self::$links[] = $url;
@@ -116,6 +124,10 @@ class Crawler {
 		);
 	}
 
+    /**
+     *  Methode d'entrée du crawler
+     *  @Return etat de la page (ex: not found)
+     */
 	static public function scanUrl($url, $followLinks = false, $recursions = 0)
 	{
 		$data = self::getDataFromUrl($url, $followLinks, $recursions);
@@ -151,6 +163,9 @@ class Crawler {
 		}
 	}
 
+    /**
+     * @Return nombre de liens scannés depuis le lancement du script
+     */
 	static public function countLinks()
 	{
 		return count(self::$links);
