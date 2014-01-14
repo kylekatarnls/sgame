@@ -49,8 +49,7 @@ class Language {
 		if(strpos('_', $choice) === false) {
 			$choice = $choice . '_' . strtoupper($choice);
 		}
-		setlocale(LC_ALL, $choice);
-		//mb_language($choice);
+		setlocale(LC_ALL, $choice . '.UTF-8');
 	}
 }
 

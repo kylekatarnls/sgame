@@ -12,6 +12,7 @@
 
 	@foreach($results as $result)
 		<?php
+		echo setlocale(LC_ALL, '0');
 		// Lignes d'exemple
 		echo '<h3>' .
 			$result->search_query .

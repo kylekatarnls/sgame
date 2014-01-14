@@ -3,6 +3,7 @@
 // Chargement des fonctions supplémentaires
 require_once __DIR__ . '/../utils/functions.php';
 
+
 /*
 |--------------------------------------------------------------------------
 | Register The Laravel Class Loader
