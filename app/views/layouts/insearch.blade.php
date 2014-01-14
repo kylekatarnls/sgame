@@ -5,7 +5,7 @@
 	<head>
 		<title>
 			@section('title')
-			{{ §('global.title'); }}
+			{{ §('global.title') }}
 			@show
 		</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, target-densitydpi=device-dpi">
@@ -57,7 +57,7 @@
 						</div>
 
 						<a class="brand" href="/" style="float:left;">
-							<img src="/img/advanced-search.png" alt="{{ §('global.title'); }}">
+							<img src="/img/advanced-search.png" alt="{{ §('global.title') }}">
 						</a>
 
 						{{ Form::open(array(

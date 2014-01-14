@@ -46,10 +46,11 @@ class Language {
 		$choice = self::getChoice();
 		Lang::setLocale($choice);
 		$choice = strtr($choice, '-', '_');
-		if(strpos('_', $choice)) {
+		if(strpos('_', $choice) === false) {
 			$choice = $choice . '_' . strtoupper($choice);
 		}
 		setlocale(LC_ALL, $choice);
+		//mb_language($choice);
 	}
 }
 

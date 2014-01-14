@@ -12,6 +12,18 @@ class Crawler {
 	const NOT_FOUND = 0xff;
 
 	static protected $links = array();
+	static protected $log = '';
+
+    /**
+     *  Retourne et vide le contenu des logs (permet de différer l'affichage des logs ou de les passer sous silence)
+     *  @Return static::$log
+     */
+	static public function getLog()
+	{
+		$log = static::$log;
+		static::$log = '';
+		return $log;
+	}
 
     /**
      *  Transforme une URL relative en URL complete
@@ -81,13 +93,18 @@ class Crawler {
 		{
 			if($followLinks)
 			{
-				preg_match_all('#<a[^>]*href\s*=\s*[\'"](.+)[\'"]#isU', $fileGetContents, $matches);
-				foreach($matches[1] as $link)
+				preg_match_all('#<a[^>]*href\s*=\s*[\'"](.+)[\'"]#isU', $fileGetContents, $matches, PREG_PATTERN_ORDER | PREG_OFFSET_CAPTURE);
+				foreach($matches[1] as $couple)
 				{
+					list($link, $offset) = $couple;
 					$link = self::realLink($url, $link);
+					self::$log .= $link . " : " . $offset . "\n";
 					if(!in_array($link, self::$links))
 					{
-						self::scanUrl($link, true, $recursions + 1);
+						if(self::scanUrl($link, true, $recursions + 1) === self::NOT_FOUND)
+						{
+							self::$log .= "Lien mort: " . $link . " page: " . $url . " ligne: " . (substr_count($fileGetContents, "\n", 0, $offset) + 1) . "\n";
+						}
 					}
 				}
 			}

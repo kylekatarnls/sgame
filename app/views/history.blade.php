@@ -17,7 +17,7 @@
 			$result->search_query .
 		'</h3>';
 		echo '<pre>';
-			var_dump($result->created_at);
+			var_dump($result->created_at->toDayDateTimeString());
 		echo '</pre>';
 		echo '<pre>';
 			var_dump($result->created_at->diffForHumans());

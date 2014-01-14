@@ -40,12 +40,13 @@ class CrawlCommand extends Command {
 		$urlCount = 0;
 		foreach(CrawledContent::all() as $crawledContent)
 		{
-		    echo $crawledContent->url ."\n".scanUrl($crawledContent->url, true)."\n";
 			$urlCount++;
-			if(scanUrl($crawledContent->url, true) === Crawler::NOT_FOUND){
-			    echo "crawledContent deleted : " . $crawledContent->url . " Not found\n";
-			    $crawledContent->delete();
+			if(scanUrl($crawledContent->url, true) === Crawler::NOT_FOUND)
+			{
+				echo "crawledContent deleted : " . $crawledContent->url . " Not found\n";
+				$crawledContent->delete();
 			}
+			echo Crawler::getLog();
 		}
 		$urlCount += Crawler::countLinks();
 		echo §('crawler.crawled-url', $urlCount)."\n";

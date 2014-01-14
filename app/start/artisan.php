@@ -13,3 +13,4 @@
 
 // Lancement du crawling via ligne de commande (php artisan crawl)
 Artisan::add(new CrawlCommand);
+Artisan::add(new ResetCommand);
