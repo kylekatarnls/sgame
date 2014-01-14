@@ -49,11 +49,7 @@ class Language {
 		if(strpos('_', $choice) === false) {
 			$choice = $choice . '_' . strtoupper($choice);
 		}
-		if(!setlocale(LC_ALL, $choice . '.UTF-8')
-		&& !setlocale(LC_ALL, $choice))
-		{
-			setlocale(LC_ALL, null);
-		}
+		setlocale(LC_ALL, $choice . '.UTF-8');
 	}
 }
 
