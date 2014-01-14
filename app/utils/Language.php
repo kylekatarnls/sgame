@@ -47,9 +47,17 @@ class Language {
 		Lang::setLocale($choice);
 		$choice = strtr($choice, '-', '_');
 		if(strpos('_', $choice) === false) {
-			$choice = $choice . '_' . strtoupper($choice);
+			$secondChoice = $choice . '_' . strtoupper($choice);
+			putenv('LANG=' . $secondChoice . '.UTF8');
+			putenv('LANGUAGE=' . $secondChoice . '.UTF8');
 		}
-		setlocale(LC_ALL, $choice . '.UTF-8');
+		else {
+			$secondChoice = $choice;
+			$choice = $choice . '_' . strtoupper($choice);
+			putenv('LANG=' . $choice . '.UTF8');
+			putenv('LANGUAGE=' . $choice . '.UTF8');
+		}
+		setlocale(LC_ALL, $choice . '.UTF-8', $choice . '.UTF8', $secondChoice . '.UTF-8', $secondChoice . '.UTF8');
 	}
 }
 
