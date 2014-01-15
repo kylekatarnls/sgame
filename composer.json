@@ -1,5 +1,5 @@
 {
-	"name": "kylekatarnls/laravel",
+	"name": "laravel/laravel",
 	"description": "The Laravel Framework.",
 	"keywords": ["framework", "laravel"],
 	"license": "MIT",
@@ -10,7 +10,7 @@
         }
     ],
 	"require": {
-		"kylekatarnls/framework": "4.1.*"
+		"laravel/framework": "dev-master"
 	},
 	"autoload": {
 		"classmap": [
