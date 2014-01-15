@@ -5,6 +5,7 @@
 1. Il est vivement conseillé d'installer le projet en utilisant Git (installez le si vous ne l'avez pas encore, sous Linux et Mac, il est installé par défaut, sous Windows il faut installer msysgit et choisir l'option "Ajouter à votre variable d'environement..." lorsque l'installateur la propose).
 
 2. Installer un serveur Web (exemple : Wamp / Mamp) disposant d'Apache et de PHP 5.4 ou + (sous linux, l'installation des paquets apache et php suffit)
+    
 
 3. Créer un dossier de travail "insearch" (dans htdocs de wamp) taper les commandes suivantes :
 	cd /chemin/vers/le/dossier/insearch
@@ -22,6 +23,11 @@
 
 5. Installer les dépendances du projet avec composer en exécutant :
     (installer/activer openssl si manquant et décommenter la ligne ";extension=openssl.dll" de php.ini)
+    (
+        sudo apt-get install postgresql postgresql-client apache2-mpm-prefork php5-mcrypt php5-pgsql
+        sudo a2enmod mod_php5
+        sudo service apache2 restart
+    )
 	php composer.phar update
 
 6. (Linux/Mac Uniquement) changer le CHMOD du dossier storage :

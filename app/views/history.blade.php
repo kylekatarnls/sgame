@@ -12,7 +12,8 @@
 
 	@foreach($results as $result)
 		<?php
-		echo setlocale(LC_ALL, '0');
+		echo strftime("%A %e %B", $result->created_at->getTimestamp()) . "\n"; // Date en français
+		echo strftime("%kh%M", $result->created_at->getTimestamp()) . "\n"; // Heure
 		// Lignes d'exemple
 		echo '<h3>' .
 			$result->search_query .

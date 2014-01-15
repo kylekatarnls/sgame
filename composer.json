@@ -1,10 +1,16 @@
 {
-	"name": "laravel/laravel",
+	"name": "kylekatarnls/laravel",
 	"description": "The Laravel Framework.",
 	"keywords": ["framework", "laravel"],
 	"license": "MIT",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/kylekatarnls/framework"
+        }
+    ],
 	"require": {
-		"laravel/framework": "4.1.*"
+		"kylekatarnls/framework": "4.1.*"
 	},
 	"autoload": {
 		"classmap": [
