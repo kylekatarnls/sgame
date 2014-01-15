@@ -98,12 +98,16 @@ class Crawler {
 				{
 					list($link, $offset) = $couple;
 					$link = self::realLink($url, $link);
-					self::$log .= $link . " : " . $offset . "\n";
 					if(!in_array($link, self::$links))
 					{
-						if(self::scanUrl($link, true, $recursions + 1) === self::NOT_FOUND)
+					    $s = self::scanUrl($link, true, $recursions + 1);
+						if($s === self::NOT_FOUND)
 						{
-							self::$log .= "Lien mort: " . $link . " page: " . $url . " ligne: " . (substr_count($fileGetContents, "\n", 0, $offset) + 1) . "\n";
+							self::$log .= "Lien mort: " . $link .
+							    " page: " . $url .
+							    " ligne: " . (substr_count($fileGetContents, "\n", 0, $offset) + 1) .
+							    " colonne : " . ($offset - strrpos(substr($fileGetContents,0,$offset),"\n") - 1) .
+							    "\n";
 						}
 					}
 				}
