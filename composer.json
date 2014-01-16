@@ -10,7 +10,7 @@
         }
     ],
 	"require": {
-		"laravel/framework": "dev-master"
+		"laravel/framework": "4.0.*"
 	},
 	"autoload": {
 		"classmap": [
