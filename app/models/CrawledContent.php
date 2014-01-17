@@ -64,6 +64,27 @@ class CrawledContent extends Searchable {
 		return '/out/'. self::$lastQuerySearch . '/' . $this->id;
 	}
 
+	public function getUrlAndLanguageAttribute()
+	{
+		return $this->url . (empty($this->language) ? '' : '(' . $this->language . ')');
+	}
+
+	public function link($label, array $attributes = array())
+	{
+		return '<a href="' . $this->outgoingLink . '"' .
+			implode('',
+				array_map(
+					function ($key, $value)
+					{
+						return ' ' . $key . '="' . e($value) . '"';
+					},
+					array_keys($attributes),
+					array_values($attributes)
+				)
+			)
+			. '>' . $label . '</a>';
+	}
+
 	public function getCountAttribute()
 	{
 		return Cache::get('crawled_content_id:'.$this->id.'_log_outgoing_link_count', $this->attributes['count']);

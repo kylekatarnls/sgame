@@ -13,12 +13,12 @@
 	@foreach($results as $result)
 		<h3>
 			<a class="visited" href="{{ $result->url }}"><span class="glyphicon glyphicon-eye-open"></span></a>
-			<a href="{{ $result->outgoingLink }}">{{ $result->title }}</a>
+			{{ $result->link($result->title) }}
 		</h3>
 		<p>
 			<span class="badge" title="{{ §('global.popularity') }}">{{ $result->count }}</span>
 			{{ $result->content }}<br>
-			<a href="{{ $result->outgoingLink }}" class="source">{{ e($result->url) }} ({{ $result->language }})</a>
+			{{ $result->link($result->urlAndLanguage, array('class' => 'source')) }}
 		</p>
 	@endforeach
 
