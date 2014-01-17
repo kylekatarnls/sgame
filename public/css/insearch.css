@@ -110,6 +110,6 @@ h3 a:visited .glyphicon {
 	cursor: pointer;
 }
 
-.autocomplete span:hover {
+.autocomplete span.selected {
 	background: #8ae;
 }

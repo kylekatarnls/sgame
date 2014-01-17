@@ -87,9 +87,6 @@ $(window).resize(resize);
 // Auto-complétion : lorsqu'on tape dans la barre de recherche, des solutions possibles
 // sont proposées à l'utilisateur
 $('[name="q"]').autocomplete(function(query, callback) {
-	if(!query.length) {
-		return callback();
-	}
 	$.ajax({
 		url: '/autocomplete',
 		type: 'POST',

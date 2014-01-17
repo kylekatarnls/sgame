@@ -34,6 +34,7 @@ class LogSearch extends Eloquent {
 	{
 		$result = static::select('search_query', 'results', DB::raw('COUNT(DISTINCT ip) AS count'))
 			->whereRaw('LOWER(search_query) LIKE ?', array(addcslashes(strtolower($searchQuery), '_%') . '%'))
+			->whereRaw('LENGTH(search_query) > 1')
 			->where('results', '>', 0)
 			->groupBy('search_query')
 			->orderBy('count', 'DESC')
