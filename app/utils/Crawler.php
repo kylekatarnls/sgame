@@ -69,20 +69,20 @@ class Crawler {
 		self::$links[] = $url;
 		try
 		{
-			$fileGetContents = file_get_contents($url);
+			$fileContent = File::getRemote($url);
 		}
 		catch(ErrorException $e)
 		{
 			return null;
 		}
-		if(stripos($fileGetContents, '<html') === false)
+		if(stripos($fileContent, '<html') === false)
 		{
 			return null;
 		}
-		$title = preg_match('#<title.*>(.+)</title>#isU', $fileGetContents, $match) ?
+		$title = preg_match('#<title.*>(.+)</title>#isU', $fileContent, $match) ?
 			trim(strip_tags($match[1])) :
 			e($url);
-		$language = preg_match('#(?<![a-z-])lang\s*=\s*([a-z-]+|"[^"]+"|\'[^\']+\')#is', $fileGetContents, $match) ?
+		$language = preg_match('#(?<![a-z-])lang\s*=\s*([a-z-]+|"[^"]+"|\'[^\']+\')#is', $fileContent, $match) ?
 			trim(strip_tags($match[1]), '\'"') :
 			null;
 		if($recursions > self::RECURSION_LIMIT)
@@ -93,7 +93,7 @@ class Crawler {
 		{
 			if($followLinks)
 			{
-				preg_match_all('#<a[^>]*href\s*=\s*[\'"](.+)[\'"]#isU', $fileGetContents, $matches, PREG_PATTERN_ORDER | PREG_OFFSET_CAPTURE);
+				preg_match_all('#<a[^>]*href\s*=\s*[\'"](.+)[\'"]#isU', $fileContent, $matches, PREG_PATTERN_ORDER | PREG_OFFSET_CAPTURE);
 				foreach($matches[1] as $couple)
 				{
 					list($link, $offset) = $couple;
@@ -105,37 +105,44 @@ class Crawler {
 						{
 							self::$log .= "Lien mort: " . $link .
 							    " page: " . $url .
-							    " ligne: " . (substr_count($fileGetContents, "\n", 0, $offset) + 1) .
-							    " colonne : " . ($offset - strrpos(substr($fileGetContents,0,$offset),"\n") - 1) .
+							    " ligne: " . (substr_count($fileContent, "\n", 0, $offset) + 1) .
+							    " colonne : " . ($offset - strrpos(substr($fileContent,0,$offset),"\n") - 1) .
 							    "\n";
 						}
 					}
 				}
 			}
-			$fileGetContents = preg_replace('#(<\/?)(h[1-6]|b|em|strong)([^a-z0-9][^>]*)?>#isU', ' $1strong> ', $fileGetContents);
-			// Remplace les balises importantes (h1...h6, em, b, strong) avec ou sans paramètres par une balise <strong> sans paramètres
-			// On rajoute au passage des espaces autour de la balise pour que l'index FULLTEXT repère correctement les séparation de mots
-			$fileGetContents = str_replace('><', '> <', $fileGetContents);
-			$fileGetContents = preg_replace('#<img\s.*alt\s*=\s*[\'"](.+)[\'"].*>#isU', '$1', $fileGetContents);
-			$fileGetContents = preg_replace('#<script[^>]*>.+</script>#isU', '', $fileGetContents);
-			$fileGetContents = preg_replace('#<style[^>]*>.+</style>#isU', '', $fileGetContents);
 			$self = __CLASS__;
-			$fileGetContents = preg_replace_callback(
-				'#<i?frame[^>]*src\s*=\s*[\'"](.+)[\'"][^>]*>.+</i?frame>#isU',
-				function ($match) use($recursions, $self)
-				{
-					$data = $self::getDataFromUrl($match[1], false, $recursions + 1);
-					return is_null($data) ? '' : array_get($data, 'content');
-				},
-				$fileGetContents
+			$fileContent = replace(
+				array(
+					'#(<\/?)(h[1-6]|b|em|strong)([^a-z0-9][^>]*)?>#isU' => ' $1strong> ',
+					// Remplace les balises importantes (h1...h6, em, b, strong) avec ou sans paramètres par une balise <strong> sans paramètres
+					// On rajoute au passage des espaces autour de la balise pour que l'index FULLTEXT repère correctement les séparation de mots
+					'><' => '> <',
+					'#<img\s.*alt\s*=\s*[\'"](.+)[\'"].*>#isU' => '$1',
+					'#<script[^>]*>.+</script>|<style[^>]*>.+</style>#isU' => '',
+					'#<style[^>]*>.+</style>#isU' => '',
+					'#<i?frame[^>]*src\s*=\s*[\'"](.+)[\'"][^>]*>.+</i?frame>#isU' => function ($match) use($recursions, $self)
+					{
+						$data = $self::getDataFromUrl($match[1], false, $recursions + 1);
+						return is_null($data) ? '' : array_get($data, 'content');
+					},
+				),
+				$fileContent
 			);
 			$content = trim(strip_tags(
-				preg_match('#<body[^>]*>(.+)</body>#isU', $fileGetContents, $match) ?
+				preg_match('#<body[^>]*>(.+)</body>#isU', $fileContent, $match) ?
 					$match[1] :
-					$fileGetContents,
+					$fileContent,
 				'<strong>'
 			));
-			$content = preg_replace('#\s{2,}#', ' ', str_replace('&nbsp;', ' ', $content));
+			$content = replace(
+				array(
+					'&nbsp;' => ' ',
+					'#\s{2,}#' => ' ',
+				),
+				$content
+			);
 		}
 		return array(
 			'url' => $url,
