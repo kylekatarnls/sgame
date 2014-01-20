@@ -71,18 +71,7 @@ class CrawledContent extends Searchable {
 
 	public function link($label, array $attributes = array())
 	{
-		return '<a href="' . $this->outgoingLink . '"' .
-			implode('',
-				array_map(
-					function ($key, $value)
-					{
-						return ' ' . $key . '="' . e($value) . '"';
-					},
-					array_keys($attributes),
-					array_values($attributes)
-				)
-			)
-			. '>' . $label . '</a>';
+		return HTML::link($this->outgoingLink, $label, $attributes);
 	}
 
 	public function getCountAttribute()
