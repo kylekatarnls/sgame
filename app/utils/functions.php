@@ -48,6 +48,61 @@ function ip2bin($ip = null)
 	return bin2hex(inet_pton(is_null($ip) ? Request::getClientIp() : $ip));
 }
 
+function replace($replacement, $to, $string = null)
+{
+	if(is_null($string))
+	{
+		if(!is_array($replacement))
+		{
+			throw new InvalidArgumentException("Signatures possibles : string, string, string / array, string / array, string, string");
+			return false;
+		}
+		$string = $to;
+		$to = null;
+	}
+	if(!is_null($to))
+	{
+		$replacement = (array) $replacement;
+		$to = (array) $to;
+		$count = count($replacement);
+		$countTo = count($to);
+		if($count < $countTo)
+		{
+			$to = array_slice($to, 0, $count);
+		}
+		else if($count > $countTo)
+		{
+			$last = last($to);
+			for($i = $countTo; $i < $count; $i++)
+			{
+				array_push($to, $last);
+			}
+		}
+		$replacement = array_combine((array) $replacement, (array) $to);
+	}
+	foreach($replacement as $from => $to)
+	{
+		if(is_callable($to))
+		{
+			$string = preg_replace_callback($from, $to, $string);
+		}
+		else
+		{
+			try
+			{
+				// Si possible, on utilise les RegExep
+				$string = preg_replace($from, $to, $string);
+			}
+			catch(ErrorException $e)
+			{
+				// Sinon on rempalcement simplement la chaîne
+				$string = str_replace($from, $to, $string);
+			}
+		}
+	}
+	return $string;
+}
+
 if(!function_exists('http_negotiate_language'))
 {
 	function http_negotiate_language($available_languages, &$result = null)
