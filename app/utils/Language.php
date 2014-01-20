@@ -13,6 +13,11 @@ class Language {
 		'fr' => 'Français'
 	);
 
+	static private $locales = array(
+		'en' => array('GB', 'US'),
+		'fr' => array('FR', 'BE', 'CA')
+	);
+
 	static public function getChoices()
 	{
 		return self::$languages;
@@ -41,23 +46,44 @@ class Language {
 		return $language;
 	}
 
-	static public function setLocale()
+	static public function setLocale($choice = null)
 	{
-		$choice = self::getChoice();
+		if(is_null($choice))
+		{
+			$choice = self::getChoice();
+		}
 		Lang::setLocale($choice);
 		$choice = strtr($choice, '-', '_');
-		if(strpos('_', $choice) === false) {
-			$secondChoice = $choice . '_' . strtoupper($choice);
-			putenv('LANG=' . $secondChoice . '.UTF8');
-			putenv('LANGUAGE=' . $secondChoice . '.UTF8');
+		$list = array($choice);
+		$underscore = strpos('_', $choice);
+		if($underscore === false)
+		{
+			if(isset(self::$locales[$choice]))
+			{
+				foreach(self::$locales[$choice] as $country)
+				{
+					$list[] = $choice . '_' . $country;
+				}
+			}
+			else
+			{
+				$list[1] = $choice . '_' . strtoupper($choice);
+			}
+			putenv('LANG=' . $list[1] . '.UTF8');
+			putenv('LANGUAGE=' . $list[1] . '.UTF8');
 		}
-		else {
-			$secondChoice = $choice;
-			$choice = $choice . '_' . strtoupper($choice);
+		else
+		{
+			$list[1] = substr($choice, $underscore);
 			putenv('LANG=' . $choice . '.UTF8');
 			putenv('LANGUAGE=' . $choice . '.UTF8');
 		}
-		setlocale(LC_ALL, $choice . '.UTF-8', $choice . '.UTF8', $secondChoice . '.UTF-8', $secondChoice . '.UTF8');
+		call_user_func_array('setlocale',
+			array(LC_ALL) +
+			array_map(function ($choice) { return $choice . '.UTF8'; }, $list) +
+			array_map(function ($choice) { return $choice . '.UTF-8'; }, $list) +
+			$list
+		);
 	}
 }
 
