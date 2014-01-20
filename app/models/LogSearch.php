@@ -13,6 +13,11 @@ class LogSearch extends Eloquent {
 	protected $fillable = array('search_query', 'ip', 'results', 'created_at');
 	public $timestamps = false;
 
+	protected function asDateTime($value)
+	{
+		return new TranslatableDateTime(parent::asDateTime($value));
+	}
+
 	static public function log($searchQuery = '', $results = 0)
 	{
 		return static::create(array(
