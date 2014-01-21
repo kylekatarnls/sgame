@@ -25,6 +25,14 @@ return array(
 		'longDate' => '%A %e %B %Y',
 		'shortDate' => '%a %e %b %Y',
 	),
+
+	'altFormat' => array(
+		'longDateTime' => 'd/m/Y à H\hi',
+		'shortDateTime' => 'd/m/y à H\hi',
+		'rTime' => 'H\hi',
+		'longDate' => 'd/m/Y',
+		'shortDate' => 'd/m/y',
+	),
 );
 
 ?>

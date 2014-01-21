@@ -14,7 +14,7 @@ class TranslatableDateTime extends Carbon
 		$format = §($key);
 		if($key !== $format)
 		{
-			return $this->formatLocalized($format);
+			return $this->formatLocalized($format) ?: $this->format('date.altFormat.' . $name);
 		}
 		else
 		{
