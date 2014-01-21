@@ -1,10 +1,28 @@
 <?php
+
 /**
  * Laravel - A PHP Framework For Web Artisans
  *
  * @package  Laravel
  * @author   Taylor Otwell <taylorotwell@gmail.com>
  */
+
+
+/*
+|--------------------------------------------------------------------------
+| Hack pour Cloud 9
+|--------------------------------------------------------------------------
+|
+| Le proxy de Cloud 9 masque la provenance (HTTP / HTTPS) or certains
+| navigateurs ne tolèrent pas le chargement de ressources HTTP sur une
+| page HTTPS, donc sous Cloud 9, on simule la provenance HTTPS
+|
+*/
+
+if($_SERVER['HTTP_HOST'] === 'project-livec9589c309a2f.rhcloud.com')
+{
+    $_SERVER['HTTPS'] = 'on';
+}
 
 /*
 |--------------------------------------------------------------------------
