@@ -32,6 +32,7 @@ class LogSearch extends Eloquent {
 	{
 		return static::select('search_query', 'created_at', 'results')
 			->where('ip', ip2bin())
+			->groupBy('id')
 			->orderBy('created_at', 'desc');
 	}
 
