@@ -58,8 +58,8 @@ class LogSearch extends Eloquent {
 			->whereRaw('LENGTH(search_query) > 1')
 			->where('results', '>', 0)
 			->groupBy('search_query')
-			->orderBy('count', 'DESC')
-			->orderBy('results', 'DESC')
+			->orderBy('count', 'desc')
+			->orderBy('results', 'desc')
 			->take(8)
 			->lists('search_query');
 		if(static::REMEMBER)

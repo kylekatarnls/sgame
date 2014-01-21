@@ -1,9 +1,5 @@
 <?php
 
-// Chargement des fonctions supplémentaires
-require_once __DIR__ . '/../utils/functions.php';
-
-
 /*
 |--------------------------------------------------------------------------
 | Register The Laravel Class Loader
@@ -85,25 +81,3 @@ App::down(function()
 
 require app_path().'/filters.php';
 
-
-/*
-|--------------------------------------------------------------------------
-| Calcul de la langue à utiliser pour l'affichage des textes
-|--------------------------------------------------------------------------
-*/
-
-Language::setLocale();
-
-
-/*
-|--------------------------------------------------------------------------
-| Récupération des données partagées à toutes les vues
-|--------------------------------------------------------------------------
-*/
-
-View::share(array(
-	'languages' => Language::getChoices(),
-	'resultsPerPageUrl' => '#',
-	'resultsPerPage' => ResultsPerPage::getChoice(),
-	'choiceResultsPerPage' => ResultsPerPage::getChoices()
-));

@@ -19,7 +19,7 @@ return array(
 	'most-popular' => 'Most popular pages',
 	'footer' => 'Insearch | 2014 Study project',
 	'history' => array(
-		'title' => ':title - Researches history'
+		'title' => ':title - Researches history',
 		'link' => 'My previous researches',
 		'count' => '{0} :title - Any researche recorded|{1}:title - Last researche|[2,Inf]:title - :count researches',
 	),

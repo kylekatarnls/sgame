@@ -175,4 +175,21 @@ return array(
 
 	),
 
+	/*
+	|--------------------------------------------------------------------------
+	| Trusted hosts
+	|--------------------------------------------------------------------------
+	|
+	| Available Insearch on this hosts only
+	|
+	*/
+
+	'trusted' => array(
+		'project-livec9589c309a2f.rhcloud.com',
+		'insearch-c9-kylekatarn.c9.io',
+		'insearch.selfbuild.fr',
+		'insearch',
+		'localhost',
+	),
+
 );

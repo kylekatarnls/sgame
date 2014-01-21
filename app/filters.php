@@ -13,7 +13,43 @@
 
 App::before(function($request)
 {
-	//
+
+	if($trustedHosts = Config::get('app.trusted'))
+	{
+		Request::setTrustedHosts($trustedHosts);
+	}
+
+	/*
+	|--------------------------------------------------------------------------
+	| Chargement des fonctions supplémentaires
+	|--------------------------------------------------------------------------
+	*/
+
+	require_once __DIR__ . '/utils/functions.php';
+
+
+	/*
+	|--------------------------------------------------------------------------
+	| Calcul de la langue à utiliser pour l'affichage des textes
+	|--------------------------------------------------------------------------
+	*/
+
+	Language::setLocale();
+
+
+	/*
+	|--------------------------------------------------------------------------
+	| Récupération des données partagées à toutes les vues
+	|--------------------------------------------------------------------------
+	*/
+
+	View::share(array(
+		'languages' => Language::getChoices(),
+		'resultsPerPageUrl' => '#',
+		'resultsPerPage' => ResultsPerPage::getChoice(),
+		'choiceResultsPerPage' => ResultsPerPage::getChoices()
+	));
+
 });
 
 
