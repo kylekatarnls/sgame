@@ -18,6 +18,11 @@ class LogSearch extends Eloquent {
 		return new TranslatableDateTime(parent::asDateTime($value));
 	}
 
+	static protected function myIp()
+	{
+		return static::where('ip', ip2bin());
+	}
+
 	static public function log($searchQuery = '', $results = 0)
 	{
 		return static::create(array(
@@ -28,12 +33,22 @@ class LogSearch extends Eloquent {
 		));
 	}
 
-	static public function mine()
+	static public function mine($page = null, $resultsPerPage = null)
 	{
-		return static::select('search_query', 'created_at', 'results')
-			->where('ip', ip2bin())
+		$result = static::myIp()
+			->select('search_query', 'created_at', 'results')
 			->groupBy('id')
 			->orderBy('created_at', 'desc');
+		if(!is_null($page))
+		{
+			$result = $result->forPage($page, $resultsPerPage);
+		}
+		return $result->get();
+	}
+
+	static public function mineCount()
+	{
+		return (int) static::myIp()->count();
 	}
 
 	static public function startWith($searchQuery = '')

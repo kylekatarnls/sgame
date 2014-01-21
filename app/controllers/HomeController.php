@@ -139,12 +139,10 @@ class HomeController extends BaseController {
 		$data = self::paginateResults(
 			$page,
 			$resultsPerPage,
-			LogSearch::mine()->count(),
+			LogSearch::mineCount(),
 			function ($page, $resultsPerPage)
 			{
-				return LogSearch::mine()
-					->forPage($page, $resultsPerPage)
-					->get();
+				return LogSearch::mine($page, $resultsPerPage);
 			}
 		);
 		return View::make('history')->with(array_merge(
