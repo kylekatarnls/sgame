@@ -3,7 +3,7 @@
 /*
  * Log de clic sur un lien sortant
  */
-class LogSearch extends Eloquent {
+class LogSearch extends Model {
 
 	const REMEMBER = false;
 	// Entrer une valeur en minutes pour la durée de mise en cache des requêtes SQL
@@ -18,11 +18,6 @@ class LogSearch extends Eloquent {
 		return new TranslatableDateTime(parent::asDateTime($value));
 	}
 
-	static protected function myIp()
-	{
-		return static::where('ip', ip2bin());
-	}
-
 	static public function log($searchQuery = '', $results = 0)
 	{
 		return static::create(array(
@@ -33,22 +28,12 @@ class LogSearch extends Eloquent {
 		));
 	}
 
-	static public function mine($page = null, $resultsPerPage = null)
+	static public function mine()
 	{
-		$result = static::myIp()
+		return static::where('ip', ip2bin())
 			->select('search_query', 'created_at', 'results')
 			->groupBy('id')
 			->orderBy('created_at', 'desc');
-		if(!is_null($page))
-		{
-			$result = $result->forPage($page, $resultsPerPage);
-		}
-		return $result->get();
-	}
-
-	static public function mineCount()
-	{
-		return (int) static::myIp()->count();
 	}
 
 	static public function startWith($searchQuery = '')

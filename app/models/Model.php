@@ -1,10 +1,9 @@
 <?php
 
-use Illuminate\Database\Query\Expression;
 /**
  * Modèle abstrait doté d'outils de recherche
  */
-abstract class Searchable extends Eloquent {
+abstract class Model extends Eloquent {
 
 	const REMEMBER = false;
 	// Entrer une valeur en minutes pour la durée de mise en cache des requêtes SQL
@@ -12,6 +11,23 @@ abstract class Searchable extends Eloquent {
 	const KEY_WORD_SCORE = 10;
 	const COMPLETE_QUERY_SCORE = 5;
 	const ONE_WORD_SCORE = 1;
+
+	// Surcharge de newQuery
+	public function newQuery($excludeDeleted = true)
+	{
+		// Code original de Illuminate\Database\Eloquent\Builder
+		// Seul Builder a été remplacé par ModelBuilder
+		$builder = new ModelBuilder($this->newBaseQueryBuilder());
+
+		$builder->setModel($this)->with($this->with);
+
+		if($excludeDeleted && $this->softDelete)
+		{
+			$builder->whereNull($this->getQualifiedDeletedAtColumn());
+		}
+
+		return $builder;
+	}
 
 	static protected $lastQuerySearch = '';
 
