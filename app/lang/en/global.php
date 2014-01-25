@@ -17,7 +17,7 @@ return array(
 		'count' => '{0} :title - Any result|{1}:title - One result|[2,Inf]:title - :count results',
 	),
 	'most-popular' => 'Most popular pages',
-	'footer' => 'Insearch | 2014 Study project',
+	'footer' => 'InSearch | 2014 Study project',
 	'history' => array(
 		'title' => ':title - Researches history',
 		'link' => 'My previous researches',
