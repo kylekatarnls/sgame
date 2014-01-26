@@ -75,7 +75,7 @@ class ResultsPerPage {
 		}
 		$mergedData = array_combine(
 			array_keys($mergedData),
-			array_map(['static', 'completeUrl'], $mergedData, array($resultsPerPage))
+			array_map(array('static', 'completeUrl'), $mergedData, array($resultsPerPage))
 		);
 	}
 }
