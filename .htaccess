@@ -14,3 +14,10 @@
     RewriteRule ^ public/index.php [L]
 
 </IfModule>
+
+ServerSignature Off
+Header unset Server
+Header unset X-Powered-By
+Header unset Vary
+Header unset ETag
+FileETag none
