@@ -41,7 +41,7 @@ class ModelBuilder extends Illuminate\Database\Eloquent\Builder {
 			$this->query->select(array());
 			$this->query->orders = null;
 			$this->query->groups = null;
-			$column = DB::raw('DISTINCT "' . $this->query->from . '"."id"');
+			$column = DB::raw('DISTINCT ' . $this->query->from . '.id');
 		}
 		return parent::count($column);
 	}
