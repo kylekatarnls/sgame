@@ -18,7 +18,14 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase {
 
 	protected function getUrl($url)
 	{
-		return file_get_contents('http://insearch.selfbuild.fr' . $url);
+		try
+		{
+			return file_get_contents('http://insearch.selfbuild.fr' . $url);
+		}
+		catch(ErrorException $e)
+		{
+			return false;
+		}
 	}
 
 }

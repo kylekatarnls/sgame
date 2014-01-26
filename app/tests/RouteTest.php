@@ -13,7 +13,7 @@ class RouteTest extends TestCase {
 		$this->assertTrue(strpos($content, 'name="q"') !== false);
 
 		$content = $this->getUrl('/je/nexiste/pas');
-		$this->assertTrue(strpos($content, 'name="q"') !== false);
+		$this->assertTrue($content === false);
 		/*
 		$crawler = $this->client->request('GET', '/');
 
