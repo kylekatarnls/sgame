@@ -40,16 +40,11 @@ App::before(function($request)
 
 	/*
 	|--------------------------------------------------------------------------
-	| Récupération des données partagées à toutes les vues
+	| Calcul du nombre de résultats par page et initialisation de la pagination
 	|--------------------------------------------------------------------------
 	*/
 
-	View::share(array(
-		'languages' => Language::getChoices(),
-		'resultsPerPageUrl' => '#',
-		'resultsPerPage' => ResultsPerPage::getChoice(),
-		'choiceResultsPerPage' => ResultsPerPage::getChoices()
-	));
+	ResultsPerPage::init();
 
 });
 

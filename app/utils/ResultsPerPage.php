@@ -54,7 +54,7 @@ class ResultsPerPage {
 	}
 
 	/**
-	 * Modifie les valeurs de $page, ^choice, $resultsPerPage, $nbPages et $mergedData en fonction
+	 * Modifie les valeurs de $page, $choice, $resultsPerPage, $nbPages et $mergedData en fonction
 	 * de la pagination
 	 *
 	 * @return void
@@ -78,6 +78,22 @@ class ResultsPerPage {
 			array_map(array('static', 'completeUrl'), $mergedData, array($resultsPerPage))
 		);
 	}
+
+	/**
+	 * Calcule les valeurs de $resultsPerPage et $choiceResultsPerPage utilisables dans
+	 * toutes les vues.
+	 *
+	 * @return void
+	 */
+	static public function init()
+	{
+		View::share(array(
+			'resultsPerPageUrl' => '#',
+			'resultsPerPage' => self::getChoice(),
+			'choiceResultsPerPage' => self::getChoices()
+		));
+	}
+
 }
 
 ?>

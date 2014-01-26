@@ -84,6 +84,9 @@ class Language {
 			array_map(function ($choice) { return $choice . '.UTF-8'; }, $list) +
 			$list
 		);
+
+		// On rend la liste des langues accessible dans toutes les vues
+		View::share('languages', self::getChoices());
 	}
 }
 
