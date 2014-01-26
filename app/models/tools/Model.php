@@ -12,6 +12,8 @@ abstract class Model extends Eloquent {
 	const COMPLETE_QUERY_SCORE = 5;
 	const ONE_WORD_SCORE = 1;
 
+	static protected $lastQuerySearch = '';
+
 	// Surcharge de newQuery
 	public function newQuery($excludeDeleted = true)
 	{
@@ -28,8 +30,6 @@ abstract class Model extends Eloquent {
 
 		return $builder;
 	}
-
-	static protected $lastQuerySearch = '';
 
 	static public function crossDriver(array $methods)
 	{
@@ -208,11 +208,6 @@ abstract class Model extends Eloquent {
 			$result = $result->remember(static::REMEMBER);
 		}
 		return $result;
-	}
-
-	static public function searchCount($query)
-	{
-		return self::search($query)->count();
 	}
 
 }

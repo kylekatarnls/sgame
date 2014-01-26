@@ -170,10 +170,16 @@ class Crawler {
 		{
 			return self::NOT_FOUND;
 		}
-		if(!mb_check_encoding($data['content'], 'UTF-8'))
+		foreach($data as &$string)
 		{
-			$data['title'] = utf8_encode($data['title']);
-			$data['content'] = utf8_encode($data['content']);
+			if(!mb_check_encoding($string, 'UTF-8') and mb_check_encoding(utf8_encode($string), 'UTF-8'))
+			{
+				$string = utf8_encode($string);
+			}
+			if(!mb_check_encoding($string, 'UTF-8') and mb_check_encoding(utf8_decode($string), 'UTF-8'))
+			{
+				$string = utf8_decode($string);
+			}
 		}
 		if($crawledContent = CrawledContent::where('url', $url)->first())
 		{

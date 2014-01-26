@@ -103,6 +103,42 @@ function replace($replacement, $to, $string = null)
 	return $string;
 }
 
+function accents2entities($string)
+{
+	return strtr($string, array(
+		'é' => '&eacute;',
+		'è' => '&egrave;',
+		'ê' => '&ecirc;',
+		'ë' => '&euml;',
+		'à' => '&agrave;',
+		'ä' => '&auml;',
+		'ù' => '&ugrave;',
+		'û' => '&ucirc;',
+		'ü' => '&uuml;',
+		'ô' => '&ocirc;',
+		'ò' => '&ograve;',
+		'ö' => '&ouml;',
+		'ï' => '&iuml;',
+		'ç' => '&ccedil;',
+		'ñ' => '&ntild;',
+		'É' => '&Eacute;',
+	));
+}
+
+function utf8($string)
+{
+	$string = str_replace('Ã ', '&agrave; ', $string);
+	if(strpos($string , 'Ã') !== false and strpos(utf8_encode($string), 'Ã') === false)
+	{
+		$string = utf8_encode(accents2entities($string));
+	}
+	if(strpos($string , 'Ã') !== false and strpos(utf8_decode($string), 'Ã') === false)
+	{
+		$string = utf8_decode(accents2entities($string));
+	}
+	return $string;
+}
+
 if(!function_exists('http_negotiate_language'))
 {
 	function http_negotiate_language($available_languages, &$result = null)

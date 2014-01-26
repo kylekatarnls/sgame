@@ -101,42 +101,17 @@ class CrawledContent extends Model {
 			$content = substr($content, 0, 800);
 			$content = substr($content, 0, strrpos($content, ' ')).'...';
 		}
-		return $content;
+		$closeStrongTag = substr_count($content, '<strong>') - substr_count($content, '</strong>');
+		$content .= str_repeat('</strong>', $closeStrongTag);
+		return utf8($content);
 	}
 
 	public function getTitleAttribute()
 	{
-		return Cache::get('CrawledContent-'.$this->id.'-title', $this->attributes['title']);
+		return utf8(Cache::get('CrawledContent-'.$this->id.'-title', $this->attributes['title']));
 	}
 
 }
 
-/**
- * Observateur des contenus enregistrés
- */
-class CrawledContentObserver {
-
-	public function saved($contentCrawled)
-	{
-		preg_match_all('#<strong>(.+)</strong>#sU', $contentCrawled->content, $matches);
-		$words = array_unique(explode(' ', preg_replace('#\s+#', ' ', trim(implode(' ', $matches[1])))));
-		$ids = array();
-		foreach($words as $word)
-		{
-			$word = preg_replace('#[^a-z0-9_-]#', '', normalize($word, true));
-			if($word !== '')
-			{
-				$keyWord = KeyWord::firstOrCreate(array(
-					'word' => $word
-				));
-				$ids[] = $keyWord->id;
-			}
-		}
-		$contentCrawled->keyWords()->sync($ids);
-	}
-
-}
-
-CrawledContent::observe(new CrawledContentObserver);
 
 ?>
