@@ -48,5 +48,5 @@ Route::post('/autocomplete', function ()
 // Gestion de l'erreur 404
 App::missing(function ()
 {
-	return View::make('errors.notFound');
+	return Response::view('errors.notFound', array(), 404);
 });
