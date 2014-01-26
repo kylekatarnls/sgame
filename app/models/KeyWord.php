@@ -3,7 +3,7 @@
 /**
  * Mot clé associé aux CrawledContent
  */
-class KeyWord extends Eloquent {
+class KeyWord extends Model {
 
 	protected $collection = 'key_word';
 	protected $fillable = array('word');

@@ -3,7 +3,7 @@
 /**
  * Contenu récupéré par le crawler
  */
-class CrawledContent extends Searchable {
+class CrawledContent extends Model {
 
 	protected $collection = 'crawled_content';
 	protected $softDelete = true;
@@ -12,10 +12,17 @@ class CrawledContent extends Searchable {
 	const SAME_LANGUAGE = 8;
 	const SAME_PRIMARY_LANGUAGE = 4;
 
-	static public function getSearchResult($query, $page = null, $resultsPerPage = null)
+	/**
+	 * Retourne les résultats d'une recherche
+	 *
+	 * @param string $query : l'expression à rechercher
+	 *
+	 * @return CrawledContent $resultsContainigQuery
+	 */
+	static public function getSearchResult($query)
 	{
 		$calledClass = get_called_class();
-		$result = self::search($query, $values) // $values contient les mots contenus dans la chaîne $query sous forme d'array
+		return self::search($query, $values) // $values contient les mots contenus dans la chaîne $query sous forme d'array
 			->select(
 				'crawled_contents.id',
 				'url', 'title', 'content', 'language', 'deleted_at',
@@ -42,11 +49,18 @@ class CrawledContent extends Searchable {
 			})
         	->groupBy('crawled_contents.id')
 			->orderBy('score', 'desc');
-		if(!is_null($resultsPerPage))
-		{
-			$result = $result->forPage($page, $resultsPerPage);
-		}
-		return $result->get();
+	}
+
+	/**
+	 * Retourne les résultats sur lesquels quelqu'un a déjà cliqué au moins une fois (lié à 1 ou plusieurs LogOutgoingLink)
+	 *
+	 * @return CrawledContent $popularResults
+	 */
+	static public function popular()
+	{
+		return static::leftJoin('log_outgoing_links', 'log_outgoing_links.crawled_content_id', '=', 'crawled_contents.id')
+			->whereNotNull('log_outgoing_links.id')
+			->groupBy('crawled_contents.id');
 	}
 
 	public function keyWords()
@@ -87,42 +101,17 @@ class CrawledContent extends Searchable {
 			$content = substr($content, 0, 800);
 			$content = substr($content, 0, strrpos($content, ' ')).'...';
 		}
-		return $content;
+		$closeStrongTag = substr_count($content, '<strong>') - substr_count($content, '</strong>');
+		$content .= str_repeat('</strong>', $closeStrongTag);
+		return utf8($content);
 	}
 
 	public function getTitleAttribute()
 	{
-		return Cache::get('CrawledContent-'.$this->id.'-title', $this->attributes['title']);
+		return utf8(Cache::get('CrawledContent-'.$this->id.'-title', $this->attributes['title']));
 	}
 
 }
 
-/**
- * Observateur des contenus enregistrés
- */
-class CrawledContentObserver {
-
-	public function saved($contentCrawled)
-	{
-		preg_match_all('#<strong>(.+)</strong>#sU', $contentCrawled->content, $matches);
-		$words = array_unique(explode(' ', preg_replace('#\s+#', ' ', trim(implode(' ', $matches[1])))));
-		$ids = array();
-		foreach($words as $word)
-		{
-			$word = preg_replace('#[^a-z0-9_-]#', '', normalize($word, true));
-			if($word !== '')
-			{
-				$keyWord = KeyWord::firstOrCreate(array(
-					'word' => $word
-				));
-				$ids[] = $keyWord->id;
-			}
-		}
-		$contentCrawled->keyWords()->sync($ids);
-	}
-
-}
-
-CrawledContent::observe(new CrawledContentObserver);
 
 ?>

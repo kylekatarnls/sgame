@@ -2,6 +2,15 @@
 
 /*
 |--------------------------------------------------------------------------
+| Chargement des fonctions supplémentaires
+|--------------------------------------------------------------------------
+*/
+
+require_once app_path() . '/utils/functions.php';
+
+
+/*
+|--------------------------------------------------------------------------
 | Application & Route Filters
 |--------------------------------------------------------------------------
 |
@@ -18,14 +27,6 @@ App::before(function($request)
 	{
 		Request::setTrustedHosts($trustedHosts);
 	}
-
-	/*
-	|--------------------------------------------------------------------------
-	| Chargement des fonctions supplémentaires
-	|--------------------------------------------------------------------------
-	*/
-
-	require_once __DIR__ . '/utils/functions.php';
 
 
 	/*
@@ -114,3 +115,20 @@ Route::filter('csrf', function()
 		throw new Illuminate\Session\TokenMismatchException;
 	}
 });
+
+
+/*
+|--------------------------------------------------------------------------
+| Observateurs d'événements
+|--------------------------------------------------------------------------
+|
+| Les observateurs permettent d'exécuter des actions à chaque fois qu'un
+| événement survient.
+|
+| Par exemple, la méthode CrawledContentObserver::saved() est exécutée à
+| chaque fois qu'un objet CrawledContent est créé ou modifié en base de
+| données.
+|
+*/
+
+CrawledContent::observe(new CrawledContentObserver);

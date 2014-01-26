@@ -17,7 +17,7 @@ return array(
 		'count' => '{0} :title - Aucun résultat|{1}:title - Un résultat|[2,Inf]:title - :count résultats',
 	),
 	'most-popular' => 'Pages les plus populaires',
-	'footer' => 'Insearch | Projet de fin d\'année 2014',
+	'footer' => 'InSearch | Projet de fin d\'année 2014',
 	'history' => array(
 		'title' => 'Historique des recherches',
 		'link' => 'Mes précédents recherches',

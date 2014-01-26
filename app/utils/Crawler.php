@@ -16,7 +16,7 @@ class Crawler {
 
     /**
      *  Retourne et vide le contenu des logs (permet de différer l'affichage des logs ou de les passer sous silence)
-     *  @Return static::$log
+     *  @return static::$log
      */
 	static public function getLog()
 	{
@@ -27,32 +27,39 @@ class Crawler {
 
     /**
      *  Transforme une URL relative en URL complete
-     *  @Return url complete
+     *  @return url complete
      *  ex: realLink("http://www.google.com/contact", "/home")="http://www.google.com/home"
      */
 	static protected function realLink($from, $to)
 	{
+		$slashDomain = function ($url)
+		{
+			if(substr_count($url, '/') < 3)
+			{
+				$url .= '/';
+			}
+			return $url;
+		};
 		switch(substr($to, 0, 1))
 		{
 			case '':
 			case '#':
 				return $from;
 			case '/':
+				$from = preg_replace('#\?.*$#', '', $from);
+				$from = preg_replace('#\#.*$#', '', $from);
 				return preg_replace('#^([a-z0-9]+://[^/]+)(/.*)$#i', '$1', $from).$to;
 			case ':':
 				return preg_replace('#^([a-z0-9]+):.*$#i', '$1', $from).$to;
 			case '?':
-				return preg_replace('#^([^\?]+)(\?.*)$#i', '$1', $from).$to;
+				$from = preg_replace('#\#.*$#', '', $from);
+				return $slashDomain(preg_replace('#^([^\?]+)(\?.*)$#i', '$1', $from)).$to;
 			default:
 				if(preg_match('#^[a-z0-9]+:#', $to))
 				{
 					return $to;
 				}
-				if(substr_count($from, '/') < 3)
-				{
-					$from .= '/';
-				}
-				$to = preg_replace('#[^/]+$#i', '', $from).$to;
+				$to = $slashDomain(preg_replace('#[^/]+$#i', '', $from)).$to;
 				$to = explode('?', $to);
 				$to[0] = str_replace('/.', '', $to[0]);
 				$to[0] = preg_replace('#(?<![^/]/)[^/]+/\.\.#', '', $to[0]);
@@ -154,7 +161,7 @@ class Crawler {
 
     /**
      *  Methode d'entrée du crawler
-     *  @Return etat de la page (ex: not found)
+     *  @return etat de la page (ex: not found)
      */
 	static public function scanUrl($url, $followLinks = false, $recursions = 0)
 	{
@@ -163,10 +170,16 @@ class Crawler {
 		{
 			return self::NOT_FOUND;
 		}
-		if(!mb_check_encoding($data['content'], 'UTF-8'))
+		foreach($data as &$string)
 		{
-			$data['title'] = utf8_encode($data['title']);
-			$data['content'] = utf8_encode($data['content']);
+			if(!mb_check_encoding($string, 'UTF-8') and mb_check_encoding(utf8_encode($string), 'UTF-8'))
+			{
+				$string = utf8_encode($string);
+			}
+			if(!mb_check_encoding($string, 'UTF-8') and mb_check_encoding(utf8_decode($string), 'UTF-8'))
+			{
+				$string = utf8_decode($string);
+			}
 		}
 		if($crawledContent = CrawledContent::where('url', $url)->first())
 		{
@@ -192,7 +205,7 @@ class Crawler {
 	}
 
     /**
-     * @Return nombre de liens scannés depuis le lancement du script
+     * @return nombre de liens scannés depuis le lancement du script
      */
 	static public function countLinks()
 	{
