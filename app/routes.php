@@ -45,6 +45,12 @@ Route::post('/autocomplete', function ()
 	return LogSearch::startWith(Input::get('q'));
 });
 
+// URLs accessibles uniquement en environement de développement
+if(Config::get('app.debug'))
+{
+    Route::get('/specs/1', 'DevController@specs');
+}
+
 // Gestion de l'erreur 404
 App::missing(function ()
 {

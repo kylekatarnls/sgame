@@ -5,15 +5,22 @@
 	<head>
 		<title>
 			@section('title')
-			{{ §('global.title') }}
+				{{ §('global.title') }}
 			@show
 		</title>
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, target-densitydpi=device-dpi">
-		<meta name="apple-mobile-web-app-capable" content="yes">
-		<meta name="format-detection" content="telephone=no">
-		{{ HTML::style('css/bootstrap.min.css') }}
-		{{ HTML::style('css/insearch.css') }}
-		<link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
+		@section('meta')
+			<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, target-densitydpi=device-dpi">
+			<meta name="apple-mobile-web-app-capable" content="yes">
+			<meta name="format-detection" content="telephone=no">
+		@show
+		@section('css')
+			{{ HTML::style('css/bootstrap.min.css') }}
+			{{ HTML::style('css/insearch.css') }}
+		@show
+		@section('link')
+			<link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
+		@show
+		@yield('head')
 	</head>
 
 	<body>
@@ -100,10 +107,12 @@
 			</p>
 		</div>
 
-		{{ HTML::script('js/jquery-1.10.2.min.js') }}
-		{{ HTML::script('js/bootstrap.min.js') }}
-		{{ HTML::script('js/typeahead.js') }}
-		{{ HTML::script('js/insearch.js') }}
+		@section('js')
+			{{ HTML::script('js/jquery-1.10.2.min.js') }}
+			{{ HTML::script('js/bootstrap.min.js') }}
+			{{ HTML::script('js/typeahead.js') }}
+			{{ HTML::script('js/insearch.js') }}
+		@show
 
 	</body>
 </html>

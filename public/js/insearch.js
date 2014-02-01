@@ -2,7 +2,7 @@
 // Exemple : lorsqu'on clique sur le bouton tout en haut à droite,
 // La liste des choix possibles pour le nombre de résultats par page se déroule
 $('.dropdown-toggle').click(function () {
-	$('[aria-labelledby="'+$(this).attr('id')+'"]').slideToggle();
+	$('[aria-labelledby="' + $(this).attr('id') + '"]').slideToggle();
 });
 
 

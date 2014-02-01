@@ -1,5 +1,5 @@
 $.fn.extend({
-	exists: function (){
+	exists: function () {
 		return $(this).length > 0;
 	},
 	autocomplete: function (callback) {
