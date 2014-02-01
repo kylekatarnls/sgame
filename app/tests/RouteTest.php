@@ -9,47 +9,16 @@ class RouteTest extends TestCase {
 	 */
 	public function testRouteToMethodes()
 	{
-		$content = $this->getUrl('/');
-		$this->assertTrue(strpos($content, 'name="q"') !== false);
 
-		$content = $this->getUrl('/je/nexiste/pas');
-		$this->assertTrue($content === false);
-		/*
-		$crawler = $this->client->request('GET', '/');
+		$this->assertFilter('GET', '/', 'h1:contains("InSearch")');
+		$this->assertFilter('GET', '/terme-de-recherche', 'form input[value="terme-de-recherche"]');
 
-		$this->assertTrue($this->client->getResponse()->isOk());
-		$this->assertRedirectedToAction('HomeController@searchBar');
-		foreach(array(
-			'/terme-de-recherche' => 'HomeController@searchResult',
-			'/3/terme-de-recherche' => 'HomeController@searchResult',
-			'/2/terme-de-recherche/50' => 'HomeController@searchResult',
-			'/out/terme-de-recherche/1' => 'HomeController@goOut',
-			'/most-popular/1' => 'HomeController@mostPopular',
-			'/most-popular/1/100' => 'HomeController@mostPopular',
-			'/history/1' => 'HomeController@history',
-			'/history/1/100' => 'HomeController@history',
-		) as $getUrl => $route)
-		{
-			$crawler = $this->client->request('GET', $getUrl);
-			$this->assertRedirectedToAction($route);
-		}
-		foreach(array(
-			'/' => 'HomeController@searchResult',
-			'/add-url' => 'HomeController@addUrl',
-		) as $postUrl => $route)
-		{
-			$crawler = $this->client->request('POST', $postUrl);
-			$this->assertRedirectedToAction($route);
-		}
+		$this->assertNotFound('GET', '/je/nexiste/pas');
+		$this->assertFound('GET', '/most-popular/1');
+		$this->assertFound('GET', '/most-popular/1/100');
+		$this->assertFound('GET', '/history/1');
 
-		$crawler = $this->client->request('GET', '/je/nexiste/pas');
-
-		$this->assertTrue($this->client->getResponse()->isKo());
-
-		$crawler = $this->client->request('POST', '/autocomplete');
-
-		$this->assertTrue(strpos($this->client->getResponse(), '{') === 0);
-		*/
+		$this->assertJsonResponse('POST', '/autocomplete');
 
 	}
 

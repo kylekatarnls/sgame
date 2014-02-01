@@ -1,5 +1,7 @@
 <?php
 
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
 class TestCase extends Illuminate\Foundation\Testing\TestCase {
 
 	/**
@@ -16,16 +18,43 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase {
 		return require __DIR__.'/../../bootstrap/start.php';
 	}
 
-	protected function getUrl($url)
+	protected function tryRequest($method, $url)
 	{
 		try
 		{
-			return file_get_contents('http://insearch.selfbuild.fr' . $url);
+			return $this->client->request($method, $url);
 		}
-		catch(ErrorException $e)
+		catch(NotFoundHttpException $e)
 		{
 			return false;
 		}
+	}
+
+	protected function tryResponse($method, $url)
+	{
+		$this->tryRequest($method, $url);
+		return $this->client->getResponse();
+	}
+
+	protected function assertFound($method, $url)
+	{
+		$this->assertTrue($this->tryRequest($method, $url) !== false);
+	}
+
+	protected function assertNotFound($method, $url)
+	{
+		$this->assertTrue($this->tryRequest($method, $url) === false);
+	}
+
+	protected function assertJsonResponse($method, $url)
+	{
+		$this->assertJson($this->tryResponse($method, $url)->getContent());
+	}
+
+	protected function assertFilter($method, $url, $filter, $count = 1)
+	{
+		$crawler = $this->tryRequest($method, $url);
+		$this->assertCount($count, $crawler->filter($filter));
 	}
 
 }

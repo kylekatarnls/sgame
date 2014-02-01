@@ -11,6 +11,36 @@ require_once app_path() . '/utils/functions.php';
 
 /*
 |--------------------------------------------------------------------------
+| N'autoriser que les domaines de confiance si la config le précise
+|--------------------------------------------------------------------------
+*/
+
+if($trustedHosts = Config::get('app.trusted'))
+{
+	Request::setTrustedHosts($trustedHosts);
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| Calcul de la langue à utiliser pour l'affichage des textes
+|--------------------------------------------------------------------------
+*/
+
+Language::setLocale();
+
+
+/*
+|--------------------------------------------------------------------------
+| Calcul du nombre de résultats par page et initialisation de la pagination
+|--------------------------------------------------------------------------
+*/
+
+ResultsPerPage::init();
+
+
+/*
+|--------------------------------------------------------------------------
 | Application & Route Filters
 |--------------------------------------------------------------------------
 |
@@ -22,30 +52,7 @@ require_once app_path() . '/utils/functions.php';
 
 App::before(function($request)
 {
-
-	if($trustedHosts = Config::get('app.trusted'))
-	{
-		Request::setTrustedHosts($trustedHosts);
-	}
-
-
-	/*
-	|--------------------------------------------------------------------------
-	| Calcul de la langue à utiliser pour l'affichage des textes
-	|--------------------------------------------------------------------------
-	*/
-
-	Language::setLocale();
-
-
-	/*
-	|--------------------------------------------------------------------------
-	| Calcul du nombre de résultats par page et initialisation de la pagination
-	|--------------------------------------------------------------------------
-	*/
-
-	ResultsPerPage::init();
-
+	//
 });
 
 
