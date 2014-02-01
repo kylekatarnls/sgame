@@ -179,3 +179,15 @@
   }
 
 }());
+
+function findOrCreate(selector, create, callback) {
+  var $elt = $(selector).first();
+  if($elt.exists()) {
+    callback.call($elt);
+  }
+  else {
+    $elt = $(create).appendTo('body');
+    callback.call($elt);
+    $elt.remove();
+  }
+}

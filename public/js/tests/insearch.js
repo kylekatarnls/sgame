@@ -1,6 +1,6 @@
 describe("Script principal insearch.js", function() {
 
-  describe("Les fonctionnalités de base", function() {
+  describe("Le module des fonctionnalités de base", function() {
 
     it("Devrait permettre de cliquer sur un bouton des panneaux pour ouvrir et fermer un formulaire", function()  {
       expect($('.option-panel form:hidden').exists()).toBe(true);
@@ -28,6 +28,7 @@ describe("Script principal insearch.js", function() {
         $input.val('-1');
         $a.data('value', '20').trigger('click');
         expect($input.val()).toBe('20');
+        $input.val('');
       }
     });
 
