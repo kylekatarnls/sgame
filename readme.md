@@ -30,6 +30,16 @@
     )
 	php composer.phar update
 
+5.b. Aucune fonctionnalité que nous utilisons ne semble utiliser Mcrypt, l'extension n'est donc pas absolument nécessaire.
+Donc si l'installation de Mcrypt échoue, il est possible de commenter cette partie de code dans le fichier
+vendor/laravel/framework/src/Illuminate/Foundation/start.php :
+<pre>if ( ! extension_loaded('mcrypt'))
+{
+	echo 'Mcrypt PHP extension required.'.PHP_EOL;
+
+	exit(1);
+}</pre>
+
 6. (Linux/Mac Uniquement) changer le CHMOD du dossier storage :
 	chmod -R 0777 app/storage
 
