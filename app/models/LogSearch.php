@@ -13,11 +13,6 @@ class LogSearch extends Model {
 	protected $fillable = array('search_query', 'ip', 'results', 'created_at');
 	public $timestamps = false;
 
-	protected function asDateTime($value)
-	{
-		return new TranslatableDateTime(parent::asDateTime($value));
-	}
-
 	static public function log($searchQuery = '', $results = 0)
 	{
 		return static::create(array(
@@ -45,13 +40,12 @@ class LogSearch extends Model {
 			->groupBy('search_query')
 			->orderBy('count', 'desc')
 			->orderBy('results', 'desc')
-			->take(8)
-			->lists('search_query');
+			->take(8);
 		if(static::REMEMBER)
 		{
 			$result = $result->remember(static::REMEMBER);
 		}
-		return $result;
+		return $result->lists('search_query');
 	}
 }
 

@@ -18,7 +18,7 @@ class ControllersTest extends TestCase {
 		$this->assertTrue(method_exists('HomeController', 'addUrl'), "HomeController->addUrl() devrait exister");
 		$this->assertTrue(method_exists('HomeController', 'mostPopular'), "HomeController->mostPopular() devrait exister");
 		$this->assertTrue(method_exists('HomeController', 'history'), "HomeController->history() devrait exister");
-		/*
+
 		$homeController = new HomeController;
 		$this->assertView($homeController->searchBar(), "HomeController->searchBar()");
 		$this->assertView($homeController->searchResult(), "HomeController->searchResult()");
@@ -32,9 +32,8 @@ class ControllersTest extends TestCase {
 			$this->assertTrue(true, "Devrait retourner une erreur 404");
 		}
 		$this->assertView($homeController->addUrl(), "HomeController->addUrl()");
-		$this->assertView($homeController->mostPopular(), "HomeController->mostPopular()");
-		$this->assertView($homeController->history(), "HomeController->history()");
-		*/
+		$this->assertView($homeController->mostPopular(1), "HomeController->mostPopular()");
+		$this->assertView($homeController->history(1), "HomeController->history()");
 
 	}
 
@@ -47,10 +46,9 @@ class ControllersTest extends TestCase {
 	{
 
 		$this->assertTrue(method_exists('DevController', 'specs'), "DevController->specs() devrait exister");
-		/*
+
 		$devController = new DevController;
 		$this->assertView($devController->specs(), "DevController->specs()");
-		*/
 
 	}
 }
