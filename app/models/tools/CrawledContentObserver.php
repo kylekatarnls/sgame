@@ -16,7 +16,7 @@ class CrawledContentObserver {
 		foreach($words as $word)
 		{
 			// On enlève les accents et les caractères spéciaux
-			$word = preg_replace('#[^a-z0-9_-]#', '', normalize($word, true));
+			$word = preg_replace('#[^a-z0-9_-]#', '', normalize($word));
 			if($word !== '')
 			{
 				// On enregistre le mot-clé en base de données s'il n'y est pas encore

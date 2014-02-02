@@ -59,7 +59,7 @@ class ResultsPerPage {
 	 *
 	 * @return void
 	 */
-	static public function paginate($nbResults, &$page = null, &$choice = null, &$resultsPerPage = null, &$nbPages = null, &$mergedData = null)
+	static public function paginate($nbResults, &$page = null, &$choice = null, &$resultsPerPage = null, &$nbPages = null, array &$mergedData = array())
 	{
 		$page = (int) $page;
 		$resultsPerPage = static::getChoice($resultsPerPage);
@@ -73,10 +73,13 @@ class ResultsPerPage {
 		{
 			$page = 1;
 		}
-		$mergedData = array_combine(
-			array_keys($mergedData),
-			array_map(array('static', 'completeUrl'), $mergedData, array($resultsPerPage))
-		);
+		if(!empty($mergedData))
+		{
+			$mergedData = array_combine(
+				array_keys($mergedData),
+				array_map(array('static', 'completeUrl'), $mergedData, array($resultsPerPage))
+			);
+		}
 	}
 
 	/**

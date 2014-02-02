@@ -7,7 +7,7 @@ class RouteTest extends TestCase {
 	 *
 	 * @return void
 	 */
-	public function testRouteToMethodes()
+	public function testResponses()
 	{
 
 		$this->assertFilter('GET', '/', 'h1:contains("InSearch")');
@@ -18,7 +18,7 @@ class RouteTest extends TestCase {
 		$this->assertFound('GET', '/most-popular/1/100');
 		$this->assertFound('GET', '/history/1');
 
-		$this->assertJsonResponse('POST', '/autocomplete');
+		$this->assertJsonResponse('POST', '/autocomplete', array('q' => 'p'));
 
 	}
 

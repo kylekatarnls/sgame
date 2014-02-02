@@ -14,6 +14,12 @@ abstract class Model extends Eloquent {
 
 	static protected $lastQuerySearch = '';
 
+	// les fonctionnalités avancées de TranslatableDateTime sont accessible dans tous les modèles
+	protected function asDateTime($value)
+	{
+		return new TranslatableDateTime(parent::asDateTime($value));
+	}
+
 	// Surcharge de newQuery
 	public function newQuery($excludeDeleted = true)
 	{

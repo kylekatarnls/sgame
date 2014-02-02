@@ -74,9 +74,13 @@ class Crawler {
 	static public function getDataFromUrl($url, $followLinks = false, $recursions = 0)
 	{
 		self::$links[] = $url;
+		if(filter_var($url, FILTER_VALIDATE_URL, FILTER_FLAG_SCHEME_REQUIRED | FILTER_FLAG_HOST_REQUIRED) === false)
+		{
+			return null;
+		}
 		try
 		{
-			$fileContent = File::getRemote($url);
+			$fileContent = file_get_contents($url);
 		}
 		catch(ErrorException $e)
 		{

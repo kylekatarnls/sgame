@@ -1,8 +1,11 @@
 <?php
 
-define('DB_NAME', 'insearch');
-define('DB_USER', 'insearch');
-define('DB_PASS', 'r6y_7|Hj{-SQdf');
+if(!defined('DB_NAME'))
+{
+	define('DB_NAME', 'insearch');
+	define('DB_USER', 'insearch');
+	define('DB_PASS', 'r6y_7|Hj{-SQdf');
+}
 
 return array(
 

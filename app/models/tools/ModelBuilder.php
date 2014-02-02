@@ -10,7 +10,7 @@ class ModelBuilder extends Illuminate\Database\Eloquent\Builder {
 	 *
 	 * @return ModelBuilder $dataForView
 	 */
-	public function paginatedData(&$page, $resultsPerPage, $mergedData = array())
+	public function paginatedData(&$page, $resultsPerPage, array $mergedData = array())
 	{
 		$nbResults = clone $this;
 		$nbResults = $nbResults->count();

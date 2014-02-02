@@ -5,7 +5,6 @@
 1. Il est vivement conseillé d'installer le projet en utilisant Git (installez le si vous ne l'avez pas encore, sous Linux et Mac, il est installé par défaut, sous Windows il faut installer msysgit et choisir l'option "Ajouter à votre variable d'environement..." lorsque l'installateur la propose).
 
 2. Installer un serveur Web (exemple : Wamp / Mamp) disposant d'Apache et de PHP 5.4 ou + (sous linux, l'installation des paquets apache et php suffit)
-    
 
 3. Créer un dossier de travail "insearch" (dans htdocs de wamp) taper les commandes suivantes :
 	cd /chemin/vers/le/dossier/insearch
@@ -95,6 +94,15 @@ Avant d'envoyer vos modifications, vérifiez-les avec git status et git diff
 - git status : Cette commande vous montre les fichiers modifiés (en vert, ce qui sont prêt à être commités et en rouge ceux qui doivent d'abord être ajoutés)
 - git diff : Cette commande vous montre les modifications pas encore ajoutées (fichiers rouges de git status)
 Dans la mesure du possible, n'ajoutez que les modifications que vous avez faites
+
+Lancer ensuite les tests unitaires PHP avec phpunit. Sur l'espace Cloud 9, entrer ceci dans le Terminal :
+	cd ~/711694/insearch
+	php ../phpunit.phar
+Un bandeau vert OK doit s'afficher si aucun test n'a été cassé par votre code
+
+Lancer ensuite les tests unitaires JS avec Jasmine. Sur l'espace Cloud 9, ouvrez par routes.php et cliquez sur Run (en cas d'erreur : Configure... > Runtime : Apache+PHP)
+Puis entrer l'URL https://insearch-c9-kylekatarn.c9.io/specs/1 dans votre navigateur
+Un bandeau vert OK doit s'afficher si aucun test n'a été cassé par votre code
 
 
 ## Envoyer vos modifications

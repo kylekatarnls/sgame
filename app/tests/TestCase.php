@@ -1,6 +1,7 @@
 <?php
 
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Illuminate\View\View as BaseView;
 
 class TestCase extends Illuminate\Foundation\Testing\TestCase {
 
@@ -55,6 +56,11 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase {
 	{
 		$crawler = $this->tryRequest($method, $url, $parameters, $files, $server, $content, $changeHistory);
 		$this->assertCount($count, $crawler->filter($filter));
+	}
+
+	protected function assertView($response, $name)
+	{
+		$this->assertTrue($response instanceof View || $response instanceof BaseView, $name . " devrait retourner une vue (View)");
 	}
 
 }
