@@ -10,13 +10,12 @@ function §()
 	return call_user_func_array('trans', $args);
 }
 
-function normalize($string, $lowerCase = false)
+function normalize($string, $lowerCase = true)
 {
 	$a = 'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûýýþÿŔŕ';
 	$b = 'aaaaaaaceeeeiiiidnoooooouuuuybsaaaaaaaceeeeiiiidnoooooouuuyybyRr';
 	$string = utf8_decode($string);
 	$string = strtr($string, utf8_decode($a), $b);
-	$string = strtolower($string);
 	if($lowerCase)
 	{
 		$string = strtolower($string);

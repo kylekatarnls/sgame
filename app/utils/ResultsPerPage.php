@@ -73,10 +73,13 @@ class ResultsPerPage {
 		{
 			$page = 1;
 		}
-		$mergedData = array_combine(
-			array_keys($mergedData),
-			array_map(array('static', 'completeUrl'), $mergedData, array($resultsPerPage))
-		);
+		if(is_array($mergedData))
+		{
+			$mergedData = array_combine(
+				array_keys($mergedData),
+				array_map(array('static', 'completeUrl'), $mergedData, array($resultsPerPage))
+			);
+		}
 	}
 
 	/**

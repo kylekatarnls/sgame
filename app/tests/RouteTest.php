@@ -7,7 +7,7 @@ class RouteTest extends TestCase {
 	 *
 	 * @return void
 	 */
-	public function testRouteToMethodes()
+	public function testResponses()
 	{
 
 		$this->assertFilter('GET', '/', 'h1:contains("InSearch")');
