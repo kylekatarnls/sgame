@@ -135,6 +135,6 @@ return array(
 	|
 	*/
 
-	'secure' => false,
+	'secure' => strlen(Request::server('HTTPS', '')) > 0,
 
 );
