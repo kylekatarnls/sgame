@@ -30,7 +30,7 @@ class Language {
 			$language = Input::get('language');
 			if(isset(self::$languages[$language]))
 			{
-				Cookie::queue('language', $language, 144000);
+				Cookie::queue('language', $language, 144000, null, null, Config::get('session.secure'), true);
 			}
 			else
 			{
