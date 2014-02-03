@@ -113,3 +113,25 @@ h3 a:visited .glyphicon {
 .autocomplete span.selected {
 	background: #8ae;
 }
+
+.history-odd,
+.history-even {
+	background: #fcfdfe;
+	padding: 1px 4px;
+}
+.history-odd:hover,
+.history-even:hover {
+	background: #eef0f2;
+}
+.history-even {
+	background: #f5f6f7;
+}
+.history-odd a,
+.history-even a {
+	display: block;
+}
+.history-time,
+.history-count-results {
+	float: left;
+	width: 140px;
+}

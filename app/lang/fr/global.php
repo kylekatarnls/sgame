@@ -22,6 +22,7 @@ return array(
 		'title' => 'Historique des recherches',
 		'link' => 'Mes précédents recherches',
 		'count' => '{0}:title - Aucune recherche enregistrée|{1}:title - Votre dernière recherche|[2,Inf]:title - :count recherches',
+		'results' => '[0,1]:count résultat|[2,Inf]:count résultats',
 	),
 );
 ?>

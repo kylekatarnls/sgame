@@ -22,6 +22,7 @@ return array(
 		'title' => ':title - Researches history',
 		'link' => 'My previous researches',
 		'count' => '{0}:title - Any researche recorded|{1}:title - Last researche|[2,Inf]:title - :count researches',
+		'results' => '[0,1]:count result|[2,Inf]:count results',
 	),
 );
 ?>
