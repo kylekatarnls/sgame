@@ -10,12 +10,17 @@
 
 	@include('includes.searchbar')
 
-	@foreach($results as $result)
-		<h3>{{ $result->search_query }}</h3>
-		<pre>{{ $result->created_at->uRecentDate }}</pre>
-		<pre>{{ $result->created_at->recentTime }}</pre>
-		<pre>{{ $result->created_at->date }}</pre>
-		<pre>{{ $result->results }}</pre>
+	@foreach($results->groupBy(function ($element)
+        {
+            return $element->created_at->uRecentDate;
+        }) as $uRecentDate => $group)
+        @foreach($group as $result)
+            <h3>{{ $result->search_query }}</h3>
+            <pre>{{ $result->created_at->uRecentDate }}</pre>
+            <pre>{{ $result->created_at->recentTime }}</pre>
+            <pre>{{ $result->created_at->date }}</pre>
+            <pre>{{ $result->results }}</pre>
+        @endforeach
 	@endforeach
 
 	@include('includes.pagination')

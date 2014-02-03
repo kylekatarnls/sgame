@@ -6,17 +6,25 @@ class HomeController extends BaseController {
 	{
 		return View::make('home');
 	}
+	
+	public function searchResultForm($page = 1, $q = null, $resultsPerPage = null)
+	{
+	    return $this->searchResult($page, $q, $resultsPerPage, true);
+	}
 
-	public function searchResult($page = 1, $q = null, $resultsPerPage = null)
+	public function searchResult($page = 1, $q = null, $resultsPerPage = null, $form = false)
 	{
 		$q = is_null($q) ? Request::get('q', $page) : urldecode($q);
 		$data = CrawledContent::getSearchResult($q)
-			->paginatedData($page, $resultsPerPage, array(
+    			->paginatedData($page, $resultsPerPage, array(
 				'q' => $q,
 				'pageUrl' => '/%d/'.urlencode($q).'{keepResultsPerPage}',
 				'resultsPerPageUrl' => '/'.$page.'/'.urlencode($q).'/%d'
 			));
-		LogSearch::log($q, $data['nbResults']);
+	    if($form)
+	    {
+		    LogSearch::log($q, $data['nbResults']);
+	    }
 		return View::make('result')->with($data);
 	}
 

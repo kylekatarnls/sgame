@@ -10,8 +10,7 @@ $('.dropdown-toggle').click(function () {
 (function () {
     var string = $('h1').html();
     var index = string.indexOf("-");
-    if (index !== -1)
-    {
+    if (index !== -1) {
         $('h1').html("<span class='mobile-hidden'>" + string.substr(0, index + 1) + "</span>" + string.substr(index + 1));
     }
 })();

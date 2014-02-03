@@ -96,8 +96,8 @@ Avant d'envoyer vos modifications, vérifiez-les avec git status et git diff
 Dans la mesure du possible, n'ajoutez que les modifications que vous avez faites
 
 Lancer ensuite les tests unitaires PHP avec phpunit. Sur l'espace Cloud 9, entrer ceci dans le Terminal :
-	cd ~/711694/insearch
-	php ../phpunit.phar
+- cd ~/711694/insearch
+- php ../phpunit.phar
 Un bandeau vert OK doit s'afficher si aucun test n'a été cassé par votre code
 
 Lancer ensuite les tests unitaires JS avec Jasmine. Sur l'espace Cloud 9, ouvrez par routes.php et cliquez sur Run (en cas d'erreur : Configure... > Runtime : Apache+PHP)

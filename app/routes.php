@@ -18,7 +18,7 @@
 Route::get('/', 'HomeController@searchBar');
 
 // Résultats
-Route::post('/', 'HomeController@searchResult');
+Route::post('/', 'HomeController@searchResultForm');
 Route::pattern('q', '[^/]+');
 Route::pattern('resultsPerPage', '[1-9][0-9]*');
 Route::pattern('page', '[1-9][0-9]*');
