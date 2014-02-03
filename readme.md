@@ -93,11 +93,13 @@ Ouvrir un terminal, se placer dans le dossier du projet et exécuter :
 Avant d'envoyer vos modifications, vérifiez-les avec git status et git diff
 - git status : Cette commande vous montre les fichiers modifiés (en vert, ce qui sont prêt à être commités et en rouge ceux qui doivent d'abord être ajoutés)
 - git diff : Cette commande vous montre les modifications pas encore ajoutées (fichiers rouges de git status)
+
 Dans la mesure du possible, n'ajoutez que les modifications que vous avez faites
 
 Lancer ensuite les tests unitaires PHP avec phpunit. Sur l'espace Cloud 9, entrer ceci dans le Terminal :
 - cd ~/711694/insearch
 - php ../phpunit.phar
+
 Un bandeau vert OK doit s'afficher si aucun test n'a été cassé par votre code
 
 Lancer ensuite les tests unitaires JS avec Jasmine. Sur l'espace Cloud 9, ouvrez par routes.php et cliquez sur Run (en cas d'erreur : Configure... > Runtime : Apache+PHP)
