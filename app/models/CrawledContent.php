@@ -111,26 +111,59 @@ class CrawledContent extends Model {
 		return utf8(Cache::get('CrawledContent-' . $this->id . '-title', array_get($this->attributes, 'title', '')));
 	}
 
-	/*
-	|--------------------------------------------------------------------------
-	| Observateur d'événements
-	|--------------------------------------------------------------------------
-	|
-	| Les observateurs permettent d'exécuter des actions à chaque fois qu'un
-	| événement survient.
-	|
-	| Par exemple, la méthode CrawledContentObserver::saved() est exécutée à
-	| chaque fois qu'un objet CrawledContent est créé ou modifié en base de
-	| données.
-	|
-	*/
-	public static function boot()
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| Observateur d'événements
+|--------------------------------------------------------------------------
+|
+| Les observateurs permettent d'exécuter des actions à chaque fois qu'un
+| événement survient.
+|
+| Par exemple, la méthode CrawledContentObserver::saved() est exécutée à
+| chaque fois qu'un objet CrawledContent est créé ou modifié en base de
+| données.
+|
+*/
+
+/**
+ * Observateur des contenus enregistrés
+ */
+class CrawledContentObserver {
+
+	public function saved($contentCrawled)
 	{
-		parent::boot();
-		static::observe(new CrawledContentObserver);
+		echo 'CALLED';
+		// On récupère tous les mots et groupes de mots importants du contenus
+		preg_match_all('#<strong>(.+)</strong>#sU', $contentCrawled->content, $matches);
+		// On les regroupe, on supprime les espaces en trop, on récupère les mots seuls, puis on enlève les doublons
+		$words = array_unique(explode(' ', preg_replace('#\s+#', ' ', trim(implode(' ', $matches[1])))));
+		$ids = array();
+		// Enregistrement de chaque mot-lcé
+		foreach($words as $word)
+		{
+			// On enlève les accents et les caractères spéciaux
+			$word = preg_replace('#[^a-z0-9_-]#', '', normalize($word));
+			if($word !== '')
+			{
+				// On enregistre le mot-clé en base de données s'il n'y est pas encore
+				$keyWord = KeyWord::firstOrCreate(array(
+					'word' => $word
+				));
+				// On récupère sont ID
+				$ids[] = $keyWord->id;
+			}
+		}
+		// On enregistre les IDs des mots-clés dans la table d'association
+		$contentCrawled->keyWords()->sync($ids);
 	}
 
 }
+
+
+CrawledContent::observe(new CrawledContentObserver);
 
 
 ?>
