@@ -7,6 +7,7 @@
 		{{ Form::text('q', $q, array(
 			'class' => 'form-control',
 			'autocomplete' => 'off',
+			'autofocus' => 'autofocus',
 			'placeholder' => §('global.search.placeholder')
 		)) }}
 		{{ Form::hidden('resultsPerPage', $resultsPerPage) }}

@@ -85,19 +85,69 @@ $(window).resize(resize);
 
 // Auto-complétion : lorsqu'on tape dans la barre de recherche, des solutions possibles
 // sont proposées à l'utilisateur
-$('[name="q"]').autocomplete(function(query, callback) {
-	$.ajax({
-		url: '/autocomplete',
-		type: 'POST',
-		dataType: 'json',
-		data: {
-			q: query
-		},
-		error: function() {
-			callback();
-		},
-		success: function(res) {
-			callback(res);
+$('[name="q"]').autocomplete(
+	function(query, callback) {
+		$.ajax({
+			url: '/autocomplete',
+			type: 'POST',
+			dataType: 'json',
+			data: {
+				q: query
+			},
+			error: function() {
+				callback();
+			},
+			success: function(res) {
+				callback(res);
+			}
+		});
+	},
+	// Easter-Eggs
+	function (value) {
+		switch(value.toLowerCase()) {
+			case 'slide':
+			case 'bounce':
+				$('body').animate({
+					paddingTop: 160
+				}, 200, function () {
+					$('body').animate({
+						paddingTop: 60
+					}, 200);
+				});
+				break;
+			case 'roll':
+			case 'barrel roll':
+			case 'rotate':
+				$('body').animate({ rotate : 1 }, {
+					duration: 400,
+					step: function (now) {
+						var prop = 'rotate(' + Math.round(now * 360) + 'deg)';
+						$(this).css({
+							'-webkit-transform': prop,
+							'-moz-transform': prop,
+							'transform': prop
+						});
+					}
+				});
+				break;
+			case 'shake':
+			case 'rumble':
+				$('body').animate({
+					marginLeft: -80
+				}, 100, function () {
+					$('body').animate({
+						marginLeft: 80
+					}, 200, function () {
+						$('body').animate({
+							marginLeft: -80
+						}, 200, function () {
+							$('body').animate({
+								marginLeft: 0
+							}, 100);
+						});
+					});
+				});
+				break;
 		}
-	});
-});
+	}
+);

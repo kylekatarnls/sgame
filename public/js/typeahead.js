@@ -2,12 +2,15 @@ $.fn.extend({
 	exists: function () {
 		return $(this).length > 0;
 	},
-	autocomplete: function (callback) {
+	autocomplete: function (callback, onTestValue) {
 		$(this).each(function () {
 			var $input = $(this), cache = [], lastValue = '', $autocomplete;
 			$('.autocomplete.last-created').removeClass('last-created');
 			function testValue() {
 				var val = $input.val();
+				if(typeof(onTestValue) === 'function') {
+					onTestValue.call(this, val);
+				}
 				if(lastValue !== val) {
 					lastValue = val;
 					if(val === '') {
