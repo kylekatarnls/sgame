@@ -130,6 +130,7 @@ Ci-dessous la liste des fonctionnalités qui peuvent compter pour les 10 points 
 - Affichage prioritaire des pages dans la langue de l'utilisateur (à score égal, les pages françaises sont affichées avant les pages en d'autres langues si l'utilisateur est français)
 - Recherche de phrases (mots groupés en les mettant entre guillements)
 - Suggestion en fonction des recherches fructueuses déjà effectuées
+- Compatibilité mobile (responsive design)
 
 
 ## Laravel PHP Framework
