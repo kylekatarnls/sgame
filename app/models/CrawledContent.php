@@ -135,7 +135,6 @@ class CrawledContentObserver {
 
 	public function saved($contentCrawled)
 	{
-		echo 'CALLED';
 		// On récupère tous les mots et groupes de mots importants du contenus
 		preg_match_all('#<strong>(.+)</strong>#sU', $contentCrawled->content, $matches);
 		// On les regroupe, on supprime les espaces en trop, on récupère les mots seuls, puis on enlève les doublons
