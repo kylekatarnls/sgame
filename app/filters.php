@@ -118,19 +118,3 @@ Route::filter('csrf', function()
 	}
 });
 
-
-/*
-|--------------------------------------------------------------------------
-| Observateurs d'événements
-|--------------------------------------------------------------------------
-|
-| Les observateurs permettent d'exécuter des actions à chaque fois qu'un
-| événement survient.
-|
-| Par exemple, la méthode CrawledContentObserver::saved() est exécutée à
-| chaque fois qu'un objet CrawledContent est créé ou modifié en base de
-| données.
-|
-*/
-
-CrawledContent::observe(new CrawledContentObserver);

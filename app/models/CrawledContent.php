@@ -111,6 +111,25 @@ class CrawledContent extends Model {
 		return utf8(Cache::get('CrawledContent-' . $this->id . '-title', array_get($this->attributes, 'title', '')));
 	}
 
+	/*
+	|--------------------------------------------------------------------------
+	| Observateur d'événements
+	|--------------------------------------------------------------------------
+	|
+	| Les observateurs permettent d'exécuter des actions à chaque fois qu'un
+	| événement survient.
+	|
+	| Par exemple, la méthode CrawledContentObserver::saved() est exécutée à
+	| chaque fois qu'un objet CrawledContent est créé ou modifié en base de
+	| données.
+	|
+	*/
+	public static function boot()
+	{
+		parent::boot();
+		static::observe(new CrawledContentObserver);
+	}
+
 }
 
 
