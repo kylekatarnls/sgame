@@ -53,7 +53,10 @@ class FunctionsTest extends TestCase {
 	public function testScanUrl()
 	{
 
-		//$this->assertTrue(scanUrl('http://localhost/') !== Crawler::NOT_FOUND, "scanUrl('http://localhost/') ne devrait pas retourner Crawler::NOT_FOUND");
+		$this->assertTrue(in_array(
+			scanUrl('http://insearch.selfbuild.fr/'),
+			array(Crawler::ADDED, Crawler::UPDATED, Crawler::DUPLICATED)
+		), "scanUrl('http://localhost/') ne devrait pas retourner Crawler::NOT_FOUND");
 
 	}
 
@@ -109,7 +112,9 @@ class FunctionsTest extends TestCase {
 	public function testUtf8()
 	{
 
-		//$this->assertTrue(utf8_decode(utf8('étà')) === 'étà', "utf8(utf8_decode('étà')) devrait retourner '&eacute;t&eacute;'");
+		$this->assertTrue(utf8('étà') === 'étà', "utf8('étà') devrait retourner 'étà' sans changement si la chaîne d'origine est en UTF-8");
+		$this->assertTrue(utf8(utf8_encode('étà')) === 'étà', "utf8(utf8_encode('étà')) devrait retourner 'étà' avec changement si la chaîne d'origine n'est pas en UTF-8");
+		$this->assertTrue(utf8(utf8_decode('étà')) === 'étà', "utf8(utf8_decode('étà')) devrait retourner 'étà' avec changement si la chaîne d'origine n'est pas en UTF-8");
 
 	}
 

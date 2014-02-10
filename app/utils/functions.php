@@ -127,13 +127,13 @@ function accents2entities($string)
 function utf8($string)
 {
 	$string = str_replace('Ã ', '&agrave; ', $string);
-	if(strpos($string , 'Ã') !== false and strpos(utf8_encode($string), 'Ã') === false)
-	{
-		$string = utf8_encode(accents2entities($string));
-	}
-	if(strpos($string , 'Ã') !== false and strpos(utf8_decode($string), 'Ã') === false)
+	if(strpos($string, 'Ã') !== false and strpos(utf8_decode($string), 'Ã') === false)
 	{
 		$string = utf8_decode(accents2entities($string));
+	}
+	if(!mb_check_encoding($string, 'UTF-8') and mb_check_encoding(utf8_encode($string), 'UTF-8'))
+	{
+		$string = utf8_encode(accents2entities($string));
 	}
 	return $string;
 }
