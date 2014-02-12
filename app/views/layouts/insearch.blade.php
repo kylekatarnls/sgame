@@ -73,12 +73,16 @@
 						)) }}
 							<div class="btn-group" id="languages">
 								<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+									<img src="/img/flags/{{ Lang::locale() }}.png" width="16" height="16"> &nbsp;
 									{{ array_get($languages, Lang::locale(), head($languages)) }}
 									<span class="caret"></span>
 								</button>
 								<ul class="dropdown-menu">
 									@foreach($languages as $code => $language)
-										<li><a href="{{ isset($q) ? $q : '' }}?language={{ $code }}"{{ Lang::locale() === $code ? ' selected="selected"' : '' }}>{{ $language }}</option>
+										<li><a href="{{ isset($q) ? $q : '' }}?language={{ $code }}"{{ Lang::locale() === $code ? ' selected="selected"' : '' }}>
+										    <img src="/img/flags/{{ $code }}.png" width="16" height="16"> &nbsp;
+										    {{ $language }}
+										</a></li>
 									@endforeach
 								</ul>
 							</div>

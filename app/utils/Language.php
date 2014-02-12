@@ -10,12 +10,13 @@ class Language {
 
 	static private $languages = array(
 		'en' => 'English',
-		'fr' => 'Français'
+		'fr' => 'Français',
+		'tr' => 'Türkçe',
 	);
 
 	static private $locales = array(
 		'en' => array('GB', 'US'),
-		'fr' => array('FR', 'BE', 'CA')
+		'fr' => array('FR', 'BE', 'CA'),
 	);
 
 	static public function getChoices()
