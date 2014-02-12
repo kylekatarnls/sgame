@@ -10,7 +10,7 @@ $('.dropdown-toggle').click(function () {
 (function () {
     var string = $('h1').html();
     var index = string.indexOf("-");
-    if (index !== -1) {
+    if(index !== -1) {
         $('h1').html("<span class='mobile-hidden'>" + string.substr(0, index + 1) + "</span>" + string.substr(index + 1));
     }
 })();
@@ -53,8 +53,18 @@ function resize() {
 		$('.navbar-inner .input-group').addClass('input-group-sm');
 		$('.navbar-inner .btn-group').addClass('btn-group-sm');
 	}
+	$('.navbar-inner .btn-group').css({
+		clear: '',
+		float: '',
+		margin: ''
+	});
+	$('h1').css({
+		marginTop: '',
+		fontSize: ''
+	});
+	$('.mobile-hidden').show();
 	// Très étroit (mobile en portrait)
-	if(screenWidth < 420) {
+	if($('.navbar-inner').height() > 50) {
 		$('.navbar-inner .btn-group').css({
 			clear: 'right',
 			float: 'right',
@@ -65,18 +75,6 @@ function resize() {
 			fontSize: '22px'
 		});
 		$('.mobile-hidden').hide();
-	}
-	else {
-		$('.navbar-inner .btn-group').css({
-			clear: '',
-			float: '',
-			margin: ''
-		});
-		$('h1').css({
-			marginTop: '',
-			fontSize: ''
-		});
-		$('.mobile-hidden').show();
 	}
 }
 resize();
