@@ -118,10 +118,10 @@ $('[name="q"]').autocomplete(
 			case 'roll':
 			case 'barrel roll':
 			case 'rotate':
-				$('body').animate({ rotate : 1 }, {
-					duration: 400,
+				$('body').animate({ rotate : 0 }, 0).animate({ rotate : 1 }, {
+					duration: 800,
 					step: function (now) {
-						var prop = 'rotate(' + Math.round(now * 360) + 'deg)';
+						var prop = 'rotate(' + (Math.round(now * 2 * 360) % 360) + 'deg)';
 						$(this).css({
 							'-webkit-transform': prop,
 							'-moz-transform': prop,
