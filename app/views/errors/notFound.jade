@@ -1,0 +1,6 @@
+extends ../layouts/insearch
+
+block content
+	- $params = array('title' => §('global.title'))
+	h1=§('global.not-found.title', $params)
+	p=§('global.not-found.description')

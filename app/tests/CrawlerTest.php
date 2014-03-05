@@ -18,7 +18,7 @@ class CrawlerTest extends TestCase {
 		$this->assertTrue(method_exists('Crawler', 'getDataFromUrl'), "Crawler::getDataFromUrl doit être définie");
 		$this->assertTrue(is_null(Crawler::getDataFromUrl('http://jenexisteassurementpas/')), "Crawler::getDataFromUrl('http://jenexisteassurementpas/') devrait retourner null");
 		$this->assertTrue(is_array(Crawler::getDataFromUrl('http://insearch-intranet.selfbuild.fr/')), "Crawler::getDataFromUrl('http://insearch-intranet.selfbuild.fr/') devrait retourner un array");
-		$this->assertTrue(is_array(Crawler::getDataFromUrl('https://insearch-intranet.selfbuild.fr/')), "Crawler::getDataFromUrl('https://insearch-intranet.selfbuild.fr/') devrait retourner un array");
+		$this->assertTrue(is_array(Crawler::getDataFromUrl('https://p.holowar.com/duel')), "Crawler::getDataFromUrl('https://p.holowar.com/duel') devrait retourner un array");
 
 	}
 

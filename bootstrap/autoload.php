@@ -2,6 +2,9 @@
 
 define('LARAVEL_START', microtime(true));
 
+require __DIR__.'/../vendor/kylekatarnls/sbp/src/sbp/sbp.php';
+
+
 /*
 |--------------------------------------------------------------------------
 | Register The Composer Auto Loader
@@ -56,7 +59,7 @@ Patchwork\Utf8\Bootup::initMbstring();
 |
 */
 
-Illuminate\Support\ClassLoader::register();
+sbp\laravel\ClassLoader::register(true);
 
 /*
 |--------------------------------------------------------------------------

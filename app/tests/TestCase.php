@@ -2,6 +2,7 @@
 
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Illuminate\View\View as BaseView;
+use Illuminate\Http\Response as BaseResponse;
 
 class TestCase extends Illuminate\Foundation\Testing\TestCase {
 
@@ -60,7 +61,7 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase {
 
 	protected function assertView($response, $name)
 	{
-		$this->assertTrue($response instanceof View || $response instanceof BaseView, $name . " devrait retourner une vue (View)");
+		$this->assertTrue($response instanceof View || $response instanceof BaseView || $response instanceof BaseResponse, $name . " devrait retourner une vue (View)");
 	}
 
 }

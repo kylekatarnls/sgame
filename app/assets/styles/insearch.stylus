@@ -1,0 +1,91 @@
+@import "bootstrap.min.css"
+
+
+html
+body
+	height 100%
+
+body
+	padding-top 60px
+
+.square
+	margin-left -1px
+	[[border-radius 0]]
+
+#languages
+	fl
+	rel
+	margin 8px 0 0 12px
+
+.header-option .dropdown-menu
+	fr
+	margin 4px 0 0 -156px
+
+a.source
+	color silver
+	font-size 0.85em
+
+.header-option
+.option-panel
+	fr
+	rel
+
+.header-option
+	margin 3px 0 -2px
+
+	& .glyphicon
+		font-size 2em
+
+	&:hover
+		color #586999
+
+.option-panel
+	width 50%
+
+	form
+		dn
+		rel -2 8
+		oh
+
+h3 a .glyphicon
+	db
+	fl
+	color silver
+	font-size 17px
+	margin 6px 8px 0 0
+
+h3 a:visited .glyphicon
+	color blue
+
+#wrap
+	min-height 100%
+	height auto !important
+	height 100%
+	margin 0 auto -60px
+	padding 0 0 60px
+
+#footer
+	height 60px
+	background-color #e8e8e8
+
+	p
+		padding 10px
+		tac
+
+.autocomplete
+	db
+	abs 0 36
+	[[border-radius 2px]]
+	[[box-shadow 0 1px 3px silver]]
+	z-index 1
+
+	span
+		db
+		padding 3px 7px
+		background white
+		cp
+
+		&.selected
+			background #8ae
+
+@import "history"

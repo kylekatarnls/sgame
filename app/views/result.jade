@@ -1,0 +1,28 @@
+extends layouts/insearch
+
+block title
+	- $params = array('title' => §('global.title'))
+	=§('global.results.title', $params)
+
+block content
+	h1
+		=§('global.results.count', $nbResults, array('title' => §('global.title')))
+
+	include includes/searchbar
+	+searchbar($q, $resultsPerPage)
+
+	each result in results
+		h3
+			a.visited(href=$result->url)
+				span.glyphicon.glyphicon-eye-open
+			=" "
+			!=$result->link($result->title)
+		p
+			span.badge(title=§('global.popularity'))
+				=$result->count
+			=" "
+			!=$result->content
+			br
+			!=$result->link($result->urlAndLanguage, array('class' => 'source'))
+
+	include includes/pagination

@@ -1,0 +1,20 @@
+extends layouts/insearch
+
+block content
+	h1
+		=§('global.title')
+	- if(isset($url)):
+		include includes/alert
+		- $params = array('url' => '<strong>' . $url . '</strong>')
+		- if($state === Crawler::NOT_FOUND):
+			+alert('danger', 'global.url-not-found', $params)
+		- elseif($state === Crawler::DUPLICATED):
+			+alert('warning', 'global.duplicated-content', $params)
+		- else:
+			- $message = 'global.url-' . ($state === Crawler::ADDED ? 'added' : 'updated')
+			+alert('success', $message, $params)
+		- endif
+	- endif
+
+	include includes/searchbar
+	+searchbar('', $resultsPerPage)

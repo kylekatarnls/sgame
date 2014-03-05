@@ -1,0 +1,27 @@
+extends layouts/insearch
+
+block title
+	- $params = array('title' => §('global.title'))
+	=§('global.history.title', $params)
+
+block content
+	h1.results
+		=§('global.history.count', $nbResults, array('title' => §('global.title')))
+
+	include includes/searchbar
+	+searchbar($q, $resultsPerPage)
+
+	each group, uRecentDate in resultsGroups
+		h3
+			=$uRecentDate
+		each result, i in group
+			div(class=e("history-" . ($i&1 ? 'odd' : 'even')))
+				.history-time
+					=$result->created_at->recentTime
+				.history-count-results
+					=§('global.history.results', $result->results)
+				div
+					a(href="/1/" . $result->search_query)
+						=$result->search_query
+
+	include includes/pagination

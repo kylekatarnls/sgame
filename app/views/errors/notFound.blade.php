@@ -2,8 +2,8 @@
 
 @section('content')
 
-	<h1>InSearch - Page Not Found</h1>
+	<h1>{{ §('global.not-found.title', array('title' => §('global.title'))) }}</h1>
 
-	<p>There is nothing here</p>
+	<p>{{ §('global.not-found.description') }}</p>
 
 @stop

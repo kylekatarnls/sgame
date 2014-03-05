@@ -1,0 +1,4 @@
+
+mixin alert(type, message, replace)
+	div(class="alert alert-" . $type)
+		!=§($message, $replace ?: array())

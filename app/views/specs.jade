@@ -1,0 +1,15 @@
+extends home
+
+block end-content
+	h3 Tests unitaires JavaScript
+	#specs-container
+	
+block append css
+	!=style('jasmine')
+
+block append js
+	!=script('jasmine/jasmine')
+	!=script('jasmine/jasmine-html')
+	!=script('jasmine/boot')
+	!=script('tests/insearch')
+	!=script('tests/typeahead')

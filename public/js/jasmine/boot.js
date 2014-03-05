@@ -191,3 +191,7 @@ function findOrCreate(selector, create, callback) {
     $elt.remove();
   }
 }
+
+function inTextInput(callback) {
+  findOrCreate('input[type="text"]', '<input type="text">', callback);
+}
