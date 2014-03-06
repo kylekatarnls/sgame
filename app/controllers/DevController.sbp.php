@@ -1,5 +1,5 @@
 <?
 
 DevController:BaseController
-	+ specs()
+	+ specs
 		<>view('specs');

@@ -8,20 +8,20 @@ TranslatableDateTime:Carbon
 
 	WEEK_PER_MONTH = 4;
 
-	+ __get($name)
+	+ __get $name
 		$key = 'date.format.' . $name;
 		$format = §($key);
-		if($key !== $format)
+		if $key !== $format
 			<>formatLocalized($format) ?: >format('date.altFormat.' . $name);
 		else
 			unset($key, $format);
 			$method = 'to' . studly_case($name) . 'String';
-			if(method_exists($this, $method))
+			if method_exists($this, $method)
 				<>$method();
 			else
 				<parent::__get($name);
 
-	+ __toString()
+	+ __toString
 		<>longDateTime;
 
 	/**
@@ -29,7 +29,7 @@ TranslatableDateTime:Carbon
 	 *
 	 * @return string
 	 */
-	+ toRecentDateString()
+	+ toRecentDateString
 		<>isToday() ?
 			§('date.today') : (
 			>isYesterday() ?
@@ -42,15 +42,15 @@ TranslatableDateTime:Carbon
 	 *
 	 * @return string
 	 */
-	+ toURecentDateString()
-		<ucfirst($this->toRecentDateString());
+	+ toURecentDateString
+		<ucfirst(>toRecentDateString());
 
 	/**
 	 * Format the instance as a difference for human if recent, or a time else
 	 *
 	 * @return string
 	 */
-	+ toRecentTimeString()
+	+ toRecentTimeString
 		<>diffInSeconds() < 3600 * 1.5 ?
 			>diffForHumans() :
 			trim(>rTime);
@@ -60,7 +60,7 @@ TranslatableDateTime:Carbon
 	 *
 	 * @return string
 	 */
-	+ toPreferredString()
+	+ toPreferredString
 		<>formatLocalized('%c');
 
 	/**
@@ -86,10 +86,10 @@ TranslatableDateTime:Carbon
 	 *
 	 * @return string
 	 */
-	+ diffForHumans(Carbon $other = null)
+	+ diffForHumans Carbon $other = null
 		$isNow = $other === null;
 
-		if($isNow)
+		if $isNow
 			$other = static::now($this->tz);
 
 		$isFuture = >gt($other);
@@ -107,14 +107,14 @@ TranslatableDateTime:Carbon
 
 		$unit = 'year';
 
-		foreach($divs as $divUnit => $divValue)
-			if($delta < $divValue)
+		foreach $divs as $divUnit => $divValue
+			if $delta < $divValue
 				$unit = $divUnit;
 				break;
 
 			$delta = floor($delta / $divValue);
 
-		if ($delta == 0)
+		if $delta == 0
 			$delta = 1;
 
 		<§('date.' .(

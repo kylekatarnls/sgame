@@ -12,7 +12,7 @@ ResultsPerPage
 	 *
 	 * @return array $possibleChoices
 	 */
-	s+ getChoices()
+	s+ getChoices
 		<array_map('intval', explode(',', :ENUM_CHOICES));
 
 	/**
@@ -21,7 +21,7 @@ ResultsPerPage
 	 *
 	 * @return int $resultsPerPage
 	 */
-	s+ getChoice($resultsPerPage = null)
+	s+ getChoice $resultsPerPage = null
 		$defaultResultsPerPage = (int) Cookie::get('resultsPerPage', :DEFAULT_CHOICE);
 		$resultsPerPage = (int) Input::get(
 			'resultsPerPage',
@@ -29,7 +29,7 @@ ResultsPerPage
 				Request::get('resultsPerPage', $defaultResultsPerPage) :
 				$resultsPerPage
 		);
-		if($resultsPerPage !== $defaultResultsPerPage)
+		if $resultsPerPage !== $defaultResultsPerPage
 			Cookie::queue('resultsPerPage', $resultsPerPage, 60); // Crée/Met à jour le cookie "resultsPerPage"
 		<$resultsPerPage;
 
@@ -38,7 +38,7 @@ ResultsPerPage
 	 *
 	 * @return string $url
 	 */
-	s+ completeUrl($value, $resultsPerPage = ~:DEFAULT_CHOICE)
+	s+ completeUrl $value, $resultsPerPage = ~:DEFAULT_CHOICE
 		<str_replace(
 			'{keepResultsPerPage}',
 			$resultsPerPage == :DEFAULT_CHOICE ? '' : '/' . $resultsPerPage,
@@ -51,16 +51,16 @@ ResultsPerPage
 	 *
 	 * @return void
 	 */
-	s+ paginate($nbResults, &$page = null, &$choice = null, &$resultsPerPage = null, &$nbPages = null, array &$mergedData = array())
+	s+ paginate $nbResults, &$page = null, &$choice = null, &$resultsPerPage = null, &$nbPages = null, array &$mergedData = array()
 		$page = (int) $page;
 		$resultsPerPage = static::getChoice($resultsPerPage);
 		$choice = static::getChoices();
-		if(!in_array($resultsPerPage, $choice))
+		if !in_array($resultsPerPage, $choice)
 			$resultsPerPage = :DEFAULT_CHOICE;
 		$nbPages = ceil($nbResults / $resultsPerPage);
-		if($page > $nbPages || $page < 1)
+		if $page > $nbPages || $page < 1
 			$page = 1;
-		if(!empty($mergedData))
+		if !empty($mergedData)
 			$mergedData = array_combine(
 				array_keys($mergedData),
 				array_map(array('static', 'completeUrl'), $mergedData, array($resultsPerPage))
@@ -72,7 +72,7 @@ ResultsPerPage
 	 *
 	 * @return void
 	 */
-	s+ init()
+	s+ init
 		View::share(array(
 			'resultsPerPageUrl' => '#',
 			'resultsPerPage' => self::getChoice(),

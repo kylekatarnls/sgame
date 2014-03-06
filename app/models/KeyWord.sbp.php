@@ -8,6 +8,6 @@ KeyWord:Model
 	* $collection = 'key_word';
 	* $fillable = array('word');
 
-	+ crawledContents()
+	+ crawledContents
 		<>belongsToMany('CrawledContent');
 

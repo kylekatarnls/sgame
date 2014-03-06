@@ -4,21 +4,21 @@ use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 
-ResetCommand:Command
+SbpCleanCommand:Command
 
 	/**
 	 * The console command name.
 	 *
 	 * @var string
 	 */
-	* $name = 'reset';
+	* $name = 'sbp:clean';
 
 	/**
 	 * The console command description.
 	 *
 	 * @var string
 	 */
-	* $description = 'Delete all ressources.';
+	* $description = 'Clean the SBP cache directory.';
 
 	/**
 	 * Create a new command instance.
@@ -34,5 +34,12 @@ ResetCommand:Command
 	 * @return void
 	 */
 	+ fire
-		CrawledContent::truncate();
-		echo "Ressources vidées\n";
+		$count = 0;
+		$success = 0;
+		$directory = app_path().'/storage/sbp/';
+		foreach scandir($directory) as $file
+			if substr($file, -4) === '.php'
+				$count++;
+				if unlink($directory . $file)
+					$success++;
+		echo $success . ' / ' . $count . "\n";

@@ -19,32 +19,32 @@ Language
 		'fr' => array('FR', 'BE', 'CA'),
 	);
 
-	s+ getChoices()
+	s+ getChoices
 		< self::$languages;
 
-	s+ getChoice()
-		if(Input::has('language'))
+	s+ getChoice
+		if Input::has('language')
 			$language = Input::get('language');
-			if(isset(self::$languages[$language]))
+			if isset(self::$languages[$language])
 				Cookie::queue('language', $language, 144000);
 			else
 				unset($language);
 
-		if(!isset($language))
+		if !isset($language)
 			$language = Cookie::get('language', http_negotiate_language(array_keys(self::$languages)));
 
 		< $language;
 
-	s+ setLocale($choice = null)
-		if(is_null($choice))
+	s+ setLocale $choice = null
+		if is_null($choice)
 			$choice = self::getChoice();
 		Lang::setLocale($choice);
 		$choice **= strtr('-', '_');
 		$list = array($choice);
 		$underscore = strpos('_', $choice);
-		if($underscore === false)
-			if(isset(self::$locales[$choice]))
-				foreach(self::$locales[$choice] as $country)
+		if $underscore === false
+			if isset(self::$locales[$choice])
+				foreach self::$locales[$choice] as $country
 					$list[] = $choice . '_' . $country;
 			else
 				$list[1] = $choice . '_' . strtoupper($choice);
@@ -56,8 +56,8 @@ Language
 			putenv('LANGUAGE=' . $choice . '.UTF8');
 		call_user_func_array('setlocale',
 			array(LC_ALL) +
-			array_map(f° ($choice) { < $choice . '.UTF8'; }, $list) +
-			array_map(f° ($choice) { < $choice . '.UTF-8'; }, $list) +
+			array_map(f° $choice { < $choice . '.UTF8'; }, $list) +
+			array_map(f° $choice { < $choice . '.UTF-8'; }, $list) +
 			$list
 		);
 

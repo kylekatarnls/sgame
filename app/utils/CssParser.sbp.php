@@ -2,53 +2,53 @@
 
 CssParser
 
-	- $fichier=false;
-	- $options=false;
-	s+ $activeInstance=null;
+	- $fichier = false;
+	- $options = false;
+	s+ $activeInstance = null;
 
-	+ __construct($fichier=false,$options=false)
-		>fichier=$fichier;
-		>options=$fichier;
-		self::$activeInstance=$this;
+	+ __construct $fichier = false, $options = false
+		>fichier = $fichier;
+		>options = $fichier;
+		self::$activeInstance = $this;
 
-	+ __destruct()
-		self::$activeInstance=null;
+	+ __destruct
+		self::$activeInstance = null;
 
-	- cp_unite($u)
-		if(strval(floatval($u))===$u)
+	- cp_unite $u
+		if strval(floatval($u)) === $u
 			< $u.'px';
 		< $u;
-	- cssb_sp($d)
+	- cssb_sp $d
 		$tab=$d[1];
 		unset($d[1]);
 		$d=array_values($d);
-		if($d[1]==='mp')
+		if $d[1] === 'mp'
 			<	$tab.
 				'margin '.>cp_unite($d[2])."\n".$tab.
 				'padding '.>cp_unite($d[3]).$d[4];
-		if($d[1]==='size')
+		if $d[1] === 'size'
 			<	$tab.
 				'width '.>cp_unite($d[2])."\n".$tab.
 				'height '.>cp_unite($d[3]).$d[4];
-		$c=array(
-			'pos'=>'',
-			'abs'=>"position absolute\n".$tab,
-			'rel'=>"position relative\n".$tab,
-			'fix'=>"position fixed\n".$tab
+		$c = array(
+			'pos' => '',
+			'abs' => "position absolute\n".$tab,
+			'rel' => "position relative\n".$tab,
+			'fix' => "position fixed\n".$tab
 		);
 		<	$tab.$c[$d[1]].
 			'left '.>cp_unite($d[2])."\n".$tab.
 			'top '.>cp_unite($d[3]).$d[4];
 
-	- cssb($d)
-		$moins=0;
-		$tab=$d[1];
+	- cssb $d
+		$moins = 0;
+		$tab = $d[1];
 		unset($d[1]);
-		$d=array_values($d);
-		if(preg_match('#^\@import#',$d[1]))
+		$d = array_values($d);
+		if preg_match('#^\@import#', $d[1])
 			< $tab.$d[1];
-		$d=array_map('trim',preg_split('#[\h:]#',$d[1],2));
-		$d[1]=rtrim($d[1],'; ');
+		$d = array_map('trim', preg_split('#[\h:]#', $d[1], 2));
+		rtrim(**$d[1], '; ');
 		$d[0] :=
 			'opacity' ::
 				<	$tab.
@@ -61,11 +61,11 @@ CssParser
 					'-webkit-'.$d[0].':'.$d[1].";\n".$tab.
 					$d[0].':'.$d[1].";";
 			'-border-radius' ::
-				$moins=1;
+				$moins = 1;
 			'border-radius' ::
-				if($moins && !defined('BEHAVIOR'))
-					define('BEHAVIOR',1);
-				$d1=explode(' ',$d[1]);
+				if $moins && !defined('BEHAVIOR')
+					define('BEHAVIOR', 1);
+				$d1 = explode(' ', $d[1]);
 				<	$tab.
 					'-o-'.$d[0].':'.$d[1].";\n".$tab.
 					'-ms-'.$d[0].':'.$d[1].";\n".$tab.
@@ -82,10 +82,10 @@ CssParser
 					'-webkit-'.$d[0].':'.$d[1].';'.($moins? "\n".$tab."behavior:url('./border-radius.htc');":'')."\n".$tab.
 					$d[0].':'.$d[1].";";
 
-		$arobase='';
-		if($d[0][0]==='@')
-			$arobase='@';
-			$d[0]=substr($d[0],1);
+		$arobase = '';
+		if $d[0][0] === '@'
+			$arobase = '@';
+			substr(**$d[0],1);
 		<	$tab.
 			$arobase.'-o-'.$d[0].':'.$d[1].";\n".$tab.
 			$arobase.'-ms-'.$d[0].':'.$d[1].";\n".$tab.
@@ -95,94 +95,94 @@ CssParser
 			$arobase.'-webkit-'.$d[0].':'.$d[1].";\n".$tab.
 			$arobase.$d[0].':'.$d[1].";";
 
-	+ options($options=false)
-		>options=$fichier;
+	+ options $options = false
+		>options = $fichier;
 
-	+ typeAndIndent($code, $options=false)
-		if($options===false)
-			$options= >options;
+	+ typeAndIndent $code, $options = false
+		if $options === false
+			$options = >options;
 		else
-			>options=$options;
-		$type=floor($options/18);
+			>options = $options;
+		$type = floor($options/18);
 		$options%6 :=
 			1 ::
-				$i="\t";
+				$i = "\t";
 				:;
 			2 ::
-				$i='x';
+				$i = 'x';
 				:;
 			3 ::
-				$i='    ';
+				$i = '    ';
 				:;
 			4 ::
-				$i='      ';
+				$i = '      ';
 				:;
 			5 ::
-				$i='        ';
+				$i = '        ';
 				:;
 			d:
-				$i=preg_match('#(\r|\n)(\h+)\H#',$code,$i)? $i[2]:'x';
+				$i = preg_match('#(\r|\n)(\h+)\H#', $code, $i) ? $i[2]:'x';
 
 		floor($options/6) :=
 			1 ::
-				$a=1;
+				$a = 1;
 				:;
 			2 ::
-				$a=2;
+				$a = 2;
 				:;
 			d:
-				$a=preg_match('#(\r|\n)\{(\r|\n)#',$code)? 1:2;
+				$a = preg_match('#(\r|\n)\{(\r|\n)#',$code) ? 1:2;
 
 		< array($type, $i, $a);
 
-	+ filterCssb($code, $options=false)
-		list($type, $i, $a)= >typeAndIndent($code, $options);
+	+ filterCssb $code, $options = false
+		list($type, $i, $a) = >typeAndIndent($code, $options);
 
 		// CSSB - Avant
-		if($type!=1)
-			$code=preg_replace_callback('#(?<=^|\n|\r)(\h*)\[\[([\s\S]*)\]\]#mU', array($this, 'cssb'), $code);
-			$racv=array(
-				 'lm'=>'float:left;margin'
-				,'rm'=>'float:right;margin'
-				,'bm'=>'display:block;margin'
-				,'lp'=>'float:left;padding'
-				,'rp'=>'float:right;padding'
-				,'bp'=>'display:block;padding'
-				,'m0p'=>'display:block;margin:0;padding'
+		if $type != 1
+			$code = preg_replace_callback('#(?<=^|\n|\r)(\h*)\[\[([\s\S]*)\]\]#mU', array($this, 'cssb'), $code);
+			$racv = array(
+				 'lm' => 'float:left;margin'
+				,'rm' => 'float:right;margin'
+				,'bm' => 'display:block;margin'
+				,'lp' => 'float:left;padding'
+				,'rp' => 'float:right;padding'
+				,'bp' => 'display:block;padding'
+				,'m0p' => 'display:block;margin:0;padding'
 			);
-			$rac=array(
-				 'abs'=>'position:absolute'
-				,'rel'=>'position:relative'
-				,'fix'=>'position:fixed'
-				,'db'=>'display:block'
-				,'dl'=>'display:block;float:left'
-				,'fl'=>'float:left'
-				,'dr'=>'display:block;float:right'
-				,'fr'=>'float:right'
-				,'di'=>'display:inline'
-				,'dn'=>'display:none'
-				,'fb'=>'font-weight:bold'
-				,'fi'=>'font-style:italic'
-				,'fbi'=>'font-weight:bold;font-style:italic'
-				,'fu'=>'text-decoration:underline'
-				,'fnu'=>'text-decoration:none'
-				,'bn'=>'border:none'
-				,'b1sb'=>'border:1px solid black'
-				,'b2sb'=>'border:2px solid black'
-				,'b3sb'=>'border:3px solid black'
-				,'cp'=>'cursor:pointer'
-				,'tal'=>'text-align:left'
-				,'tar'=>'text-align:right'
-				,'tac'=>'text-align:center'
-				,'taj'=>'text-align:justify'
-				,'oh'=>'overflow:hidden'
-				,'oa'=>'overflow:auto'
-				,'mp0'=>'margin:0;padding:0'
+			$rac = array(
+				 'abs' => 'position:absolute'
+				,'rel' => 'position:relative'
+				,'fix' => 'position:fixed'
+				,'db' => 'display:block'
+				,'dl' => 'display:block;float:left'
+				,'fl' => 'float:left'
+				,'dr' => 'display:block;float:right'
+				,'fr' => 'float:right'
+				,'di' => 'display:inline'
+				,'dn' => 'display:none'
+				,'fb' => 'font-weight:bold'
+				,'fi' => 'font-style:italic'
+				,'fbi' => 'font-weight:bold;font-style:italic'
+				,'fu' => 'text-decoration:underline'
+				,'fnu' => 'text-decoration:none'
+				,'bn' => 'border:none'
+				,'b1sb' => 'border:1px solid black'
+				,'b2sb' => 'border:2px solid black'
+				,'b3sb' => 'border:3px solid black'
+				,'cp' => 'cursor:pointer'
+				,'tal' => 'text-align:left'
+				,'tar' => 'text-align:right'
+				,'tac' => 'text-align:center'
+				,'taj' => 'text-align:justify'
+				,'oh' => 'overflow:hidden'
+				,'oa' => 'overflow:auto'
+				,'mp0' => 'margin:0;padding:0'
 			);
-			foreach($rac as $c=>$r)
-				$code=preg_replace('#(?<![a-zA-Z0-9-\:])'.$c.'\s*[;\n]#',$r.";\n",$code);
-			foreach($racv as $c=>$r)
-				$code=preg_replace('#(?<![a-zA-Z0-9-\:])'.$c.'\s*:#U',$r.':',$code);
+			foreach $rac as $c => $r
+				$code = preg_replace('#(?<![a-zA-Z0-9-\:])'.$c.'\s*[;\n]#', $r.";\n", $code);
+			foreach $racv as $c => $r
+				$code = preg_replace('#(?<![a-zA-Z0-9-\:])'.$c.'\s*:#U', $r.':', $code);
 
 		// if($type!=2)
 		// 	try
@@ -193,25 +193,25 @@ CssParser
 		// 		$code='/* Erreur LessCSS'."\n\n".$e->getMessage()."\n\n*/\n\n".$code;
 
 		// CSSB - Après
-		if($type!=1)
-			$code=preg_replace_callback('#(?<=^|\n|\r)(\h*)(size|pos|abs|rel|fix|mp)\s*[:\s]\s*(\S+)\s*[\s,]\s*(\S+)\s*([;}\n])#U',array($this, 'cssb_sp'),$code);
+		if $type != 1
+			$code = preg_replace_callback('#(?<=^|\n|\r)(\h*)(size|pos|abs|rel|fix|mp)\s*[:\s]\s*(\S+)\s*[\s,]\s*(\S+)\s*([;}\n])#U', array($this, 'cssb_sp'), $code);
 
 		< preg_replace('#(?<=[a-z]):([^\n;]+);#i', ' $1', $code);
 
-	+ parse($code=false,$options=false)
-		if($code===false)
-			$code=file_get_contents(>fichier);
-		list($type, $i, $a)= >typeAndIndent($code, $options);
+	+ parse $code = false, $options = false
+		if $code === false
+			$code = file_get_contents(>fichier);
+		list($type, $i, $a) = >typeAndIndent($code, $options);
 
-		$dir=dirname(>fichier);
-		if(false!==strpos($code,'[[import'))
-			$code=preg_replace_callback(
+		$dir = dirname(>fichier);
+		if strpos($code,'[[import') !== false
+			$code = preg_replace_callback(
 				'#\[\[import(\s+\-p)?[\s:]\s*(\\"([^\\"]*)\\"|[^\\"\n\r]*)\]\]#',
-				f° ($f) use($dir)
-					if(substr($f[0],-7)!=='.stylus')
-						return '/*!'.$f[0].'!*/';
-					$f[2]=trim($f[2],"\" \n\t");
-					$fgc=file_get_contents($dir.'/'.$f[2]);
+				f° $f use $dir
+					if substr($f[0],-7) !== '.stylus'
+						< '/*!'.$f[0].'!*/';
+					trim(**$f[2], "\" \n\t");
+					$fgc = file_get_contents($dir.'/'.$f[2]);
 					// if(!empty($f[1]))
 					// 	try
 					// 		$fgc=(new lessc)->parse($fgc);
@@ -222,17 +222,19 @@ CssParser
 				$code
 			);
 
-		$code= >filterCssb($code, $options);
+		$code = >filterCssb($code, $options);
 
-		$code=Stylus::parse(>fichier, $code);
-		if($a===1) $code=preg_replace('#\s\{(?=\n|\r)#', "\n{", $code);
-		if($i!=='x') $code=preg_replace('#(?<=\n|\r)\h+(?=\H)#', $i, $code);
-		if(false!==strpos($code,'/*![[import'))
-			$code=preg_replace_callback(
+		$code = Stylus::parse(>fichier, $code);
+		if $a === 1
+			$code = preg_replace('#\s\{(?=\n|\r)#', "\n{", $code);
+		if $i!=='x'
+			$code = preg_replace('#(?<=\n|\r)\h+(?=\H)#', $i, $code);
+		if strpos($code,'/*![[import') !== false
+			$code = preg_replace_callback(
 				'#\/\*\!\[\[import(\s+\-p)?[\s:]\s*(\\"([^\\"]*)\\"|[^\\"\n\r]*)\]\]\!\*\/#',
-				f° ($f) use($dir)
-					$f[2]=trim($f[2],"\" \n\t");
-					$fgc=file_get_contents($dir.'/'.$f[2]);
+				f° $f use $dir
+					trim(**$f[2],"\" \n\t");
+					$fgc = file_get_contents($dir.'/'.$f[2]);
 					// if(!empty($f[1]))
 					// 	try
 					// 		$fgc=(new lessc)->parse($fgc);
@@ -242,13 +244,13 @@ CssParser
 				,
 				$code
 			);
-		$code=str_replace('},', '}', $code);
-		if(!Config::get('app.debug'))
-			$code=preg_replace('#\s+#',' ',$code);
-			$code=preg_replace('#\s*([\}\{:;])\s*#','$1',$code);
-			$code=str_replace(';}','}',$code);
+		$code = str_replace('},', '}', $code);
+		if !Config::get('app.debug')
+			$code = preg_replace('#\s+#', ' ', $code);
+			$code = preg_replace('#\s*([\}\{:;])\s*#', '$1', $code);
+			$code = str_replace(';}', '}', $code);
 		< $code;
 
-	+ out($fichier,$options=false)
-		$options= >options;
+	+ out $fichier, $options = false
+		$options = >options;
 		< file_put_contents($fichier, >parse());

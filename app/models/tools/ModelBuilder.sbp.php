@@ -10,7 +10,7 @@ ModelBuilder:Illuminate\Database\Eloquent\Builder
 	 *
 	 * @return ModelBuilder $dataForView
 	 */
-	+ paginatedData(&$page, $resultsPerPage, array $mergedData = array())
+	+ paginatedData &$page, $resultsPerPage, array $mergedData = array()
 		$nbResults = clone $this;
 		$nbResults = $nbResults->count();
 		ResultsPerPage::paginate($nbResults, $page, $choice, $resultsPerPage, $nbPages, $mergedData);
@@ -32,8 +32,8 @@ ModelBuilder:Illuminate\Database\Eloquent\Builder
 	 *
 	 * @return int $nombreDeResultats
 	 */
-	+ count($column = null)
-		if(is_null($column))
+	+ count $column = null
+		if is_null($column)
 			>query->select(array());
 			>query->orders = null;
 			>query->groups = null;

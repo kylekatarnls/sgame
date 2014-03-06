@@ -4,20 +4,20 @@ JsParser
 
 	* $coffeeFile;
 
-	+ __construct($coffeeFile)
+	+ __construct $coffeeFile
 		>coffeeFile = $coffeeFile;
 
-	+ out($jsFile)
+	+ out $jsFile
 		< file_put_contents(
 			$jsFile,
 			>parse(>coffeeFile)
 		);
 
-	+ parse($coffeeFile)
+	+ parse $coffeeFile
 		$code = CoffeeScript\Compiler::compile(
 			preg_replace_callback(
 				'#\/\/-\s*require\s*\(?\s*([\'"])(.*(?<!\\\\)(?:\\\\{2})*)\\1#',
-				f° ($match) use($coffeeFile)
+				f° $match use $coffeeFile
 					$file = stripslashes($match[2]);
 					< file_get_contents(preg_match('#^(http|https|ftp|sftp|ftps):\/\/#', $file) ?
 						$file :
@@ -31,21 +31,21 @@ JsParser
 				'bare' => true
 			)
 		);
-		if(!Config::get('app.debug'))
+		if !Config::get('app.debug')
 			$code = preg_replace('#;(?:\\r\\n|\\r|\\n)\\h*#', ';', $code);
 			$code = preg_replace('#(?:\\r\\n|\\r|\\n)\\h*#', ' ', $code);
 		< $code;
 
-	s* findFile($file)
-		if(file_exists($file))
+	s* findFile $file
+		if file_exists($file)
 			< $file;
 		$coffeeFile = static::coffeeFile($file);
-		if(file_exists($coffeeFile))
+		if file_exists($coffeeFile)
 			< $coffeeFile;
 		< static::jsFile($file);
 
-	s+ coffeeFile($file)
+	s+ coffeeFile $file
 		< app_path() . '/assets/scripts/' . $file . '.coffee';
 
-	s+ jsFile($file)
+	s+ jsFile $file
 		< app_path() . '/../public/js/' . $file . '.js';

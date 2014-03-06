@@ -30,7 +30,7 @@ CrawlCommand:Command
 	 *
 	 * @return void
 	 */
-	+ __construct()
+	+ __construct
 		parent::__construct();
 
 	/**
@@ -38,13 +38,13 @@ CrawlCommand:Command
 	 *
 	 * @return void
 	 */
-	+ fire()
+	+ fire
 		$urlCount = 0;
-		foreach(CrawledContent::all() as $crawledContent)
+		foreach CrawledContent::all() as $crawledContent
 			$urlCount++;
-			if(scanUrl($crawledContent->url, :FOLLOW_LINKS) === Crawler::NOT_FOUND)
+			if scanUrl($crawledContent->url, :FOLLOW_LINKS) === Crawler::NOT_FOUND
 				echo "crawledContent deleted : " . $crawledContent->url . " Not found\n";
 				$crawledContent->delete();
 			echo Crawler::getLog();
 		$urlCount += Crawler::countLinks();
-		echo §('crawler.crawled-url', $urlCount)."\n";
+		echo §('crawler.crawled-url', $urlCount) . "\n";
