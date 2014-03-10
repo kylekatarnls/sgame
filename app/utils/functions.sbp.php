@@ -111,23 +111,25 @@ f utf8 $string
 
 f style
 	$args = func_get_args();
-	$stylusFile = app_path().'/assets/styles/' . $args[0] . '.stylus';
-	$cssFile = app_path().'/../public/css/' . $args[0] . '.css';
+	$stylusFile = CssParser::stylusFile($args[0]);
+	$cssFile = CssParser::cssFile($args[0], $isALib);
 	if file_exists($stylusFile)
 		if !file_exists($cssFile) || filemtime($stylusFile) > filemtime($cssFile)
 			(new CssParser($stylusFile))->out($cssFile);
-	$args[0] = 'css/' . $args[0] . '.css';
+	$args[0] = 'css/' . ($isALib ? 'lib/' : '') . $args[0] . '.css';
 	< call_user_func_array(array('HTML', 'style'), $args);
 
 
 f script
 	$args = func_get_args();
-	$coffeeFile = app_path().'/assets/scripts/' . $args[0] . '.coffee';
-	$jsFile = app_path().'/../public/js/' . $args[0] . '.js';
+	$coffeeFile = JsParser::coffeeFile($args[0]);
+	$jsFile = JsParser::jsFile($args[0], $isALib);
+	echo '<hr>';
+	var_dump($coffeeFile, $jsFile);
 	if file_exists($coffeeFile)
 		if !file_exists($jsFile) || filemtime($coffeeFile) > filemtime($jsFile)
 			(new JsParser($coffeeFile))->out($jsFile);
-	$args[0] = 'js/' . $args[0] . '.js';
+	$args[0] = 'js/' . ($isALib ? 'lib/' : '') . $args[0] . '.js';
 	< call_user_func_array(array('HTML', 'script'), $args);
 
 

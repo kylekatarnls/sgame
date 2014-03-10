@@ -211,6 +211,9 @@ CssParser
 					if substr($f[0],-7) !== '.stylus'
 						< '/*!'.$f[0].'!*/';
 					trim(**$f[2], "\" \n\t");
+					$file = $dir.'/'.$f[2];
+					if !file_exists($file)
+						$file = $dir.'/lib/'.$f[2];
 					$fgc = file_get_contents($dir.'/'.$f[2]);
 					// if(!empty($f[1]))
 					// 	try
@@ -254,3 +257,25 @@ CssParser
 	+ out $fichier, $options = false
 		$options = >options;
 		< file_put_contents($fichier, >parse());
+
+	s+ stylusFile $file
+		$files = array(
+			app_path().'/assets/styles/' . $file . '.stylus',
+			app_path().'/../public/css/lib/' . $file . '.stylus',
+		);
+		foreach $files as $iFile
+			if file_exists($iFile)
+				$isALib = str_contains($iFile, 'lib/');
+				< $iFile;
+		< array_get($files, 0);
+
+	s+ cssFile $file, &$isALib = null
+		$files = array(
+			app_path().'/../public/css/' . $file . '.css',
+			app_path().'/../public/css/lib/' . $file . '.css',
+		);
+		foreach $files as $iFile
+			if file_exists($iFile)
+				$isALib = str_contains($iFile, 'lib/');
+				< $iFile;
+		< array_get($files, 0);

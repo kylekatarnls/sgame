@@ -29,7 +29,7 @@ JsParser
 						ends_with($file, '.coffee') :
 						in_array(strtolower($match[3]), explode('|', :YES));
 					file_get_contents(**$file);
-					if(!$isCoffee)
+					if !$isCoffee
 						$file = "`$file`";
 					< $file;
 				,
@@ -53,13 +53,22 @@ JsParser
 			< $coffeeFile;
 		< static::jsFile($file);
 
-	s+ coffeeFile $file
-		< app_path() . '/assets/scripts/' . $file . '.coffee';
+	s+ coffeeFile $file, &$isALib = null
+		$files = array(
+			app_path() . '/assets/scripts/' . $file . '.coffee',
+			app_path() . '/../public/js/lib/' . $file . '.coffee',
+		);
+		foreach $files as $iFile
+			if file_exists($iFile)
+				$isALib = str_contains($iFile, 'lib/');
+				< $iFile;
+		< array_get($files, 0);
 
-	s+ jsFile $file
+	s+ jsFile $file, &$isALib = null
 		$jsDir = app_path() . '/../public/js/';
 		foreach array($jsDir, $jsDir . 'lib/') as $dir
 			foreach array('coffee', 'js') as $ext
 				if file_exists($dir . $file . '.' . $ext)
-					< $jsDir . $file . '.' . $ext;
-		< null;
+					$isALib = ends_with($dir, 'lib/');
+					< $dir . $file . '.js';
+		< app_path() . '/../public/js/' . $file . '.js';

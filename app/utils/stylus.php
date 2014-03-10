@@ -385,6 +385,9 @@ class Stylus
         $publicDir = app_path().'/../public/css';
         $isStylus = in_array($extension, array('.stylus', '.styl'));
         $path = ($isStylus && file_exists($dir.'/'.$name.$extension) ? $dir : $publicDir).'/'.$name.$extension;
+        if(!file_exists($path)) {
+            $path = $publicDir.'/lib/'.$name.$extension;
+        }
         $file_handle = fopen($path, 'r') or StylusException::report('Could not open '.$path);
         $contents = fread($file_handle, filesize($path)) or StylusException::report('Could not read '.$path);
         fclose($file_handle);
