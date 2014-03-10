@@ -14,7 +14,10 @@ BaseController:Controller
 	* view $view = 'home', $data = array()
 		$jadeFile = app_path() . '/views/' . $view . '.jade';
 		if(file_exists($jadeFile))
-			<new Illuminate\Http\Response((new Jade)->render($jadeFile, View::withShared($data)));
+			$jade = new Jade(array(
+				'cache' => app_path() . '/storage/views'
+			));
+			<new Illuminate\Http\Response($jade->render($jadeFile, View::withShared($data)));
 		<View::make($view)->with($data);
 
 	s+ response $view = 'home', $status = 200

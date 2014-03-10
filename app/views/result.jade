@@ -1,7 +1,7 @@
 extends layouts/insearch
 
 block title
-	- $params = array('title' => §('global.title'))
+	params = array('title' => §('global.title'))
 	=§('global.results.title', $params)
 
 block content
@@ -19,9 +19,9 @@ block content
 			!=$result->link($result->title)
 		p
 			span.badge(title=§('global.popularity'))
-				=$result->count
+				=result->count
 			=" "
-			!=$result->content
+			!=result->content
 			br
 			!=$result->link($result->urlAndLanguage, array('class' => 'source'))
 

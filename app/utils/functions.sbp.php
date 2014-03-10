@@ -41,8 +41,10 @@ f ip2bin $ip = null
 f replace $replacement, $to, $string = null
 	if is_null($string)
 		if !is_array($replacement)
-			throw new InvalidArgumentException("Signatures possibles : string, string, string / array, string / array, string, string");
-			< false;
+			if !is_array($to)
+				throw new InvalidArgumentException("Signatures possibles : string, string, string / array, string / array, string, string / string, array");
+				< false;
+			< replace($to, strval($replacement));
 
 		$string = $to;
 		$to = null;

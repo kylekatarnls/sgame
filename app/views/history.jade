@@ -1,7 +1,7 @@
 extends layouts/insearch
 
 block title
-	- $params = array('title' => §('global.title'))
+	params = array('title' => §('global.title'))
 	=§('global.history.title', $params)
 
 block content
@@ -13,15 +13,15 @@ block content
 
 	each group, uRecentDate in resultsGroups
 		h3
-			=$uRecentDate
+			=uRecentDate
 		each result, i in group
 			div(class=e("history-" . ($i&1 ? 'odd' : 'even')))
 				.history-time
-					=$result->created_at->recentTime
+					=result->created_at->recentTime
 				.history-count-results
 					=§('global.history.results', $result->results)
 				div
 					a(href="/1/" . $result->search_query)
-						=$result->search_query
+						=result->search_query
 
 	include includes/pagination

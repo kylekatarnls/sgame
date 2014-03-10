@@ -1,7 +1,5 @@
-`
 //- require 'jquery-1.11.0.min'
 //- require 'bootstrap.min'
-`
 //- require 'typeahead'
 
 # Menus déroulant au clic

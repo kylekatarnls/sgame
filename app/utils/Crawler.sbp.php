@@ -93,7 +93,7 @@ Crawler
 								" colonne : " . ($offset - strrpos(substr($fileContent,0,$offset),"\n") - 1) .
 								"\n";
 			$self = __CLASS__;
-			$fileContent = replace(
+			replace(**$fileContent,
 				array(
 					'#(<\/?)(h[1-6]|b|em|strong)([^a-z0-9][^>]*)?>#isU' => ' $1strong> ',
 					// Remplace les balises importantes (h1...h6, em, b, strong) avec ou sans paramètres par une balise <strong> sans paramètres
@@ -106,8 +106,7 @@ Crawler
 						$data = $self::getDataFromUrl($match[1], false, $recursions + 1);
 						< is_null($data) ? '' : array_get($data, 'content');
 					,
-				),
-				$fileContent
+				)
 			);
 			$content = trim(strip_tags(
 				preg_match('#<body[^>]*>(.+)</body>#isU', $fileContent, $match) ?
@@ -115,12 +114,11 @@ Crawler
 					$fileContent,
 				'<strong>'
 			));
-			$content = replace(
+			replace(**$content,
 				array(
 					'&nbsp;' => ' ',
 					'#\s{2,}#' => ' ',
-				),
-				$content
+				)
 			);
 		< array(
 			'url' => $url,

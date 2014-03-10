@@ -2,6 +2,9 @@
 
 JsParser
 
+	YES = 'yes|true|on|1';
+	NO = 'no|false|off|0';
+
 	* $coffeeFile;
 
 	+ __construct $coffeeFile
@@ -16,13 +19,19 @@ JsParser
 	+ parse $coffeeFile
 		$code = CoffeeScript\Compiler::compile(
 			preg_replace_callback(
-				'#\/\/-\s*require\s*\(?\s*([\'"])(.*(?<!\\\\)(?:\\\\{2})*)\\1#',
+				'#\/\/-\s*require\s*\(?\s*([\'"])(.*(?<!\\\\)(?:\\\\{2})*)\\1(?:[ \t]*,[ \t]*(' . :YES . '|' . :NO . '))?[ \t]*\)?[ \t]*(?=[\n\r])#i',
 				f° $match use $coffeeFile
 					$file = stripslashes($match[2]);
-					< file_get_contents(preg_match('#^(http|https|ftp|sftp|ftps):\/\/#', $file) ?
+					$file = preg_match('#^(http|https|ftp|sftp|ftps):\/\/#', $file) ?
 						$file :
-						static::findFile($file)
-					);
+						static::findFile($file);
+					$isCoffee = empty($match[3]) ?
+						ends_with($file, '.coffee') :
+						in_array(strtolower($match[3]), explode('|', :YES));
+					file_get_contents(**$file);
+					if(!$isCoffee)
+						$file = "`$file`";
+					< $file;
 				,
 				file_get_contents($coffeeFile)
 			),
@@ -48,4 +57,9 @@ JsParser
 		< app_path() . '/assets/scripts/' . $file . '.coffee';
 
 	s+ jsFile $file
-		< app_path() . '/../public/js/' . $file . '.js';
+		$jsDir = app_path() . '/../public/js/';
+		foreach array($jsDir, $jsDir . 'lib/') as $dir
+			foreach array('coffee', 'js') as $ext
+				if file_exists($dir . $file . '.' . $ext)
+					< $jsDir . $file . '.' . $ext;
+		< null;

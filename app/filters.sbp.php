@@ -48,12 +48,24 @@ ResultsPerPage::init();
 |
 */
 
-App::before(f°($request)
-	//
+App::before(f° $request
+	Blade::extend(f° $value, $compiler
+		< replace(
+			array(
+				'/(?<=\s)@switch\((.*)\)(\s*)@case\((.*)\)(?=\s)/' => '<?php switch($1):$2case $3: ?>',
+				'/(?<=\s)@endswitch(?=\s)/' => '<?php endswitch; ?>',
+				'/(?<=\s)@case\((.*)\)(?=\s)/' => '<?php case $1: ?>',
+				'/(?<=\s)@default(?=\s)/' => '<?php default: ?>',
+				'/(?<=\s)@break(?=\s)/' => '<?php break; ?>',
+			),
+			$value
+			// Credit : https://github.com/francescomalatesta
+		);
+	);
 );
 
 
-App::after(f°($request, $response)
+App::after(f° $request, $response
 	//
 );
 

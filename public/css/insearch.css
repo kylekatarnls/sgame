@@ -2,7 +2,10 @@
 	height: 100%;
 }
 body {
-	padding-top: 60px;
+	padding-top: 50px;
+}
+.navbar {
+	margin-bottom: 0;
 }
 .square {
 	margin-left: -1px;
@@ -72,6 +75,7 @@ h3 a:visited .glyphicon {
 	background-color: #e8e8e8;
 }
 #footer p {
+	margin: 0;
 	padding: 10px;
 	text-align: center;
 }
