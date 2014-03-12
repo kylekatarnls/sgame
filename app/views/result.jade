@@ -13,6 +13,8 @@ block content
 
 	each result in results
 		h3
+			.rate
+				!=starRate($result->id)
 			a.visited(href=$result->url)
 				span.glyphicon.glyphicon-eye-open
 			=" "

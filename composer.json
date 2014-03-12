@@ -5,6 +5,7 @@
 	"license": "MIT",
 	"require": {
 		"laravel/framework": "4.1.*",
+		"kylekatarnls/utils": "*",
 		"kylekatarnls/sbp": "*",
 		"kylekatarnls/jade-php": "*",
 		"coffeescript/coffeescript": "*"

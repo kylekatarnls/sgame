@@ -60,6 +60,9 @@ h3 a .glyphicon
 h3 a:visited .glyphicon
 	color blue
 
+h3 .rate
+	font-size .5em
+
 #wrap
 	min-height 100%
 	height auto !important

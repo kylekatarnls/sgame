@@ -124,8 +124,6 @@ f script
 	$args = func_get_args();
 	$coffeeFile = JsParser::coffeeFile($args[0]);
 	$jsFile = JsParser::jsFile($args[0], $isALib);
-	echo '<hr>';
-	var_dump($coffeeFile, $jsFile);
 	if file_exists($coffeeFile)
 		if !file_exists($jsFile) || filemtime($coffeeFile) > filemtime($jsFile)
 			(new JsParser($coffeeFile))->out($jsFile);
@@ -136,6 +134,10 @@ f script
 f lang
 	< Lang::locale();
 
+f starRate $id = '', $params = ''
+	< (new StarPush($id))
+		->images(StarPush::GRAY_STAR, StarPush::BLUE_STAR, StarPush::GREEN_STAR)
+		->get($params);
 
 if !function_exists('http_negotiate_language')
 	f http_negotiate_language $available_languages, &$result = null
