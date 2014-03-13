@@ -1,12 +1,14 @@
-@import "bootstrap.min.css"
+footer-height = 60px
+neg-footer-height = -60px
 
+@import "bootstrap.min.css"
 
 html
 body
 	height 100%
 
 body
-	padding-top 50px
+	padding-top footer-height
 
 .navbar
 	margin-bottom 0
@@ -67,11 +69,11 @@ h3 .rate
 	min-height 100%
 	height auto !important
 	height 100%
-	margin 0 auto -60px
-	padding 0 0 60px
+	margin 0 auto neg-footer-height
+	padding 0 0 footer-height
 
 #footer
-	height 60px
+	height footer-height
 	background-color #e8e8e8
 
 	p

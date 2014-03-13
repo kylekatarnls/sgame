@@ -138,6 +138,10 @@ CssParser
 	+ filterCssb $code, $options = false
 		list($type, $i, $a) = >typeAndIndent($code, $options);
 
+		$code = preg_replace_callback('#(?<![a-zA-Z0-9_-])image\s*\(\s*([\'"])([^\'"]+)\\1\s*\)#', f° $match
+			< 'url(' . $match[1] . image($match[2]) . $match[1] . ')';
+		, $code);
+
 		// CSSB - Avant
 		if $type != 1
 			$code = preg_replace_callback('#(?<=^|\n|\r)(\h*)\[\[([\s\S]*)\]\]#mU', array($this, 'cssb'), $code);

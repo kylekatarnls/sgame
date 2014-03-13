@@ -221,6 +221,7 @@ class Stylus
     private function call($name, $arguments, $parent_args = null)
     {
         $function = $this->functions[$name];
+        var_dump($function);
         $output = '';
         foreach ($function['contents'] as $i => $line) {
             $line = $this->insertVariables($line, true);
@@ -394,10 +395,11 @@ class Stylus
         if($isStylus && class_exists('CssParser') && isset(CssParser::$activeInstance)){
             $contents = CssParser::$activeInstance->filterCssb($contents);
         }
+        $contents = str_replace(array('*/', '/*'), array("*/\n", "\n/*"), $contents);
         $c = count($lines);
         array_splice(
             $lines, $i, 1,
-            array_values(array_filter(preg_replace('~^\s*}\s*$~', '', preg_split('~\r\n|\n|\r~', $contents)), 'strlen'))
+            array_values(array_filter(preg_replace('~^\s*}\s*$~', '', preg_split('~\r\n|\n|\r~', $contents)), 'strlen')) + array("\n")
         );
         $lines = array_values($lines);
         $i -= ($isStylus ? 1 : 1 + $c - count($lines));
@@ -420,6 +422,7 @@ class Stylus
         else
         {
             return $this->import($lines, $i, $extension);
+            /*
        	    $extension = '';
        	    if (preg_match('~^(.+)(\..*)$~', $name, $matches)) {
 	            $name = $matches[1];
@@ -438,6 +441,7 @@ class Stylus
 	            $lines = array_merge(array_values(array_filter(preg_replace('~^\s*}\s*$~', '', preg_split('~\r\n|\n|\r~', $contents)), 'strlen')), $lines);
 	            $i += count($lines) - $c;
 	        }
+            */
         }
     }
 

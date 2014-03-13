@@ -109,35 +109,87 @@ f utf8 $string
 	< $string;
 
 
+f fileLastTime $file
+	< max(filemtime($file), filectime($file));
+
+
+f checkAssets $state = null
+	static $_state = null;
+	if !is_null($state)
+		$_state = !!$state;
+	elseif is_null($_state)
+		$_state = Config::get('app.debug');
+	< $_state;
+
+
 f style
 	$args = func_get_args();
-	$stylusFile = CssParser::stylusFile($args[0]);
-	$cssFile = CssParser::cssFile($args[0], $isALib);
-	if file_exists($stylusFile)
-		if !file_exists($cssFile) || filemtime($stylusFile) > filemtime($cssFile)
-			(new CssParser($stylusFile))->out($cssFile);
-	$args[0] = 'css/' . ($isALib ? 'lib/' : '') . $args[0] . '.css';
+	if checkAssets()
+		$stylusFile = CssParser::stylusFile($args[0]);
+		$cssFile = CssParser::cssFile($args[0], $isALib);
+		$time = 0;
+		if file_exists($stylusFile)
+			$time = fileLastTime($stylusFile);
+			if !file_exists($cssFile) || $time > fileLastTime($cssFile)
+				(new CssParser($stylusFile))->out($cssFile);
+			$time -= 1363188938;
+		$args[0] = 'css/' . ($isALib ? 'lib/' : '') . $args[0] . '.css' . ($time ? '?' . $time : '');
+	else
+		$args[0] = 'css/' . (!file_exists(app_path() . '/../public/css/' . $args[0] . '.css') ? 'lib/' : '') . $args[0] . '.css';
 	< call_user_func_array(array('HTML', 'style'), $args);
 
 
 f script
 	$args = func_get_args();
-	$coffeeFile = JsParser::coffeeFile($args[0]);
-	$jsFile = JsParser::jsFile($args[0], $isALib);
-	if file_exists($coffeeFile)
-		if !file_exists($jsFile) || filemtime($coffeeFile) > filemtime($jsFile)
-			(new JsParser($coffeeFile))->out($jsFile);
-	$args[0] = 'js/' . ($isALib ? 'lib/' : '') . $args[0] . '.js';
+	if checkAssets()
+		$coffeeFile = JsParser::coffeeFile($args[0]);
+		$jsFile = JsParser::jsFile($args[0], $isALib);
+		$time = 0;
+		if file_exists($coffeeFile)
+			$time = fileLastTime($coffeeFile);
+			if !file_exists($jsFile) || $time > fileLastTime($jsFile)
+				(new JsParser($coffeeFile))->out($jsFile);
+			$time -= 1363188938;
+		$args[0] = 'js/' . ($isALib ? 'lib/' : '') . $args[0] . '.js' . ($time ? '?' . $time : '');
+	else
+		$args[0] = 'js/' . (!file_exists(app_path() . '/../public/js/' . $args[0] . '.js') ? 'lib/' : '') . $args[0] . '.js';
 	< call_user_func_array(array('HTML', 'script'), $args);
+
+
+f image $path
+	$time = 0;
+	if checkAssets()
+		$asset = app_path() . '/assets/images/' . $path;
+		$publicFile = app_path() . '/../public/img/' . $path;
+		$complete = f° $ext use &$path, &$asset, &$publicFile
+			$asset .= '.' . $ext;
+			$publicFile .= '.' . $ext;
+			$path .='.' . $ext;
+		;
+		if !file_exists($asset) && !file_exists($publicFile)
+			if file_exists($asset . '.png') || file_exists($publicFile . '.png')
+				$complete('png');
+			elseif file_exists($asset . '.jpg') || file_exists($publicFile . '.jpg')
+				$complete('jpg');
+			elseif file_exists($asset . '.gif') || file_exists($publicFile . '.gif')
+				$complete('gif');
+		if file_exists($asset)
+			$time = fileLastTime($asset);
+			if !file_exists($publicFile) || $time > fileLastTime($publicFile)
+				copy($asset, $publicFile);
+			$time -= 1363188938;
+	< '/img/' . $path . ($time ? '?' . $time : '');
 
 
 f lang
 	< Lang::locale();
 
+
 f starRate $id = '', $params = ''
 	< (new StarPush($id))
 		->images(StarPush::GRAY_STAR, StarPush::BLUE_STAR, StarPush::GREEN_STAR)
 		->get($params);
+
 
 if !function_exists('http_negotiate_language')
 	f http_negotiate_language $available_languages, &$result = null

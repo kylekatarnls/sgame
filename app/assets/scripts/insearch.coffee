@@ -61,6 +61,8 @@ resize = ->
 	$('h1').css
 		marginTop: ''
 		fontSize: ''
+	$('#footer').css
+		fontSize: ''
 	$('.mobile-hidden').show()
 	# Très étroit (mobile en portrait)
 	if $('.navbar-inner').height() > 50
@@ -71,6 +73,8 @@ resize = ->
 		$('h1').css
 			marginTop: '0'
 			fontSize: '22px'
+		$('#footer').css
+			fontSize: '12px'
 		$('.mobile-hidden').hide()
 	return
 

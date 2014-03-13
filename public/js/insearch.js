@@ -156,6 +156,9 @@ resize = function() {
     marginTop: '',
     fontSize: ''
   });
+  $('#footer').css({
+    fontSize: ''
+  });
   $('.mobile-hidden').show();
   if ($('.navbar-inner').height() > 50) {
     $('.navbar-inner .btn-group').css({
@@ -166,6 +169,9 @@ resize = function() {
     $('h1').css({
       marginTop: '0',
       fontSize: '22px'
+    });
+    $('#footer').css({
+      fontSize: '12px'
     });
     $('.mobile-hidden').hide();
   }

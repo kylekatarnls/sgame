@@ -44,19 +44,19 @@ html(lang=lang())
 							!=Form::close()
 
 						a.brand(href="/", style="float:left;")
-							img(src="/img/advanced-search.png", alt=§('global.title'))
+							img(src=image("advanced-search"), alt=§('global.title'))
 
 						!=Form::open('/')
 							#languages.btn-group
 								button.btn.btn-default.dropdown-toggle(type="button", 'data-toggle'="dropdown")
-									img(src=e("/img/flags/" . lang() . ".png"), width="16", height="16")
+									img(src=image("flags/" . lang()), width="16", height="16")
 									!=" &nbsp; " . array_get($languages, lang(), head($languages)) . " "
 									span.caret
 								ul.dropdown-menu
 									each language, code in languages
 										li
 											a(href=((isset($q) ? $q : '') . '?language=' . $code), selected=(lang() === $code ? 'selected' : '' ))
-												img(src=e("/img/flags/" . $code . ".png"), width="16", height="16")
+												img(src=image("flags/" . $code), width="16", height="16")
 												!=" &nbsp; " . $language . " "
 						!=Form::close()
 						.nav-collapse.collapse
