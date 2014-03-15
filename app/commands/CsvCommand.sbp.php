@@ -48,6 +48,13 @@ CsvCommand:Command
 	+ input $input
 		$simulation = >option('test');
 		echo "Import en cours...\n";
+		$contents = file_get_contents($input);
+		if substr_count($contents, "\t") / substr_count($contents, ";") > 10
+			echo "Conversion depuis un format Microsoft...\n";
+			$stream = fopen($input, 'w');
+			foreach preg_split("#(\r\n|\n|\r)#", trim($contents)) as $line
+				CSV::put($stream, explode("\t", $line));
+			fclose($stream);
 		$stream = fopen($input, 'r');
 		$headers = CSV::next($stream);
 		if ! is_array($headers) || count($headers) < 3

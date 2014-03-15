@@ -45,7 +45,7 @@ Route::post('/autocomplete', function() {
 }); 
  
 // URLs accessibles uniquement en environement de développement 
-if(Config::get('app.debug')) {
+if (Config::get('app.debug')) {
     Route::get('/specs/1', 'DevController@specs'); 
 	} Route::get('/lang/csv', function () {
 		return  Response::download(Utils\Lang\CSV::convert()); 
