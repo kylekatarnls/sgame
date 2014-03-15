@@ -11,14 +11,14 @@ AssetsCompileCommand:Command
 	 *
 	 * @var string
 	 */
-	* $name = 'sbp:clean';
+	* $name = 'asset:compile';
 
 	/**
 	 * The console command description.
 	 *
 	 * @var string
 	 */
-	* $description = 'Clean the SBP cache directory.';
+	* $description = 'Compile/Recompile all the assets.';
 
 	/**
 	 * Create a new command instance.
@@ -29,17 +29,36 @@ AssetsCompileCommand:Command
 		parent::__construct();
 
 	/**
+	 * Get list of assets from a directory recursively.
+	 *
+	 * @return array $files
+	 */
+	- files $assetsDirectory, $directory
+		$files = array();
+		foreach scandir($assetsDirectory . '/' . $directory) as $file
+			if substr($file, 0, 1) !== '.'
+				$path = $directory . '/' . $file;
+				if is_file($assetsDirectory . '/' . $path)
+					$files[] = $path;
+				else
+					array_merge(**$files, >files($assetsDirectory, $path));
+		< $files;
+
+	/**
 	 * Execute the console command.
 	 *
 	 * @return void
 	 */
 	+ fire
-		$count = 0;
-		$success = 0;
-		$directory = app_path().'/storage/sbp/';
-		foreach scandir($directory) as $file
-			if substr($file, -4) === '.php'
+
+		checkAssets(true);
+		$assetsDirectory = app_path().'/assets';
+
+		foreach array('image', 'script', 'style') as $asset
+			$count = 0;
+			$plural = $asset . 's';
+			foreach >files($assetsDirectory, $plural) as $file
+				echo "     $file\n";
+				$asset($file);
 				$count++;
-				if unlink($directory . $file)
-					$success++;
-		echo $success . ' / ' . $count . "\n";
+			echo $count . " fichiers $plural copiés\n\n";

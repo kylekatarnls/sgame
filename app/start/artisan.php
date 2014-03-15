@@ -12,6 +12,11 @@
 */
 
 // Lancement du crawling via ligne de commande (php artisan crawl)
-Artisan::add(new CrawlCommand);
-Artisan::add(new ResetCommand);
-Artisan::add(new SbpCleanCommand);
+foreach (array(
+	'CrawlCommand',
+	'ResetCommand',
+	'SbpCleanCommand',
+	'AssetsCompileCommand',
+	'CsvCommand',
+) as $className)
+	Artisan::add(new $className);

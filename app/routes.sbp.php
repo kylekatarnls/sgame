@@ -47,6 +47,9 @@ Route::post('/autocomplete', f°()
 // URLs accessibles uniquement en environement de développement
 if(Config::get('app.debug'))
     Route::get('/specs/1', 'DevController@specs');
+	Route::get('/lang/csv', f°
+		< Response::download(Utils\Lang\CSV::convert());
+	);
 
 // Gestion de l'erreur 404
 App::missing(f°()

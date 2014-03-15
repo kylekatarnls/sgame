@@ -191,6 +191,22 @@ f starRate $id = '', $params = ''
 		->get($params);
 
 
+f array_undot $array
+	$results = array();
+	foreach $array as $key => $value
+		$dot = strpos($key, '.');
+		if $dot === false
+			$results[$key] = $value;
+		else
+			list($first, $second) = explode('.', $key, 2);
+			if ! isset($results[$first])
+				$results[$first] = array();
+			$results[$first][$second] = $value;
+	< array_map(f° $value
+		< is_string($value) ? $value : array_undot($value);
+	, $results);
+
+
 if !function_exists('http_negotiate_language')
 	f http_negotiate_language $available_languages, &$result = null
 		$http_accept_language = Request::server('HTTP_ACCEPT_LANGUAGE', '');

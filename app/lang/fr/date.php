@@ -1,6 +1,5 @@
 <?php
-
-return array(
+return array (
 	'second' => 'seconde|secondes',
 	'minute' => 'minute|minutes',
 	'hour' => 'heure|heures',
@@ -8,31 +7,22 @@ return array(
 	'week' => 'semaine|semaines',
 	'month' => 'mois',
 	'year' => 'année|années',
-
 	'fromNow' => 'dans :diff',
 	'ago' => 'il y a :diff',
 	'after' => ':diff après',
 	'before' => ':diff avant',
-
-	'today' => "aujourd'hui",
+	'today' => 'aujourd\'hui',
 	'yesterday' => 'hier',
 	'tomorrow' => 'demain',
-
-	'format' => array(
-		'longDateTime' => '%A %e %B %Y à %kh%M',
-		'shortDateTime' => '%a %e %b %Y à %kh%M',
-		'rTime' => '%kh%M',
-		'longDate' => '%A %e %B %Y',
-		'shortDate' => '%a %e %b %Y',
-	),
-
-	'altFormat' => array(
-		'longDateTime' => 'd/m/Y à H\hi',
-		'shortDateTime' => 'd/m/y à H\hi',
-		'rTime' => 'H\hi',
-		'longDate' => 'd/m/Y',
-		'shortDate' => 'd/m/y',
-	),
+	'format.longDateTime' => '%A %e %B %Y à %kh%M',
+	'format.shortDateTime' => '%a %e %b %Y à %kh%M',
+	'format.rTime' => '%kh%M',
+	'format.longDate' => '%A %e %B %Y',
+	'format.shortDate' => '%a %e %b %Y',
+	'altFormat.longDateTime' => 'd/m/Y à H\\hi',
+	'altFormat.shortDateTime' => 'd/m/y à H\\hi',
+	'altFormat.rTime' => 'H\\hi',
+	'altFormat.longDate' => 'd/m/Y',
+	'altFormat.shortDate' => 'd/m/y',
 );
-
 ?>

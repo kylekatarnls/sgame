@@ -47,8 +47,11 @@ Route::post('/autocomplete', function() {
 // URLs accessibles uniquement en environement de développement 
 if(Config::get('app.debug')) {
     Route::get('/specs/1', 'DevController@specs'); 
+	} Route::get('/lang/csv', function () {
+		return  Response::download(Utils\Lang\CSV::convert()); 
+	} ); 
  
-}// Gestion de l'erreur 404 
+// Gestion de l'erreur 404 
 App::missing(function() {
 	return BaseController::notFound(); 
 });
