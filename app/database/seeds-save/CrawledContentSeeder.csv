@@ -1,8 +1,0 @@
-url;title;content
-http://insearch/;Insearch;This site itself
-http://network-page/page.php;Some page;Some content
-http://network-page/users.html;Html Page;Some html stripped
-http://network-other/;Root URL;Other Network Site home page
-http://network-other/truc;Directory URL;Content from truc
-http://network-foo/bar/x.asp;ASP Page;Content generate by ASP from network-foo
-http://network-far/index.jsp;JSP Page;"If there are some ; carachters"

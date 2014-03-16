@@ -65,6 +65,13 @@ h3 a:visited .glyphicon
 h3 .rate
 	font-size .5em
 
+form.login
+	width 50%
+	margin auto
+	& .input-group,
+	& .btn
+		width 100%
+
 #wrap
 	min-height 100%
 	height auto !important

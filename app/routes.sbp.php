@@ -51,6 +51,9 @@ if Config::get('app.debug')
 		< Response::download(Utils\Lang\CSV::convert());
 	);
 
+// Résultats des précédentes recherches
+Route::get('/user/login', 'UserController@login');
+
 // Gestion de l'erreur 404
 App::missing(f°()
 	<BaseController::notFound();
