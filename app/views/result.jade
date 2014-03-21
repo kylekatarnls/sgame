@@ -19,6 +19,9 @@ block content
 				span.glyphicon.glyphicon-eye-open
 			=" "
 			!=$result->link($result->title)
+			if User::current()->isModerator()
+				a.remove(href="/delete/" . $result->id, title=§('global.delete-result'))
+					span.glyphicon.glyphicon-trash
 		p
 			span.badge(title=§('global.popularity'))
 				=result->count

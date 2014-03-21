@@ -207,6 +207,13 @@ f array_undot $array
 	, $results);
 
 
+f backUri $currentUri
+	$uri = Request::server('REQUEST_URI');
+	if $uri === $currentUri
+		$uri = Request::server('HTTP_REFERER');
+	< $uri;
+
+
 if !function_exists('http_negotiate_language')
 	f http_negotiate_language $available_languages, &$result = null
 		$http_accept_language = Request::server('HTTP_ACCEPT_LANGUAGE', '');

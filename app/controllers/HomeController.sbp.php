@@ -22,7 +22,7 @@ HomeController:BaseController
 
 	+ goOut $search_query, $id
 		$result = CrawledContent::find($id);
-		if !$result
+		if ! $result
 			App::abort(404);
 
 		LogOutgoingLink::create(array(
@@ -36,9 +36,31 @@ HomeController:BaseController
 			$count = LogOutgoingLink::where('crawled_content_id', $id)->count();
 		Cache::put('crawled_content_id:'.$id.'_log_outgoing_link_count', $count, CrawledContent::REMEMBER);
 
-		<Redirect::to($result->url);
+		< Redirect::to($result->url);
+
+	+ delete $id
+		if ! User::current()->isModerator()
+			Session::flash('back-url', '/delete/' . $id);
+			< Redirect::to('/user/login');
+		$result = CrawledContent::find($id);
+		if ! $result
+			App::abort(404);
+
+		<>view('delete', array(
+			'result' => CrawledContent::find($id)
+		));
+
+	+ deleteConfirm $id
+		if ! User::current()->isModerator()
+			<Redirect::to('/user/login');
+		CrawledContent::destroy($id);
+		Session::flash('alert', 'global.delete-succeed');
+		Session::flash('alert-type', 'success');
+
+		< Redirect::to('/');
 
 	+ addUrl
+		Session::regenerateToken();
 		$url = Input::get('url');
 		$state = scanUrl($url);
 		<>view('home', array(

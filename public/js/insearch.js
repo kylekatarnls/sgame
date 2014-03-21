@@ -245,3 +245,13 @@ $('[name="q"]').autocomplete(function(query, callback) {
       });
   }
 });
+
+$(document).on('click', '.remember-me', function() {
+  var $this;
+  $this = $(this);
+  if ($this.is('.selected')) {
+    return $(this).removeClass('selected').next('input').val('');
+  } else {
+    return $(this).addClass('selected').next('input').val('on');
+  }
+});

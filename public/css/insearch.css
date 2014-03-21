@@ -3,9 +3,11 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, nav, 
 }
 body {
 	padding-top: 60px;
+	min-width: 350px;
 }
 .navbar {
 	margin-bottom: 0;
+	min-width: 350px;
 }
 .square {
 	margin-left: -1px;
@@ -58,7 +60,7 @@ h3 a .glyphicon {
 	float: left;
 	color: silver;
 	font-size: 17px;
-	margin: 6px 8px 0 0;
+	margin: 5px 8px 0 0;
 }
 h3 a:visited .glyphicon {
 	color: blue;
@@ -66,12 +68,36 @@ h3 a:visited .glyphicon {
 h3 .rate {
 	font-size: .5em;
 }
+h3 a.remove .glyphicon {
+	margin-top: 4px;
+	color: #e77;
+}
+h3 a.remove:hover .glyphicon {
+	color: red;
+}
 form.login {
+	min-width: 350px;
 	width: 50%;
 	margin: auto;
 }
 form.login .input-group, form.login .btn {
 	width: 100%;
+}
+form.login a {
+	display: block;
+	text-align: center;
+	padding: 1px;
+}
+#login-menu .dropdown-menu {
+	top: 34px;
+}
+#login-menu .dropdown-menu form.login {
+	margin: 0 4px;
+	width: 242px;
+	min-width: 242px;
+}
+#login-menu .dropdown-menu form.login .glyphicon {
+	font-size: 14px;
 }
 #wrap {
 	min-height: 100%;
@@ -118,6 +144,33 @@ form.login .input-group, form.login .btn {
 }
 .autocomplete span.selected {
 	background: #8ae;
+}
+button.remember-me {
+	filter: alpha(opacity=50);
+	-o-opacity: .5;
+	-ms-opacity: .5;
+	-moz-opacity: .5;
+	-imac-opacity: .5;
+	-khtml-opacity: .5;
+	-webkit-opacity: .5;
+	opacity: .5;
+}
+button.remember-me.selected {
+	filter: alpha(opacity=100);
+	-o-opacity: 1;
+	-ms-opacity: 1;
+	-moz-opacity: 1;
+	-imac-opacity: 1;
+	-khtml-opacity: 1;
+	-webkit-opacity: 1;
+	opacity: 1;
+	-o-box-shadow: inset 0 0 10px #a6c0ff;
+	-ms-box-shadow: inset 0 0 10px #a6c0ff;
+	-moz-box-shadow: inset 0 0 10px #a6c0ff;
+	-imac-box-shadow: inset 0 0 10px #a6c0ff;
+	-khtml-box-shadow: inset 0 0 10px #a6c0ff;
+	-webkit-box-shadow: inset 0 0 10px #a6c0ff;
+	box-shadow: inset 0 0 10px #a6c0ff;
 }
 .history-odd, .history-even {
 	clear: left;

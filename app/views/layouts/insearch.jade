@@ -32,16 +32,27 @@ html(lang=lang())
 										li
 											a('data-value'=choice, href=str_replace('%d', $choice, $resultsPerPageUrl))
 												=choice
-						.option-panel
-							a.btn.header-option
-								span.glyphicon.glyphicon-plus-sign
-							!=Form::open('/add-url')
-								.input-group
-									!=Form::text('url', '', 'form-control', §('global.add-url'))
-									.input-group-btn
-										button.btn.btn-default(type="submit")
-											span.glyphicon.glyphicon-plus
-							!=Form::close()
+						if Auth::check()
+							a.btn.header-option(href="/user/logout")
+								span.glyphicon.glyphicon-off
+						else
+							#login-menu.dropdown
+								a#user-login.btn.header-option.dropdown-toggle('data-toggle'="dropdown")
+									span.glyphicon.glyphicon-user
+								.header-option
+									.dropdown-menu(role="menu", 'aria-labelledby'="user-login")
+										include ../includes/login
+						if User::current()->isContributor()
+							.option-panel
+								a.btn.header-option(href="/user/login")
+									span.glyphicon.glyphicon-plus-sign
+								!=Form::open('/add-url')
+									.input-group
+										!=Form::text('url', '', 'form-control', §('global.add-url'))
+										.input-group-btn
+											button.btn.btn-default(type="submit")
+												span.glyphicon.glyphicon-plus
+								!=Form::close()
 
 						a.brand(href="/", style="float:left;")
 							img(src=image("advanced-search"), alt=§('global.title'))
@@ -65,6 +76,11 @@ html(lang=lang())
 									a(href=e(URL::to('')))
 										=§('global.home')
 			.container
+				if Session::has('alert')
+					include ../includes/alert
+					type = Session::get('alert-type', 'danger')
+					message = Session::get('alert')
+					+alert(type, message)
 				block content
 				block end-content
 		#footer

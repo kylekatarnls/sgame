@@ -173,7 +173,7 @@ return array(
 		'Validator'       => 'Illuminate\Support\Facades\Validator',
 		//'View'            => 'Illuminate\Support\Facades\View',
 		'Jade'            => 'Jade\Jade',
-		'StarPush'        => 'Widgets\StarPush',
+		'StarPush'        => 'Utils\Widgets\StarPush',
 
 	),
 

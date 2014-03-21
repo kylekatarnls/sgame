@@ -119,7 +119,8 @@ Route::filter('guest', f°()
 
 Route::filter('csrf', f°()
 	if (Session::token() != Input::get('_token'))
-		throw new Illuminate\Session\TokenMismatchException;
+		//throw new Illuminate\Session\TokenMismatchException;
+		<Redirect::to('/error/wrong-token');
 );
 
 

@@ -27,4 +27,7 @@ BaseController:Controller
 
 	s+ notFound $view = 'errors/notFound', $status = 404
 		<static::response($view, $status);
+
+	s+ wrongToken $view = 'errors/wrongToken', $status = 500
+		<static::response($view, $status);
 			

@@ -1,0 +1,24 @@
+
+!=Form::open('/user/login', array('class' => 'login'))
+	!=Form::hidden('back-url', backUri('/user/login'));
+	.input-group
+		.input-group-addon
+			span.glyphicon.glyphicon-user
+		!=Form::text('email', '', 'form-control', §('user.email'))
+	.input-group
+		.input-group-addon
+			span.glyphicon.glyphicon-lock
+		!=Form::password('password', '', 'form-control', §('user.password'))
+	.input-group
+		button.remember-me.btn.btn-default(type="button")
+			=§('user.login.remember-me')
+		!=Form::hidden('remember-me');
+	.input-group
+		button.btn.btn-default(type="submit")
+			=§('user.login.connection')
+	div
+		a(href="/user/signin")
+			=§('user.signin.signin')
+		a(href="/user/forget-password")
+			=§('user.forget-password.forget-password')
+!=Form::close()

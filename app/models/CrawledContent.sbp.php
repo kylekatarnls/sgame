@@ -76,14 +76,17 @@ CrawledContent:Model
 	+ getCountAttribute
 		<Cache::get('crawled_content_id:' . $this->id . '_log_outgoing_link_count', array_get($this->attributes, 'count', 0));
 
-	+ getContentAttribute
+	+ resume $length = 800
 		$content = trim(Cache::get('CrawledContent-' . $this->id . '-content', array_get($this->attributes, 'content', '')));
-		if strlen($content) > 800
-			substr(**$content, 0, 800);
+		if strlen($content) > $length
+			substr(**$content, 0, $length);
 			substr(**$content, 0, strrpos($content, ' ')) . '...';
 		$closeStrongTag = substr_count($content, '<strong>') - substr_count($content, '</strong>');
 		$content .= str_repeat('</strong>', $closeStrongTag);
 		<utf8($content);
+
+	+ getContentAttribute
+		<>resume();
 
 	+ getTitleAttribute
 		<utf8(Cache::get('CrawledContent-' . $this->id . '-title', array_get($this->attributes, 'title', '')));

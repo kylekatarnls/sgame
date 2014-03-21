@@ -1,18 +1,11 @@
 extends layouts/insearch
 
-block content
-	h1=§('user.login.title')
+block title
+	params = array('title' => §('user.title', array('title' => §('global.title'))))
+	=§('user.login.title', $params)
 
-	!=Form::open('/user/login', array('class' => 'login'))
-		.input-group
-			.input-group-addon
-				span.glyphicon.glyphicon-user
-			!=Form::text('username', '', 'form-control', §('user.login.username'))
-		.input-group
-			.input-group-addon
-				span.glyphicon.glyphicon-lock
-			!=Form::password('password', '', 'form-control', §('user.login.password'))
-		.input-group
-			button.btn.btn-default(type="submit")
-				=§('user.login.connection')
-	!=Form::close()
+block content
+	h1
+		=§('user.login.title', $params)
+
+	include includes/login

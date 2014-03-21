@@ -16,6 +16,10 @@ return array(
 		'title' => ':title - Résultats',
 		'count' => '{0}:title - Aucun résultat|{1}:title - Un résultat|[2,Inf]:title - :count résultats',
 	),
+	'confirm' => 'Confirmer',
+	'cancel' => 'Annuler',
+	'delete-result' => 'Supprimer ce résultat',
+	'delete-succeed' => 'Suppression réussie',
 	'most-popular' => 'Pages les plus populaires',
 	'footer' => 'InSearch | Projet de fin d\'année 2014',
 	'history' => array(
@@ -26,7 +30,11 @@ return array(
 	),
 	'not-found' => array(
 		'title' => ':title - Page introuvable',
-		'description' => "Il n'y a rien ici",
+		'description' => "Il n'y a rien ici.",
+	),
+	'wrong-token' => array(
+		'title' => ':title - Session expirée',
+		'description' => 'Vous pouvez réessayer maintenant.',
 	),
 );
 ?>

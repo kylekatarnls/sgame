@@ -24,9 +24,5 @@ return array(
 		'count' => '{0}:title - Any researche recorded|{1}:title - Last researche|[2,Inf]:title - :count researches',
 		'results' => '[0,1]:count result|[2,Inf]:count results',
 	),
-	'not-found' => array(
-		'title' => ':title - Page Not Found',
-		'description' => 'There is nothing here',
-	),
 );
 ?>

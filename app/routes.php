@@ -30,8 +30,11 @@ Route::get('/{page}/{q}/{resultsPerPage?}', 'HomeController@searchResult');
 Route::pattern('id', '[1-9][0-9]*'); 
 Route::get('/out/{q}/{id}', 'HomeController@goOut'); 
  
+Route::get('/delete/{id}', 'HomeController@delete'); 
+ 
 // Ajout manuel d'une URL 
-Route::post('/add-url', 'HomeController@addUrl'); 
+Route::post('/add-url', 'HomeController@addUrl')->before('csrf'); 
+Route::get('/error/wrong-token', 'BaseController@wrongToken'); 
  
 // Résultats les plus populaires 
 Route::get('/most-popular/{page}/{resultsPerPage?}', 'HomeController@mostPopular'); 
@@ -41,7 +44,7 @@ Route::get('/history/{page}/{resultsPerPage?}', 'HomeController@history');
  
 // Auto-complétion 
 Route::post('/autocomplete', function() {
-	return LogSearch::startWith(Input::get('q')); 
+	return  LogSearch::startWith(Input::get('q')); 
 }); 
  
 // URLs accessibles uniquement en environement de développement 
@@ -51,10 +54,12 @@ if (Config::get('app.debug')) {
 		return  Response::download(Utils\Lang\CSV::convert()); 
 	} ); 
  
-// Résultats des précédentes recherches 
+// Espace membre 
 Route::get('/user/login', 'UserController@login'); 
+Route::post('/user/login', 'UserController@tryLogin'); 
+Route::get('/user/logout', 'UserController@logout'); 
  
 // Gestion de l'erreur 404 
-App::missing(function() {
-	return BaseController::notFound(); 
+App::missing(function () {
+	return  BaseController::notFound(); 
 });

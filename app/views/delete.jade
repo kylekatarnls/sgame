@@ -1,0 +1,17 @@
+extends layouts/insearch
+
+block content
+	h1
+		=§('global.delete-result')
+		.btn-group
+			a.btn.btn-default(href="/")
+				=§('global.cancel')
+			a.btn.btn-danger(href="/delete/confirm/" . $result->id)
+				=§('global.confirm')
+
+	h3
+		=$result->title
+	p
+		!=$result->resume(2600)
+		br
+		!=$result->link($result->urlAndLanguage, array('class' => 'source'))

@@ -145,3 +145,15 @@ $('[name="q"]').autocomplete(
 
 					return
 )
+
+$(document).on('click', '.remember-me', ->
+	$this = $(@);
+	if $this.is '.selected'
+		$(@).removeClass('selected')
+			.next('input')
+			.val('')
+	else
+		$(@).addClass('selected')
+			.next('input')
+			.val('on')
+)

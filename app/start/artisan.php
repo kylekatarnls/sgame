@@ -18,5 +18,6 @@ foreach (array(
 	'SbpCleanCommand',
 	'AssetsCompileCommand',
 	'CsvCommand',
+	'NewAdminCommand',
 ) as $className)
 	Artisan::add(new $className);

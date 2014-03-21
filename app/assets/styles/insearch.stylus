@@ -1,5 +1,7 @@
 footer-height = 60px
 neg-footer-height = -60px
+min-width = 350px
+login-menu-width = 242px
 
 @import "bootstrap.min.css"
 
@@ -9,9 +11,11 @@ body
 
 body
 	padding-top footer-height
+	min-width min-width
 
 .navbar
 	margin-bottom 0
+	min-width min-width
 
 .square
 	margin-left -1px
@@ -57,7 +61,7 @@ h3 a .glyphicon
 	fl
 	color silver
 	font-size 17px
-	margin 6px 8px 0 0
+	margin 5px 8px 0 0
 
 h3 a:visited .glyphicon
 	color blue
@@ -65,12 +69,33 @@ h3 a:visited .glyphicon
 h3 .rate
 	font-size .5em
 
+h3 a.remove
+	& .glyphicon
+		margin-top 4px
+		color #e77
+	&:hover .glyphicon
+		color red
+
 form.login
+	min-width min-width
 	width 50%
 	margin auto
 	& .input-group,
 	& .btn
 		width 100%
+	a
+		db
+		tac
+		padding 1px
+
+#login-menu .dropdown-menu
+	top 34px
+	& form.login
+		margin 0 4px
+		width login-menu-width
+		min-width login-menu-width
+		& .glyphicon
+			font-size 14px
 
 #wrap
 	min-height 100%
@@ -103,5 +128,11 @@ form.login
 
 		&.selected
 			background #8ae
+
+button.remember-me
+	[[opacity .5]]
+	.selected
+		[[opacity 1]]
+		[[box-shadow inset 0 0 10px #a6c0ff]]
 
 @import "history"

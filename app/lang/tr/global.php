@@ -24,5 +24,13 @@ return array(
 		'count' => '{0}:title - Aucune recherche enregistrée|{1}:title - Votre dernière recherche|[2,Inf]:title - :count recherches',
 		'results' => '[0,1]:count résultat|[2,Inf]:count résultats',
 	),
+	'not-found' => array(
+		'title' => ':title - Page introuvable',
+		'description' => "Il n'y a rien ici.",
+	),
+	'wrong-token' => array(
+		'title' => ':title - Session expirée',
+		'description' => 'Vous pouvez réessayer maintenant.',
+	),
 );
 ?>
