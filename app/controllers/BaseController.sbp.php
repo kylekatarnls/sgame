@@ -15,7 +15,9 @@ BaseController:Controller
 		$jadeFile = app_path() . '/views/' . $view . '.jade';
 		if(file_exists($jadeFile))
 			$jade = new Jade(array(
-				'cache' => app_path() . '/storage/views'
+				'cache' => Config::get('app.debug') ?
+					null :
+					app_path() . '/storage/views'
 			));
 			<new Illuminate\Http\Response($jade->render($jadeFile, View::withShared($data)));
 		<View::make($view)->with($data);
