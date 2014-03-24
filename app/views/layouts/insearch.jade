@@ -55,19 +55,20 @@ html(lang=lang())
 								!=Form::close()
 
 						a.brand(href="/", style="float:left;")
-							img(src=image("advanced-search"), alt=§('global.title'))
+							!=image("advanced-search", §('global.title'))
 
 						!=Form::open('/')
 							#languages.btn-group
 								button.btn.btn-default.dropdown-toggle(type="button", 'data-toggle'="dropdown")
-									img(src=image("flags/" . lang()), width="16", height="16")
-									!=" &nbsp; " . array_get($languages, lang(), head($languages)) . " "
+									currentLanguage = array_get($languages, lang(), head($languages))
+									!=image("flags/" . lang(), $currentLanguage, 16, 16)
+									!=" &nbsp; " . $currentLanguage . " "
 									span.caret
 								ul.dropdown-menu
 									each language, code in languages
 										li
 											a(href=((isset($q) ? $q : '') . '?language=' . $code), selected=(lang() === $code ? 'selected' : '' ))
-												img(src=image("flags/" . $code), width="16", height="16")
+												!=image("flags/" . $code, $language, 16, 16)
 												!=" &nbsp; " . $language . " "
 						!=Form::close()
 						.nav-collapse.collapse

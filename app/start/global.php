@@ -54,50 +54,22 @@ use Whoops\Handler\Handler;
 // Use the Laravel IoC to get the Whoops\Run instance, if whoops
 // is available (which will be the case, by default, in the dev
 // environment)
-/*
+
+if(method_exists($app['whoops.handler'], 'setResourcesPath'))
+{
+	$app['whoops.handler']->setResourcesPath(app_path() . '/utils/exception/resources');
+}
+
 if(App::bound("whoops"))
 {
 	ob_start(function ($content)
 	{
-		$content = preg_replace_callback(
-			'~'.preg_quote(app_path().DIRECTORY_SEPARATOR.'storage'.DIRECTORY_SEPARATOR.'sbp'.DIRECTORY_SEPARATOR, '~').'[0-9a-fA-F]+\.php~',
-			function ($match)
-			{
-				return \sbp\laravel\ClassLoader::sbpFromFile($match[0]);
-			},
-			$content
-		);
-		$content = preg_replace_callback(
-			'~'.preg_quote(DIRECTORY_SEPARATOR.'app'.DIRECTORY_SEPARATOR.'storage'.DIRECTORY_SEPARATOR.'sbp'.DIRECTORY_SEPARATOR, '~').'[0-9a-fA-F]+\.php~',
-			function ($match)
-			{
-				return \sbp\laravel\ClassLoader::sbpFromFile($match[0]);
-			},
-			$content
-		);
-		return $content;
+		return str_replace("\\n", "\n", preg_replace('#^<!DOCTYPE\shtml>.+<!DOCTYPE\shtml>#', '<!DOCTYPE html>', str_replace("\n", "\\n", $content)));
 	});
 }
-//*/
 
 App::error(function(Exception $exception, $code)
 {
-	/*
-	if(\sbp\laravel\ClassLoader::sbpIsRunning())
-	{
-		$static = get_class($exception);
-		$exception = new $static(
-			"Error " . get_class($exception) .
-			" in " . \sbp\laravel\ClassLoader::lastSbpFile() . ":" .
-			$exception->getLine() . " : " .
-			$exception->getMessage()
-		);
-		Log::error($exception);
-		(new \Illuminate\Exception\WhoopsDisplayer(new \Whoops\Run, false))->display($exception);
-		exit;
-		return '<pre>'.$exception.'</pre>';
-	}
-	//*/
 	Log::error($exception);
 });
 

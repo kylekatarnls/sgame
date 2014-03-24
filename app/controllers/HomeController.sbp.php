@@ -54,8 +54,7 @@ HomeController:BaseController
 		if ! User::current()->isModerator()
 			<Redirect::to('/user/login');
 		CrawledContent::destroy($id);
-		Session::flash('alert', 'global.delete-succeed');
-		Session::flash('alert-type', 'success');
+		flashAlert('global.delete-succeed', 'success');
 
 		< Redirect::to('/');
 

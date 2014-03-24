@@ -9,6 +9,10 @@ User:Eloquent <<< UserInterface, RemindableInterface
 	MODERATOR = 0x02;
 	CONTRIBUTOR = 0x04;
 
+	DEFAULT_ADMIN = false;
+	DEFAULT_MODERATOR = false;
+	DEFAULT_CONTRIBUTOR = false;
+
 	/**
 	 * The database table used by the model.
 	 *

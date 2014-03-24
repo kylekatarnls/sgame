@@ -1,0 +1,32 @@
+extends layouts/insearch
+
+block title
+	params = array('title' => §('user.title', array('title' => §('global.title'))))
+	=§('user.signin.title', $params)
+
+block content
+	h1
+		=§('user.signin.title', $params)
+
+	!=Form::open('/user/signin', array('class' => 'login'))
+		!=Form::hidden('back-url', backUri('/user/signin'));
+		.input-group
+			.input-group-addon
+				span.glyphicon.glyphicon-user
+			!=Form::text('email', '', 'form-control', §('user.email'))
+		.input-group
+			.input-group-addon
+				span.glyphicon.glyphicon-lock
+			!=Form::password('password', '', 'form-control', §('user.password'))
+		.input-group
+			.input-group-addon
+				span.glyphicon.glyphicon-lock
+			!=Form::password('password-confirm', '', 'form-control', §('user.signin.password-confirm'))
+		.input-group
+			button.remember-me.btn.btn-default(type="button")
+				=§('user.remember-me')
+			!=Form::hidden('remember-me');
+		.input-group
+			button.btn.btn-default(type="submit")
+				=§('user.signin.signin')
+	!=Form::close()

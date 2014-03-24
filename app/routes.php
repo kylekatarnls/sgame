@@ -58,6 +58,8 @@ if (Config::get('app.debug')) {
 Route::get('/user/login', 'UserController@login'); 
 Route::post('/user/login', 'UserController@tryLogin'); 
 Route::get('/user/logout', 'UserController@logout'); 
+Route::get('/user/signin', 'UserController@signin'); 
+Route::post('/user/signin', 'UserController@trySignin'); 
  
 // Gestion de l'erreur 404 
 App::missing(function () {

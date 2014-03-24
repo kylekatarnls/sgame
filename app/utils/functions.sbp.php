@@ -102,11 +102,18 @@ f accents2entities $string
 
 f utf8 $string
 	$string = str_replace('Ã ', '&agrave; ', $string);
-	if strpos($string, 'Ã') !== false and strpos(utf8_decode($string), 'Ã') === false
+	if strpos($string, 'Ã') not false and strpos(utf8_decode($string), 'Ã') is false
 		$string = utf8_decode(accents2entities($string));
 	if !mb_check_encoding($string, 'UTF-8') and mb_check_encoding(utf8_encode($string), 'UTF-8')
 		$string = utf8_encode(accents2entities($string));
 	< $string;
+
+
+f flashAlert $textKey, $type = 'danger'
+	Session::flash('alert', $textKey);
+	Session::flash('alert-type', $type);
+	if $type is 'danger'
+		Input::flash();
 
 
 f fileLastTime $file
@@ -156,7 +163,7 @@ f script
 	< call_user_func_array(array('HTML', 'script'), $args);
 
 
-f image $path
+f image $path, $alt = null, $width = null, $height = null, $attributes = array(), $secure = null
 	$time = 0;
 	if checkAssets()
 		$asset = app_path() . '/assets/images/' . $path;
@@ -178,7 +185,23 @@ f image $path
 			if !file_exists($publicFile) || $time > fileLastTime($publicFile)
 				copy($asset, $publicFile);
 			$time -= 1363188938;
-	< '/img/' . $path . ($time ? '?' . $time : '');
+	$image = '/img/' . $path . ($time ? '?' . $time : '');
+	if ! is_null($alt) || ! is_null($wdith) || ! is_null($height) || $attributes !== array() || ! is_null($secure)
+		if is_array($alt)
+			$attributes = $alt;
+			$alt = null;
+		elseif is_array($width)
+			$attributes = $width;
+			$width = null;
+		elseif is_array($height)
+			$attributes = $height;
+			$height = null;
+		if ! is_null($width)
+			$attributes['width'] = $width;
+		if ! is_null($height)
+			$attributes['height'] = $height;
+		$image = HTML::image($image, $alt, $attributes, $secure);
+	< $image;
 
 
 f lang
