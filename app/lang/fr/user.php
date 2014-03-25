@@ -21,5 +21,11 @@ return array(
 	'forget-password' => array(
 		'forget-password' => "Mot de passe oublié ?",
 	),
+	'list' => array(
+		'title' => ':title - Administration des utilisateurs',
+	),
+	'contributor' => 'Contributeur',
+	'moderator' => 'Modérateur',
+	'administrator' => 'Administrateur',
 );
 ?>

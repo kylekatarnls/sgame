@@ -68,3 +68,11 @@ UserController:BaseController
 		else
 			flashAlert('error.signin.wrong-email');
 		<>view('signin');
+
+	+ listAll
+		if ! User::current()->isAdministrator()
+			Session::flash('back-url', '/user/list');
+			< Redirect::to('/user/login');
+		<>view('user-list', array(
+			'users' => User::all()
+		));

@@ -86,6 +86,14 @@ User:Eloquent <<< UserInterface, RemindableInterface
 		<>haveFlags(:ADMIN);
 
 	/**
+	 * Return true if the user is an administrator, false else.
+	 *
+	 * @return boolean
+	 */
+	+ isAdministrator
+		<>isAdmin();
+
+	/**
 	 * Return true if the user is a moderator, false else.
 	 *
 	 * @return boolean

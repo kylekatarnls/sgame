@@ -55,12 +55,16 @@ if Config::get('app.debug')
 		< Response::download(Utils\Lang\CSV::convert());
 	);
 
-// Espace membre
+//// Espace membre
+// Connexion
 Route::get('/user/login', 'UserController@login');
 Route::post('/user/login', 'UserController@tryLogin')->before('csrf');
 Route::get('/user/logout', 'UserController@logout');
+// Inscription
 Route::get('/user/signin', 'UserController@signin');
 Route::post('/user/signin', 'UserController@trySignin')->before('csrf');
+// Administration des utilisateurs
+Route::get('/user/list', 'UserController@listAll');
 
 // Gestion de l'erreur 404
 App::missing(f°
