@@ -9,6 +9,7 @@ UserController:BaseController
 		<>view('login');
 
 	+ tryLogin
+		Session::regenerateToken();
 		$auth = Auth::attempt(
 			Input::only(array('email', 'password')),
 			Input::get('remember-me') === 'on'
@@ -30,6 +31,7 @@ UserController:BaseController
 		<>view('signin');
 
 	+ trySignin
+		Session::regenerateToken();
 		$email = Input::get('email');
 		$password = Input::get('password');
 		if filter_var($email, FILTER_VALIDATE_EMAIL) !== false

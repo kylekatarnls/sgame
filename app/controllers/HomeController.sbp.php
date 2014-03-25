@@ -52,7 +52,7 @@ HomeController:BaseController
 
 	+ deleteConfirm $id
 		if ! User::current()->isModerator()
-			<Redirect::to('/user/login');
+			< Redirect::to('/user/login');
 		CrawledContent::destroy($id);
 		flashAlert('global.delete-succeed', 'success');
 
@@ -60,6 +60,8 @@ HomeController:BaseController
 
 	+ addUrl
 		Session::regenerateToken();
+		if ! User::current()->isContributor()
+			< Redirect::to('/user/login');
 		$url = Input::get('url');
 		$state = scanUrl($url);
 		<>view('home', array(

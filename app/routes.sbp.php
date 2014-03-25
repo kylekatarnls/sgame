@@ -31,6 +31,7 @@ Route::pattern('id', '[1-9][0-9]*');
 Route::get('/out/{q}/{id}', 'HomeController@goOut');
 
 Route::get('/delete/{id}', 'HomeController@delete');
+Route::get('/delete/confirm/{id}', 'HomeController@deleteConfirm');
 
 // Ajout manuel d'une URL
 Route::post('/add-url', 'HomeController@addUrl')->before('csrf');
@@ -56,10 +57,10 @@ if Config::get('app.debug')
 
 // Espace membre
 Route::get('/user/login', 'UserController@login');
-Route::post('/user/login', 'UserController@tryLogin');
+Route::post('/user/login', 'UserController@tryLogin')->before('csrf');
 Route::get('/user/logout', 'UserController@logout');
 Route::get('/user/signin', 'UserController@signin');
-Route::post('/user/signin', 'UserController@trySignin');
+Route::post('/user/signin', 'UserController@trySignin')->before('csrf');
 
 // Gestion de l'erreur 404
 App::missing(f°
