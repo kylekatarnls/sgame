@@ -20,11 +20,13 @@ class ControllersTest extends TestCase {
 		$this->assertTrue(method_exists('HomeController', 'history'), "HomeController->history() devrait exister");
 
 		$homeController = new HomeController;
-		$this->assertView($homeController->searchBar(), "HomeController->searchBar()");
-		$this->assertView($homeController->searchResult(), "HomeController->searchResult()");
+		$userController = new UserController;
 
 		$invalidId = -1;
 		$validId = User::first()->id;
+
+		$this->assertView($homeController->searchBar(), "HomeController->searchBar()");
+		$this->assertView($homeController->searchResult(), "HomeController->searchResult()");
 
 		try
 		{
@@ -40,8 +42,8 @@ class ControllersTest extends TestCase {
 			'flags' => User::CONTRIBUTOR,
 		)));
 		$this->assertView($homeController->addUrl(), "HomeController->addUrl()");
-		$this->assertEquals($homeController->list()->getStatusCode(), 302, "HomeController->list() devrait renvoyer un status 302 (redirection temporaire)");
-		$this->assertView($homeController->delete($validId), "HomeController->delete()");
+		$this->assertEquals($userController->listAll()->getStatusCode(), 302, "HomeController->listAll() devrait renvoyer un status 302 (redirection temporaire)");
+		$this->assertEquals($homeController->delete($validId)->getStatusCode(), 302, "HomeController->delete() devrait renvoyer un status 302 (redirection temporaire)");
 		Auth::logout();
 		$this->assertEquals($homeController->addUrl()->getStatusCode(), 302, "HomeController->addUrl() devrait renvoyer un status 302 (redirection temporaire)");
 		Auth::login(new User(array(
@@ -58,17 +60,17 @@ class ControllersTest extends TestCase {
 		}
 		$this->assertView($homeController->delete($validId), "HomeController->delete()");
 		$this->assertEquals($homeController->addUrl()->getStatusCode(), 302, "HomeController->addUrl() devrait renvoyer un status 302 (redirection temporaire)");
-		$this->assertEquals($homeController->list()->getStatusCode(), 302, "HomeController->list() devrait renvoyer un status 302 (redirection temporaire)");
+		$this->assertEquals($userController->listAll()->getStatusCode(), 302, "HomeController->listAll() devrait renvoyer un status 302 (redirection temporaire)");
 		Auth::logout();
 		$this->assertEquals($homeController->delete($validId)->getStatusCode(), 302, "HomeController->delete() devrait renvoyer un status 302 (redirection temporaire)");
 		Auth::login(new User(array(
 			'flags' => User::ADMINISTRATOR,
 		)));
+		$this->assertView($userController->listAll(), "HomeController->listAll()");
 		$this->assertEquals($homeController->addUrl()->getStatusCode(), 302, "HomeController->addUrl() devrait renvoyer un status 302 (redirection temporaire)");
-		$this->assertView($homeController->list(), "HomeController->list()");
-		$this->assertView($homeController->delete($validId), "HomeController->delete()");
+		$this->assertEquals($homeController->delete($validId)->getStatusCode(), 302, "HomeController->delete() devrait renvoyer un status 302 (redirection temporaire)");
 		Auth::logout();
-		$this->assertEquals($homeController->list()->getStatusCode(), 302, "HomeController->list() devrait renvoyer un status 302 (redirection temporaire)");
+		$this->assertEquals($userController->listAll()->getStatusCode(), 302, "HomeController->listAll() devrait renvoyer un status 302 (redirection temporaire)");
 		$this->assertView($homeController->mostPopular(1), "HomeController->mostPopular()");
 		$this->assertView($homeController->history(1), "HomeController->history()");
 

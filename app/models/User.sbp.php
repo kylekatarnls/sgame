@@ -6,6 +6,7 @@ use Illuminate\Auth\Reminders\RemindableInterface;
 User:Eloquent <<< UserInterface, RemindableInterface
 
 	ADMIN = 0x01;
+	ADMINISTRATOR = 0x01;
 	MODERATOR = 0x02;
 	CONTRIBUTOR = 0x04;
 
