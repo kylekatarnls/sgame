@@ -2,15 +2,21 @@
 
 describe("Script principal insearch.js", function() {
   describe("Le module des fonctionnalités de base", function() {
-    it("Devrait permettre de cliquer sur un bouton des panneaux pour ouvrir et fermer un formulaire", function() {
-      expect($('.option-panel form:hidden').exists()).toBe(true);
-      $('.option-panel a.btn').trigger('click');
-      expect($('.option-panel form:hidden').exists()).toBe(false);
-      $('.option-panel a.btn').trigger('click');
-      return expect($('.option-panel form:hidden, .option-panel form:animated').exists()).toBe(true);
-    });
+    var $btn;
+    $btn = $('.option-panel a.btn .glyphicon-plus-sign').parent();
+    if ($btn.exists()) {
+      it("Devrait permettre de cliquer sur un bouton des panneaux pour ouvrir et fermer un formulaire", function() {
+        expect($('.option-panel form:hidden').exists()).toBe(true);
+        $('.option-panel a.btn').trigger('click');
+        expect($('.option-panel form:hidden').exists()).toBe(false);
+        $('.option-panel a.btn').trigger('click');
+        return expect($('.option-panel form:hidden, .option-panel form:animated').exists()).toBe(true);
+      });
+    } else {
+      xit("Testez le bouton (+) en vous connectant avec un contributeur");
+    }
     it("Devrait permettre d'ouvrir et fermer des menus déroulants", function() {
-      var $btn, id;
+      var id;
       $btn = $('.dropdown-toggle:first');
       id = $btn.attr('id');
       expect($('[aria-labelledby="' + id + '"]:hidden').exists()).toBe(true);

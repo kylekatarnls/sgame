@@ -57,10 +57,10 @@ if (Config::get('app.debug')) {
  
 // Espace membre 
 Route::get('/user/login', 'UserController@login'); 
-Route::post('/user/login', 'UserController@tryLogin')->before('csrf');; 
+Route::post('/user/login', 'UserController@tryLogin')->before('csrf'); 
 Route::get('/user/logout', 'UserController@logout'); 
 Route::get('/user/signin', 'UserController@signin'); 
-Route::post('/user/signin', 'UserController@trySignin')->before('csrf');; 
+Route::post('/user/signin', 'UserController@trySignin')->before('csrf'); 
  
 // Gestion de l'erreur 404 
 App::missing(function () {

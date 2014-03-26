@@ -2,12 +2,17 @@ describe "Script principal insearch.js", ->
 
   describe "Le module des fonctionnalités de base", ->
 
-    it "Devrait permettre de cliquer sur un bouton des panneaux pour ouvrir et fermer un formulaire", ->
-      expect($('.option-panel form:hidden').exists()).toBe yes
-      $('.option-panel a.btn').trigger 'click'
-      expect($('.option-panel form:hidden').exists()).toBe no
-      $('.option-panel a.btn').trigger 'click'
-      expect($('.option-panel form:hidden, .option-panel form:animated').exists()).toBe yes
+    $btn = $('.option-panel a.btn .glyphicon-plus-sign').parent()
+    if $btn.exists()
+      it "Devrait permettre de cliquer sur un bouton des panneaux pour ouvrir et fermer un formulaire", ->
+        expect($('.option-panel form:hidden').exists()).toBe yes
+        $('.option-panel a.btn').trigger 'click'
+        expect($('.option-panel form:hidden').exists()).toBe no
+        $('.option-panel a.btn').trigger 'click'
+        expect($('.option-panel form:hidden, .option-panel form:animated').exists()).toBe yes
+    else
+      xit "Testez le bouton (+) en vous connectant avec un contributeur"
+
 
 
     it "Devrait permettre d'ouvrir et fermer des menus déroulants", ->
