@@ -1,0 +1,30 @@
+extends layouts/insearch
+
+block title
+	params = array('title' => §('user.title', array('title' => §('global.title'))))
+	=§('user.list.title', $params)
+
+block content
+	h1
+		=§('user.list.title', $params)
+
+	table
+		tr
+			th
+				=§('user.email')
+			th
+				=§('user.contributor')
+			th
+				=§('user.moderator')
+			th
+				=§('user.administrator')
+		each user in users
+			tr
+				td
+					=$user->email
+				td
+					=$user->isContributor() ? 'X' : ''
+				td
+					=$user->isModerator() ? 'X' : ''
+				td
+					=$user->isAdministrator() ? 'X' : ''

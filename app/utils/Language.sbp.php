@@ -64,4 +64,10 @@ Language
 		// On rend la liste des langues accessible dans toutes les vues
 		View::share('languages', self::getChoices());
 
+	s+ altLang
+		$locale = Lang::locale();
+		foreach static::$languages as $language => $name
+			if $language not $locale
+				< $language;
+
 ?>

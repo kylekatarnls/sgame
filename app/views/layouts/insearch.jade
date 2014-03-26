@@ -32,6 +32,9 @@ html(lang=lang())
 										li
 											a('data-value'=choice, href=str_replace('%d', $choice, $resultsPerPageUrl))
 												=choice
+						if User::current()->isAdministrator()
+							a.btn.header-option(href="/user/list")
+								span.glyphicon.glyphicon-wrench
 						if Auth::check()
 							a.btn.header-option(href="/user/logout")
 								span.glyphicon.glyphicon-off
