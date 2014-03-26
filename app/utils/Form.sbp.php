@@ -26,6 +26,12 @@ Form:Illuminate\Support\Facades\Form
 	s+ password $name, $value = null, $options = array(), $placeholder = null, $autocomplete = true
 		< static::input('password', $name, $value, $options, $placeholder, $autocomplete);
 
+	s+ checkbox $name, $value = null, $options = array(), $placeholder = null, $autocomplete = true
+		< static::input('checkbox', $name, $value, $options, $placeholder, $autocomplete);
+
+	s+ radio $name, $value = null, $options = array(), $placeholder = null, $autocomplete = true
+		< static::input('radio', $name, $value, $options, $placeholder, $autocomplete);
+
 	s+ email $name, $value = null, $options = array(), $placeholder = null, $autocomplete = true
 		< static::input('email', $name, $value, $options, $placeholder, $autocomplete);
 

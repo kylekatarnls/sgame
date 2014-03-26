@@ -8,12 +8,12 @@
 		clear left
 
 	&:hover
-		background #eef0f2
+		background odd-bg
 	a
 		db
 
 .history-even
-	background #f5f6f7
+	background even-bg
 
 
 .history-time

@@ -8,9 +8,9 @@ block content
 	h1
 		=§('user.list.title', $params)
 
-	table
+	table#user-list
 		tr
-			th
+			th.first
 				=§('user.email')
 			th
 				=§('user.contributor')
@@ -18,13 +18,24 @@ block content
 				=§('user.moderator')
 			th
 				=§('user.administrator')
+
+		mixin flag(user, role)
+			method = 'is' . ucfirst($role)
+			haveFlag = $user->{$method}()
+			if User::current()->{$method}()
+				td
+					label
+						!=Form::checkbox('role_' . $user->id, $role, $haveFlag ? array("checked" => "checked") : array())
+			else
+				td
+					=$haveFlag ? 'X' : ''
+
+		i = 0
 		each user in users
-			tr
-				td
+			- $i++
+			tr(class=($i & 1 ? 'odd' : 'even'))
+				td.first
 					=$user->email
-				td
-					=$user->isContributor() ? 'X' : ''
-				td
-					=$user->isModerator() ? 'X' : ''
-				td
-					=$user->isAdministrator() ? 'X' : ''
+				+flag($user, 'contributor')
+				+flag($user, 'moderator')
+				+flag($user, 'administrator')

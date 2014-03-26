@@ -14,6 +14,10 @@ if(!isset($_e))
   {
     $replace = function ($match)
     {
+      if(!file_exists($match[0]))
+      {
+        return $match[0];
+      }
       $file = \sbp\sbp::sbpFromFile($match[0]);
       if(!empty($file))
       {

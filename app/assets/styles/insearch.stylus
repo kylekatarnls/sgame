@@ -2,6 +2,8 @@ footer-height = 60px
 neg-footer-height = -60px
 min-width = 350px
 login-menu-width = 242px
+odd-bg = #eef0f2
+even-bg = #f5f6f7
 
 @import "bootstrap.min.css"
 
@@ -134,5 +136,18 @@ button.remember-me
 	.selected
 		[[opacity 1]]
 		[[box-shadow inset 0 0 10px #a6c0ff]]
+
+#user-list
+	width 100%
+	& .odd td
+		background odd-bg
+	& .even td
+		background even-bg
+	td, th
+		tac
+		label
+			db
+	td.first, th.first
+		tal
 
 @import "history"
