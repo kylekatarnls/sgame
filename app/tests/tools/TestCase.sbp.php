@@ -28,10 +28,10 @@ a TestCase:Illuminate\Foundation\Testing\TestCase
 		<>client->getResponse();
 
 	* assertFound $method, $url, array $parameters = array(), array $files = array(), array $server = array(), $content = null, $changeHistory = true
-		>assertTrue($this->tryRequest($method, $url, $parameters, $files, $server, $content, $changeHistory) !== false, "Cette requête ne devrait pas renvoyer une erreur 404 Not Found");
+		should not $this->tryRequest($method, $url, $parameters, $files, $server, $content, $changeHistory) be false, "Cette requête ne devrait pas renvoyer une erreur 404 Not Found";
 
 	* assertNotFound $method, $url, array $parameters = array(), array $files = array(), array $server = array(), $content = null, $changeHistory = true
-		>assertTrue($this->tryRequest($method, $url, $parameters, $files, $server, $content, $changeHistory) === false, "Cette requête devrait renvoyer une erreur 404 Not Found");
+		should $this->tryRequest($method, $url, $parameters, $files, $server, $content, $changeHistory) be false, "Cette requête devrait renvoyer une erreur 404 Not Found";
 
 	* assertJsonResponse $method, $url, array $parameters = array(), array $files = array(), array $server = array(), $content = null, $changeHistory = true
 		>assertJson($this->tryResponse($method, $url, $parameters, $files, $server, $content, $changeHistory)->getContent(), "Cette requête devrait renvoyer un résultat au format JSON");
@@ -41,14 +41,14 @@ a TestCase:Illuminate\Foundation\Testing\TestCase
 		>assertCount($count, $crawler->filter($filter));
 
 	* assertView $response, $name
-		>assertTrue($response instanceof View || $response instanceof BaseView || $response instanceof BaseResponse, $name . " devrait retourner une vue (View)");
+		should $response instanceof View || $response instanceof BaseView || $response instanceof BaseResponse, $name . " devrait retourner une vue (View)";
 
 	* assertThrowNotFoundHttpException $object, $method, $parameters = array()
 		try
 			call_user_func_array(array($object, $method), $parameters);
-			>assertTrue(false, "Devrait retourner une erreur 404");
+			should false, "Devrait retourner une erreur 404";
 		catch NotFoundHttpException $e
-			>assertTrue(true, "Devrait retourner une erreur 404");
+			should true, "Devrait retourner une erreur 404";
 
 	* assertStatus $response, $status, $text = 'La méthode'
-		>assertEquals($response->getStatusCode(), $status, $text . " devrait renvoyer un status 302 (" . SymfonyResponse::$statusTexts[$status] . ")");
+		$response->getStatusCode() should == $status, $text . " devrait renvoyer un status 302 (" . SymfonyResponse::$statusTexts[$status] . ")";

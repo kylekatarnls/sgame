@@ -9,12 +9,12 @@ ControllersTest:TestCase
 	 */
 	+ testHomeController
 
-		>assertTrue(method_exists('HomeController', 'searchBar'), "HomeController->searchBar() devrait exister");
-		>assertTrue(method_exists('HomeController', 'searchResult'), "HomeController->searchResult() devrait exister");
-		>assertTrue(method_exists('HomeController', 'goOut'), "HomeController->goOut() devrait exister");
-		>assertTrue(method_exists('HomeController', 'addUrl'), "HomeController->addUrl() devrait exister");
-		>assertTrue(method_exists('HomeController', 'mostPopular'), "HomeController->mostPopular() devrait exister");
-		>assertTrue(method_exists('HomeController', 'history'), "HomeController->history() devrait exister");
+		should method_exists('HomeController', 'searchBar'), "HomeController->searchBar() devrait exister";
+		should method_exists('HomeController', 'searchResult'), "HomeController->searchResult() devrait exister";
+		should method_exists('HomeController', 'goOut'), "HomeController->goOut() devrait exister";
+		should method_exists('HomeController', 'addUrl'), "HomeController->addUrl() devrait exister";
+		should method_exists('HomeController', 'mostPopular'), "HomeController->mostPopular() devrait exister";
+		should method_exists('HomeController', 'history'), "HomeController->history() devrait exister";
 
 		$homeController = new HomeController;
 		$userController = new UserController;
@@ -65,7 +65,7 @@ ControllersTest:TestCase
 	 */
 	+ testDevController
 
-		>assertTrue(method_exists('DevController', 'specs'), "DevController->specs() devrait exister");
+		should method_exists('DevController', 'specs'), "DevController->specs() devrait exister";
 
 		$devController = new DevController;
 		>assertView($devController->specs(), "DevController->specs()");
