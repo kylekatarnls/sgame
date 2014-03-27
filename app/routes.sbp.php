@@ -53,6 +53,7 @@ if Config::get('app.debug')
     Route::get('/specs/1', 'DevController@specs');
 	Route::get('/lang/csv', f°
 		< Response::download(Utils\Lang\CSV::convert());
+		// Test
 	);
 
 //// Espace membre

@@ -50,7 +50,7 @@ FunctionsTest:TestCase
 		>assertTrue(in_array(
 			scanUrl('http://insearch.selfbuild.fr/'),
 			array(Crawler::ADDED, Crawler::UPDATED, Crawler::DUPLICATED)
-		), "scanUrl('http://localhost/') ne devrait pas retourner Crawler::NOT_FOUND");
+		), "scanUrl('http://insearch.selfbuild.fr/') ne devrait pas retourner Crawler::NOT_FOUND");
 
 
 	/**
