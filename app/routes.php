@@ -68,4 +68,4 @@ Route::get('/user/list', 'UserController@listAll');
 // Gestion de l'erreur 404 
 App::missing(function () {
 	return  BaseController::notFound(); 
-});
+}); 

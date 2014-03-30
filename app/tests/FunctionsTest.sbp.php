@@ -9,11 +9,11 @@ FunctionsTest:TestCase
 	 */
 	+ test§
 
-		Language::setLocale('en');
+		Language::setLocale('en')
 		§('global.results.count', 0, array('title' => 'T')) should be 'T - Any result', "§('global.results.count', 0) devrait retourner 'T - Any result'"
 		§('global.results.count', 1, array('title' => 'T')) should be 'T - One result', "§('global.results.count', 1) devrait retourner 'T - One result'"
 		§('global.results.count', 2, array('title' => 'T')) should be 'T - 2 results', "§('global.results.count', 2) devrait retourner 'T - 2 results'"
-		Language::setLocale('fr');
+		Language::setLocale('fr')
 		§('global.results.count', 0, array('title' => 'T')) should be 'T - Aucun résultat', "§('global.results.count', 0) devrait retourner 'T - Aucun résultat'"
 		§('global.results.count', 1, array('title' => 'T')) should be 'T - Un résultat', "§('global.results.count', 1) devrait retourner 'T - One result'"
 		§('global.results.count', 2, array('title' => 'T')) should be 'T - 2 résultats', "§('global.results.count', 2) devrait retourner 'T - 2 résultats'"

@@ -34,11 +34,11 @@ HomeController:BaseController
 			$count = LogOutgoingLink::where('crawled_content_id', $id)->count()
 		Cache::put('crawled_content_id:'.$id.'_log_outgoing_link_count', $count, CrawledContent::REMEMBER)
 
-		< Redirect::to($result->url)
+		< Redirect::to($crawledContent->url)
 
 	+ delete $crawledContent
 		if ! User::current()->isModerator()
-			Session::flash('back-url', '/delete/' . $id)
+			Session::flash('back-url', '/delete/' . $crawledContent->id)
 			< Redirect::to('/user/login')
 
 		<>view('delete', array(

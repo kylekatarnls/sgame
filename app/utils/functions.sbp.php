@@ -191,7 +191,7 @@ f image $path, $alt = null, $width = null, $height = null, $attributes = array()
 				copy($asset, $publicFile);
 			$time -= 1363188938;
 	$image = '/img/' . $path . ($time ? '?' . $time : '');
-	if ! is_null($alt) || ! is_null($wdith) || ! is_null($height) || $attributes !== array() || ! is_null($secure)
+	if ! is_null($alt) || ! is_null($width) || ! is_null($height) || $attributes !== array() || ! is_null($secure)
 		if is_array($alt)
 			$attributes = $alt;
 			$alt = null;
