@@ -3,71 +3,66 @@
 HomeController:BaseController
 
 	+ searchBar
-		<>view('home');
+		<>view('home')
 	
 	+ searchResultForm $page = 1, $q = null, $resultsPerPage = null
-		<>searchResult($page, $q, $resultsPerPage, true);
+		<>searchResult($page, $q, $resultsPerPage, true)
 
 	+ searchResult $page = 1, $q = null, $resultsPerPage = null, $form = false
-		$q = is_null($q) ? Request::get('q', $page) : urldecode($q);
+		$q = is_null($q) ? Request::get('q', $page) : urldecode($q)
 		$data = CrawledContent::getSearchResult($q)
 				->paginatedData($page, $resultsPerPage, array(
 				'q' => $q,
 				'pageUrl' => '/%d/'.urlencode($q).'{keepResultsPerPage}',
 				'resultsPerPageUrl' => '/'.$page.'/'.urlencode($q).'/%d'
-			));
+			))
 		if $form
-			LogSearch::log($q, $data['nbResults']);
-		<>view('result', $data);
+			LogSearch::log($q, $data['nbResults'])
+		<>view('result', $data)
 
-	+ goOut $search_query, $id
-		$result = CrawledContent::find($id);
-		if ! $result
-			App::abort(404);
+	+ goOut $search_query, $crawledContent
+		$id = $crawledContent->id
 
 		LogOutgoingLink::create(array(
 			'search_query' => $search_query,
 			'crawled_content_id' => $id
-		));
+		))
 		$count = Cache::get('crawled_content_id:'.$id.'_log_outgoing_link_count');
 		if $count
-			$count++;
+			$count++
 		else
-			$count = LogOutgoingLink::where('crawled_content_id', $id)->count();
-		Cache::put('crawled_content_id:'.$id.'_log_outgoing_link_count', $count, CrawledContent::REMEMBER);
+			$count = LogOutgoingLink::where('crawled_content_id', $id)->count()
+		Cache::put('crawled_content_id:'.$id.'_log_outgoing_link_count', $count, CrawledContent::REMEMBER)
 
-		< Redirect::to($result->url);
+		< Redirect::to($result->url)
 
-	+ delete $id
+	+ delete $crawledContent
 		if ! User::current()->isModerator()
-			Session::flash('back-url', '/delete/' . $id);
-			< Redirect::to('/user/login');
-		$result = CrawledContent::find($id);
-		if ! $result
-			App::abort(404);
+			Session::flash('back-url', '/delete/' . $id)
+			< Redirect::to('/user/login')
 
 		<>view('delete', array(
-			'result' => CrawledContent::find($id)
-		));
+			'result' => $crawledContent
+		))
 
-	+ deleteConfirm $id
+	+ deleteConfirm $crawledContent
 		if ! User::current()->isModerator()
-			< Redirect::to('/user/login');
-		CrawledContent::destroy($id);
-		flashAlert('global.delete-succeed', 'success');
+			< Redirect::to('/user/login')
+		$crawledContent->delete()
+		flashAlert('global.delete-succeed', 'success')
 
-		< Redirect::to('/');
+		< Redirect::to('/')
 
 	+ addUrl
-		Session::regenerateToken();
+		Session::regenerateToken()
 		if ! User::current()->isContributor()
-			< Redirect::to('/user/login');
-		$url = Input::get('url');
-		$state = scanUrl($url);
+			< Redirect::to('/user/login')
+		$url = Input::get('url')
+		$state = scanUrl($url)
 		<>view('home', array(
 			'url' => $url,
 			'state' => $state
-		));
+		))
 
 	+ mostPopular $page, $resultsPerPage = null
 		<>view('result',
@@ -83,7 +78,7 @@ HomeController:BaseController
 					'pageUrl' => '/most-popular/%d{keepResultsPerPage}',
 					'resultsPerPageUrl' => '/most-popular/'.$page.'/%d'
 				))
-			);
+			)
 
 	+ history $page, $resultsPerPage = null
 		$data = LogSearch::mine()
@@ -91,8 +86,8 @@ HomeController:BaseController
 				'q' => '',
 				'pageUrl' => '/history/%d{keepResultsPerPage}',
 				'resultsPerPageUrl' => '/history/'.$page.'/%d'
-			));
+			))
 		$data['resultsGroups'] = $data['results']->groupBy(f° $element
-			<$element->created_at->uRecentDate;
-		);
-		<>view('history', $data);
+			<$element->created_at->uRecentDate
+		)
+		<>view('history', $data)

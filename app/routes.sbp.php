@@ -26,12 +26,11 @@ Route::get('/{q}', 'HomeController@searchResult')
 Route::get('/{page}/{q}/{resultsPerPage?}', 'HomeController@searchResult')
 
 // Clic sur un lien sortant
-//Route::model('id', 'CrawledContent')
-Route::pattern('id', '[1-9][0-9]*')
-Route::get('/out/{q}/{id}', 'HomeController@goOut')
+Route::model('crawledContent', 'CrawledContent')
+Route::get('/out/{q}/{crawledContent}', 'HomeController@goOut')
 
-Route::get('/delete/{id}', 'HomeController@delete')
-Route::get('/delete/confirm/{id}', 'HomeController@deleteConfirm')
+Route::get('/delete/{crawledContent}', 'HomeController@delete')
+Route::get('/delete/confirm/{crawledContent}', 'HomeController@deleteConfirm')
 
 // Ajout manuel d'une URL
 Route::post('/add-url', 'HomeController@addUrl')->before('csrf')
