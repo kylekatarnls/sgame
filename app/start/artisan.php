@@ -19,5 +19,9 @@ foreach (array(
 	'AssetsCompileCommand',
 	'CsvCommand',
 	'NewAdminCommand',
+	'PostUpdateCommand',
+	'PreUpdateCommand',
+	'UpdateCommand',
+	'TestCommand',
 ) as $className)
 	Artisan::add(new $className);
