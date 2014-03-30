@@ -59,7 +59,12 @@ Patchwork\Utf8\Bootup::initMbstring();
 |
 */
 
-sbp\laravel\ClassLoader::register(true);
+sbp\laravel\ClassLoader::register(true, function ($file)
+{
+	$name = ltrim(substr($file, max(intval(strrpos($file, '/')), intval(strrpos($file, '\\')))), '\\/');
+	$name = preg_replace('#(\.sbp\.php|\.php\.sbp|\.php|\.sbp)$#', '', $name);
+	return $name . '-' . strtr(rtrim(base64_encode(sha1($file, true)), '='), '+/', '-_');
+});
 
 /*
 |--------------------------------------------------------------------------

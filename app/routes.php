@@ -26,7 +26,7 @@ Route::get('/{q}', 'HomeController@searchResult');
 Route::get('/{page}/{q}/{resultsPerPage?}', 'HomeController@searchResult'); 
  
 // Clic sur un lien sortant 
-//Route::model('id', 'CrawledContent'); 
+//Route::model('id', 'CrawledContent') 
 Route::pattern('id', '[1-9][0-9]*'); 
 Route::get('/out/{q}/{id}', 'HomeController@goOut'); 
  
@@ -51,11 +51,11 @@ Route::post('/autocomplete', function() {
 // URLs accessibles uniquement en environement de développement 
 if (Config::get('app.debug')) {
     Route::get('/specs/1', 'DevController@specs'); 
-	} Route::get('/lang/csv', function () {
+	Route::get('/lang/csv', function () {
 		return  Response::download(Utils\Lang\CSV::convert()); 
 	} ); 
  
-//// Espace membre 
+}//// Espace membre 
 // Connexion 
 Route::get('/user/login', 'UserController@login'); 
 Route::post('/user/login', 'UserController@tryLogin')->before('csrf'); 

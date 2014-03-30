@@ -6,7 +6,7 @@
 |--------------------------------------------------------------------------
 */
 
-sbp_include_once(app_path() . '/utils/functions.php');
+sbp_include_once(app_path() . '/utils/functions.php')
 
 
 /*
@@ -16,7 +16,7 @@ sbp_include_once(app_path() . '/utils/functions.php');
 */
 
 if($trustedHosts = Config::get('app.trusted'))
-	Request::setTrustedHosts($trustedHosts);
+	Request::setTrustedHosts($trustedHosts)
 
 
 /*
@@ -25,7 +25,7 @@ if($trustedHosts = Config::get('app.trusted'))
 |--------------------------------------------------------------------------
 */
 
-Language::setLocale();
+Language::setLocale()
 
 
 /*
@@ -34,7 +34,7 @@ Language::setLocale();
 |--------------------------------------------------------------------------
 */
 
-ResultsPerPage::init();
+ResultsPerPage::init()
 
 
 /*
@@ -60,14 +60,14 @@ App::before(f° $request
 			),
 			$value
 			// Credit : https://github.com/francescomalatesta
-		);
-	);
-);
+		)
+	)
+)
 
 
 App::after(f° $request, $response
 	//
-);
+)
 
 /*
 |--------------------------------------------------------------------------
@@ -82,13 +82,13 @@ App::after(f° $request, $response
 
 Route::filter('auth', f°()
 	if (Auth::guest())
-		<Redirect::guest('login');
-);
+		<Redirect::guest('login')
+)
 
 
 Route::filter('auth.basic', f°()
-	<Auth::basic();
-);
+	<Auth::basic()
+)
 
 /*
 |--------------------------------------------------------------------------
@@ -103,8 +103,8 @@ Route::filter('auth.basic', f°()
 
 Route::filter('guest', f°()
 	if (Auth::check())
-		<Redirect::to('/');
-);
+		<Redirect::to('/')
+)
 
 /*
 |--------------------------------------------------------------------------
@@ -120,8 +120,8 @@ Route::filter('guest', f°()
 Route::filter('csrf', f°()
 	if (Session::token() != Input::get('_token'))
 		//throw new Illuminate\Session\TokenMismatchException;
-		<Redirect::to('/error/wrong-token');
-);
+		<Redirect::to('/error/wrong-token')
+)
 
 
 /*
@@ -138,4 +138,4 @@ Route::filter('csrf', f°()
 |
 */
 
-CrawledContent::observe(new CrawledContentObserver);
+CrawledContent::observe(new CrawledContentObserver)
