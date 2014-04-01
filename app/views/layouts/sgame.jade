@@ -21,17 +21,6 @@ html(lang=lang())
 			.navbar.navbar-inverse.navbar-fixed-top
 				.navbar-inner
 					.container
-						.dropdown
-							a#choice-per-page.btn.header-option.dropdown-toggle('data-toggle'="dropdown")
-								span.glyphicon.glyphicon-list
-							.header-option
-								ul.dropdown-menu(role="menu", 'aria-labelledby'="choice-per-page")
-									li.dropdown-header
-										=§('global.results-per-page') 
-									each choice in choiceResultsPerPage
-										li
-											a('data-value'=choice, href=str_replace('%d', $choice, $resultsPerPageUrl))
-												=choice
 						if User::current()->isAdministrator()
 							a.btn.header-option(href="/user/list")
 								span.glyphicon.glyphicon-wrench

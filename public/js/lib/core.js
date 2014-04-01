@@ -163,7 +163,7 @@ function documentpagechange(event, data)
 	if(typeof(wsRegister) === 'function')
 		wsRegister();
 }
-$document.on('click', '.h-button', function ()
+$document.on('click', '.h-button, .hold-focus', function ()
 {
 	var $button = $(this);
 	$button.addClass('focus');
@@ -463,7 +463,7 @@ Array.prototype.pick = function (n){
 $.fn.extend({
 	disable: function (events){
 		if(typeof(events) !== 'object'){
-			events = [events];
+			events = events.split(/\s+/g);
 		}
 		var $this = $(this);
 		$.each(events, function (){

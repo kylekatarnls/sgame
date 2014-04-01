@@ -171,7 +171,7 @@ function documentpagechange(event, data)
 	if(typeof(wsRegister) === 'function')
 		wsRegister();
 }
-$document.on('click', '.h-button', function ()
+$document.on('click', '.h-button, .hold-focus', function ()
 {
 	var $button = $(this);
 	$button.addClass('focus');
@@ -471,7 +471,7 @@ Array.prototype.pick = function (n){
 $.fn.extend({
 	disable: function (events){
 		if(typeof(events) !== 'object'){
-			events = [events];
+			events = events.split(/\s+/g);
 		}
 		var $this = $(this);
 		$.each(events, function (){
@@ -1661,7 +1661,7 @@ function getDirection(x1, y1, x2, y2){
 	});
 })([]);;
 
-var Mobile, Player, Positionable, Wall, b,
+var Mobile, Player, Positionable, Wall, b, cHeight, cWidth, height, width,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
@@ -1684,16 +1684,14 @@ Positionable = (function() {
   function Positionable(content, style, x, y) {
     this.x = x || 0;
     this.y = y || 0;
-    this.jQueryObject = $('<div class="mobile">' + content + '</div>').appendTo('#origin');
-    style = $.extend({
+    this.jQueryObject = $('<div class="mobile">' + content + '</div>').appendTo('#origin').css($.extend({
       left: this.x + 'px',
       top: this.y + 'px'
     }, style || {
       background: 'gray',
       width: '32px',
       height: '32px'
-    });
-    this.jQueryObject.css(style);
+    }));
   }
 
   return Positionable;
@@ -1725,15 +1723,17 @@ Player = (function(_super) {
 
   __extends(Player, _super);
 
-  function Player(x, y) {
+  function Player(x, y, w, h) {
     Player.__super__.constructor.call(this, 'A', {
       background: 'gray',
       textAlign: 'center',
-      lineHeight: '32px',
-      width: '32px',
-      height: '32px'
+      lineHeight: (h || 32) + 'px',
+      width: (w || 32) + 'px',
+      height: (h || 32) + 'px'
     }, x, y);
-    this.jQueryObject.eightDirections().centerView(true).setWall('.wall');
+    this.jQueryObject.eightDirections().setWall('.wall').collision('.wall', function() {
+      return $(this).stop();
+    });
   }
 
   return Player;
@@ -1747,8 +1747,8 @@ Wall = (function(_super) {
   function Wall(x, y, w, h) {
     Wall.__super__.constructor.call(this, '', {
       background: 'silver',
-      width: w + 'px',
-      height: h + 'px'
+      width: (w || 32) + 'px',
+      height: (h || 32) + 'px'
     }, x, y);
     this.jQueryObject.addClass('wall');
   }
@@ -1757,14 +1757,16 @@ Wall = (function(_super) {
 
 })(Positionable);
 
-new Wall(-200, -200, 32, 400);
+cHeight = cWidth = 500;
 
-new Wall(200 - 32, -200, 32, 400);
+height = width = 64;
 
-new Wall(-200, -200, 400, 32);
+new Wall(-cWidth / 2, -cHeight / 2, width, cHeight);
 
-new Wall(-200, 200 - 32, 400, 32);
+new Wall(cWidth / 2 - width, -cHeight / 2, width, cHeight);
 
-b = new Player(-16, -16);
+new Wall(-cWidth / 2, -cHeight / 2, cWidth, height);
 
-b = new Player(-16, -16);
+new Wall(-cWidth / 2, cHeight / 2 - height, cWidth, height);
+
+b = new Player(-width / 2, -height / 2, width, height);

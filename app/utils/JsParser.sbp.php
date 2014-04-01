@@ -17,9 +17,10 @@ JsParser
 		);
 
 	+ parse $coffeeFile
+		DependancesCache::flush($coffeeFile);
 		$code = CoffeeScript\Compiler::compile(
 			preg_replace_callback(
-				'#\/\/-\s*require\s*\(?\s*([\'"])(.*(?<!\\\\)(?:\\\\{2})*)\\1(?:[ \t]*,[ \t]*(' . :YES . '|' . :NO . '))?[ \t]*\)?[ \t]*(?=[\n\r])#i',
+				'#\/\/-\s*require\s*\(?\s*([\'"])(.*(?<!\\\\)(?:\\\\{2})*)\\1(?:[ \t]*,[ \t]*(' . :YES . '|' . :NO . '))?[ \t]*\)?[ \t]*(?=[\n\r]|$)#i',
 				f° $match use $coffeeFile
 					$file = stripslashes($match[2]);
 					$file = preg_match('#^(http|https|ftp|sftp|ftps):\/\/#', $file) ?
@@ -28,8 +29,9 @@ JsParser
 					$isCoffee = empty($match[3]) ?
 						ends_with($file, '.coffee') :
 						in_array(strtolower($match[3]), explode('|', :YES));
+					DependancesCache::add($coffeeFile, $file);
 					file_get_contents(**$file);
-					if !$isCoffee
+					if ! $isCoffee
 						$file = "`$file`";
 					< $file;
 				,
@@ -40,7 +42,7 @@ JsParser
 				'bare' => true
 			)
 		);
-		if !Config::get('app.debug')
+		if ! Config::get('app.debug')
 			$code = preg_replace('#;(?:\\r\\n|\\r|\\n)\\h*#', ';', $code);
 			$code = preg_replace('#(?:\\r\\n|\\r|\\n)\\h*#', ' ', $code);
 		< $code;
