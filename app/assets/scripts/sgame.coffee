@@ -1,0 +1,5 @@
+//- require 'jquery-1.11.0.min'
+//- require 'core'
+//- require 'game'
+//- require 'includes/menu'
+//- require 'games/builder'

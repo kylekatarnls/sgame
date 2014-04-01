@@ -2,9 +2,9 @@
 
 if(!defined('DB_NAME'))
 {
-	define('DB_NAME', 'insearch');
-	define('DB_USER', 'insearch');
-	define('DB_PASS', 'r6y_7|Hj{-SQdf');
+	define('DB_NAME', 'sgame');
+	define('DB_USER', 'sgame');
+	define('DB_PASS', 'Y7f8_IuD9[tK-Sx');
 }
 
 return array(

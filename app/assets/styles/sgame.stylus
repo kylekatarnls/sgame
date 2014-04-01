@@ -1,0 +1,128 @@
+footer-height = 0px
+neg-footer-height = 0px
+min-width = 350px
+login-menu-width = 242px
+odd-bg = #eef0f2
+even-bg = #f5f6f7
+
+@import "bootstrap.min.css"
+
+html
+body
+	height 100%
+
+body
+	padding-top footer-height
+	min-width min-width
+
+.navbar
+	margin-bottom 0
+	min-width min-width
+
+.square
+	margin-left -1px
+	[[border-radius 0]]
+
+#languages
+	fl
+	rel
+	margin 8px 0 0 12px
+
+.header-option .dropdown-menu
+	fr
+	margin 4px 0 0 -156px
+
+a.source
+	color silver
+	font-size 0.85em
+
+.header-option
+.option-panel
+	fr
+	rel
+
+.header-option
+	margin 3px 0 -2px
+
+	& .glyphicon
+		font-size 2em
+
+	&:hover
+		color #586999
+
+.option-panel
+	width 50%
+
+	form
+		dn
+		rel -2 8
+		oh
+
+h3 a .glyphicon
+	db
+	fl
+	color silver
+	font-size 17px
+	margin 5px 8px 0 0
+
+h3 a:visited .glyphicon
+	color blue
+
+h3 .rate
+	font-size .5em
+
+h3 a.remove
+	& .glyphicon
+		margin-top 4px
+		color #e77
+	&:hover .glyphicon
+		color red
+
+form.login
+	min-width min-width
+	width 50%
+	margin auto
+	& .input-group,
+	& .btn
+		width 100%
+	a
+		db
+		tac
+		padding 1px
+
+#login-menu .dropdown-menu
+	top 34px
+	& form.login
+		margin 0 4px
+		width login-menu-width
+		min-width login-menu-width
+		& .glyphicon
+			font-size 14px
+
+#wrap
+	min-height 100%
+	height auto !important
+	height 100%
+	margin 0 auto neg-footer-height
+	padding 0 0 footer-height
+
+#footer
+	height footer-height
+	background-color #e8e8e8
+
+	p
+		margin 0
+		padding 10px
+		tac
+
+button.remember-me
+	[[opacity .5]]
+	.selected
+		[[opacity 1]]
+		[[box-shadow inset 0 0 10px #a6c0ff]]
+
+#origin
+	abs 50% 50%
+
+	& .mobile
+		abs

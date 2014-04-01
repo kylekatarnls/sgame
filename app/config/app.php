@@ -187,10 +187,8 @@ return array(
 	*/
 
 	'trusted' => array(
-		'project-livec9589c309a2f.rhcloud.com',
-		'insearch-c9-kylekatarn.c9.io',
-		'insearch.selfbuild.fr',
-		'insearch',
+		'sgame.selfbuild.fr',
+		'sgame',
 		'localhost',
 	),
 

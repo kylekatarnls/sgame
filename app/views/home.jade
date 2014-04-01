@@ -1,19 +1,4 @@
-extends layouts/insearch
+extends layouts/sgame
 
 block content
-	h1
-		=§('global.title')
-	if isset($url)
-		include includes/alert
-		params = array('url' => '<strong>' . $url . '</strong>')
-		case state
-			when Crawler::NOT_FOUND
-				+alert('danger', 'global.url-not-found', $params)
-			when Crawler::DUPLICATED
-				+alert('warning', 'global.duplicated-content', $params)
-			default
-				message = 'global.url-' . ($state === Crawler::ADDED ? 'added' : 'updated')
-				+alert('success', $message, $params)
-
-	include includes/searchbar
-	+searchbar('', $resultsPerPage)
+	#origin
