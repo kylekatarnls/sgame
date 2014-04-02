@@ -1579,6 +1579,11 @@ function getDirection(x1, y1, x2, y2){
 				});
 			}
 		},
+		move: function (fct) {
+			return typeof(fct) === 'undefined' ?
+				$(this).trigger('reMove'):
+				$(this).on('reMove', fct);
+		},
 		platform: function (speed, jumpForce, gravityForce, controls){
 			if(typeof(speed) === 'object'){
 				var inter = jumpForce;
@@ -1594,6 +1599,18 @@ function getDirection(x1, y1, x2, y2){
 				var inter = controls;
 				controls = gravityForce;
 				gravityForce = inter;
+			}
+			if(typeof(controls.jumpForce) !== 'undefined'){
+				jumpForce = controls.jumpForce;
+				delete controls.jumpForce;
+			}
+			if(typeof(controls.gravityForce) !== 'undefined'){
+				gravityForce = controls.gravityForce;
+				delete controls.gravityForce;
+			}
+			if(typeof(controls.speed) !== 'undefined'){
+				speed = controls.speed;
+				delete controls.speed;
 			}
 			if(typeof(jumpForce) === 'undefined'){
 				jumpForce = 100;
@@ -1681,10 +1698,20 @@ $(document).on('click', '.remember-me', function() {
 
 Positionable = (function() {
 
+  Positionable.prototype.tag = 'div';
+
   function Positionable(content, style, x, y) {
+    var classes, ctor, id;
     this.x = x || 0;
     this.y = y || 0;
-    this.jQueryObject = $('<div class="mobile">' + content + '</div>').appendTo('#origin').css($.extend({
+    ctor = this.constructor;
+    id = ctor.name.toLowerCase();
+    classes = [id];
+    while (typeof ctor.__super__ === 'object') {
+      ctor = ctor.__super__.constructor;
+      classes.push(ctor.name.toLowerCase());
+    }
+    this.jQueryObject = $('<' + this.tag + ' ' + ($('#' + id).length ? '' : id = 'id="' + id + '"') + ' class="' + classes.join(' ') + '">' + content + '</' + this.tag + '>').appendTo('#origin').css($.extend({
       left: this.x + 'px',
       top: this.y + 'px'
     }, style || {
@@ -1723,16 +1750,20 @@ Player = (function(_super) {
 
   __extends(Player, _super);
 
+  Player.prototype.tag = 'img';
+
   function Player(x, y, w, h) {
-    Player.__super__.constructor.call(this, 'A', {
+    Player.__super__.constructor.call(this, '', {
       background: 'gray',
       textAlign: 'center',
       lineHeight: (h || 32) + 'px',
       width: (w || 32) + 'px',
       height: (h || 32) + 'px'
     }, x, y);
-    this.jQueryObject.eightDirections().setWall('.wall').collision('.wall', function() {
-      return $(this).stop();
+    this.jQueryObject.attr('src', 'https://www.google.fr/images/srpr/logo11w.png').attr('alt', 'Joueur').setWall('.wall').platform({
+      speed: 0.2,
+      jumpForce: 90,
+      gravityForce: 6
     });
   }
 
@@ -1757,7 +1788,7 @@ Wall = (function(_super) {
 
 })(Positionable);
 
-cHeight = cWidth = 500;
+cHeight = cWidth = 600;
 
 height = width = 64;
 

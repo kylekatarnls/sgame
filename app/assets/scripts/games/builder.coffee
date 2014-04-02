@@ -1,38 +1,11 @@
-
-class Positionable
-
-	constructor: (content, style, x, y) ->
-		@x = x || 0
-		@y = y || 0
-		@jQueryObject = $('<div class="mobile">' + content + '</div>')
-			.appendTo('#origin')
-			.css($.extend({
-					left: @x + 'px'
-					top: @y + 'px'
-				},
-				style || {
-					background: 'gray'
-					width: '32px'
-					height: '32px'
-				}
-			))
-
-
-class Mobile extends Positionable
-
-	move: (x, y) ->
-		@x += x
-		@y += y
-		@jQueryObject.animate(
-			left: @x
-			top: @y
-		)
-
+//- require 'geoobject'
 
 class Player extends Mobile
 
+	tag: 'img'
+
 	constructor: (x, y, w, h) ->
-		super 'A', 
+		super '', 
 			background: 'gray'
 			textAlign: 'center'
 			lineHeight: (h || 32) + 'px'
@@ -40,10 +13,14 @@ class Player extends Mobile
 			height: (h || 32) + 'px'
 		, x, y
 		@jQueryObject
-			.eightDirections()
+			.attr('src', 'https://www.google.fr/images/srpr/logo11w.png')
+			.attr('alt', 'Joueur')
 			.setWall('.wall')
-			.collision '.wall', ->
-				$(@).stop()
+			#.eightDirections()
+			.platform
+				speed: 0.2
+				jumpForce: 90
+				gravityForce: 6
 
 
 class Wall extends Positionable
@@ -57,7 +34,7 @@ class Wall extends Positionable
 		@jQueryObject.addClass 'wall'
 
 
-cHeight = cWidth = 500
+cHeight = cWidth = 600
 height = width = 64
 new Wall -cWidth/2, -cHeight/2, width, cHeight
 new Wall cWidth/2-width, -cHeight/2, width, cHeight

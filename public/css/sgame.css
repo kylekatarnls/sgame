@@ -147,6 +147,6 @@ button.remember-me.selected {
 	left: 50%;
 	top: 50%;
 }
-#origin .mobile {
+#origin .positionable {
 	position: absolute;
 }

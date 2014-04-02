@@ -974,6 +974,11 @@ function getDirection(x1, y1, x2, y2){
 				});
 			}
 		},
+		move: function (fct) {
+			return typeof(fct) === 'undefined' ?
+				$(this).trigger('reMove'):
+				$(this).on('reMove', fct);
+		},
 		platform: function (speed, jumpForce, gravityForce, controls){
 			if(typeof(speed) === 'object'){
 				var inter = jumpForce;
@@ -989,6 +994,18 @@ function getDirection(x1, y1, x2, y2){
 				var inter = controls;
 				controls = gravityForce;
 				gravityForce = inter;
+			}
+			if(typeof(controls.jumpForce) !== 'undefined'){
+				jumpForce = controls.jumpForce;
+				delete controls.jumpForce;
+			}
+			if(typeof(controls.gravityForce) !== 'undefined'){
+				gravityForce = controls.gravityForce;
+				delete controls.gravityForce;
+			}
+			if(typeof(controls.speed) !== 'undefined'){
+				speed = controls.speed;
+				delete controls.speed;
 			}
 			if(typeof(jumpForce) === 'undefined'){
 				jumpForce = 100;

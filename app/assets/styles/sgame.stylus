@@ -124,5 +124,5 @@ button.remember-me
 #origin
 	abs 50% 50%
 
-	& .mobile
+	& .positionable
 		abs
