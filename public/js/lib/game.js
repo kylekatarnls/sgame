@@ -182,6 +182,36 @@ function getDirection(x1, y1, x2, y2){
 				$elem.centerView();
 			}
 		},
+		fadeFrom: function (from, duration) {
+			var $this = $(this), to = {
+				opacity: 1,
+				left: $this.css('left'),
+				top: $this.css('top'),
+				scale: 1
+			},
+			options = {
+				step: function (now, fx) {
+					if(fx.prop === 'scale') {
+						$this.css3({
+							transform: 'scale('+now+')'
+						});
+					}
+				}
+			};
+			if(typeof(duration) !== 'undefined') {
+				otpions.duration = duration;
+			}
+			return $this.appendTo(from)
+			.animate($.extend({
+				opacity: 0,
+				left: 0,
+				top: 0,
+				scale: 0
+			}, css3({
+				transform: 'scale(0)'
+			})), 0)
+			.animate(to, options);
+		},
 		collision: function (target, fct){
 			targets.push([this, target, fct]);
 			return $(this);
