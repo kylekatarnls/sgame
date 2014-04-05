@@ -1166,19 +1166,123 @@ function getDirection(x1, y1, x2, y2){
 						.addClass(bulletClassName)
 						.css('position', 'absolute')
 						.center($this)
-						.animate({
-							left: $dom.offset().left-Math.round(1500*Math.sin(Math.PI*direction/180)),
-							top: $dom.offset().top+Math.round(1500*Math.cos(Math.PI*direction/180))
-						}, {
-							duration: 1000/(speed||1),
-							easing: "linear",
-							complete: function (){
-								$dom.remove();
-							},
-							step: $.fn.collisionTest
-						});
+						.goTo(
+							$dom.offset().left-1500*Math.sin(Math.PI*direction/180),
+							$dom.offset().top+1500*Math.cos(Math.PI*direction/180), {
+								speed: speed,
+								complete: function (){
+									$dom.remove();
+								},
+								step: $.fn.collisionTest
+							}
+						);
 				}
 			});
+		},
+		farestAvailablePosition: function (x, y, targets) {
+			x = Math.round(x);
+			y = Math.round(y);
+			iniX = x;
+			iniY = y;
+			ratio = 1;
+			var $this = $(this),
+			mWidth = $this.width(),
+			mHeight = $this.height(),
+			mLeft = $this.offset().left,
+			mTop = $this.offset().top,
+			cssLeft = parseInt($this.css('left')),
+			cssTop = parseInt($this.css('top')),
+			horizontal = Math.abs(cssLeft - x) > Math.abs(cssTop - y),
+			sens = horizontal ? (cssLeft > x ? -1 : 1) : (cssTop > y ? -1 : 1);
+			if(cssLeft != x || cssTop != y) {
+				$(targets || $this.data('wall')).each(function () {
+					var $target = $(this),
+					tLeft = $target.offset().left,
+					tTop = $target.offset().top,
+					tWidth = $target.width(),
+					tHeight = $target.height();
+					if(horizontal) {
+						for(var ix = cssLeft; ix != x; ix += sens) {
+							var iy = cssTop + (ix - cssLeft) / (y - cssTop);
+							if(ix + mWidth > tLeft && tLeft + tWidth < ix
+							&& iy + mHeight > tTop && tTop + tHeight < iy) {
+								console.log('ici');
+								console.log($target);
+								x = ix;
+								y = iy;
+								ratio = (x - cssLeft) / (iniX - cssLeft);
+								break;
+							}
+						}
+					}
+					else {
+						for(var iy = cssTop; iy != y; iy += sens) {
+							var ix = cssLeft + (iy - cssTop) / (x - cssLeft);
+							if(ix + mWidth > tLeft && tLeft + tWidth < ix
+							&& iy + mHeight > tTop && tTop + tHeight < iy) {
+								console.log('là');
+								console.log($target);
+								x = ix;
+								y = iy;
+								ratio = (y - cssTop) / (iniY - cssTop);
+								break;
+							}
+						}
+					}
+				});
+			}
+			return {
+				left: Math.round(x),
+				top: Math.round(y),
+				ratio: ratio
+			};
+		},
+		goTo: function (x, y, options) {
+			var $this = $(this),
+			left = parseInt($this.css('left')),
+			top = parseInt($this.css('top'));
+			if(typeof(x) === 'undefined' || x === null) {
+				x = left;
+			}
+			if(typeof(x) === 'undefined' || x === null) {
+				x = top;
+			}
+			x += '';
+			y += '';
+			if(x.charAt(1) === '=') {
+				x = left + (x.charAt(0) === '-' ? -1 : 1) * parseFloat(x.substr(2));
+			}
+			if(y.charAt(1) === '=') {
+				y = top + (y.charAt(0) === '-' ? -1 : 1) * parseFloat(y.substr(2));
+			}
+			x = Math.round(x * 1);
+			y = Math.round(y * 1);
+			if(isNaN(x)) {
+				x = left;
+			}
+			if(isNaN(y)) {
+				y = top;
+			}
+			options = $.extend(options || {}, {
+					easing: "linear"
+					,step: $.fn.collisionTest
+				});
+			if(typeof(options.speed) !== 'undefined') {
+				options.duration = 1000 / (options.speed || 1);
+			}
+			//var pos = $this.farestAvailablePosition(x, y, options.targets);
+			pos = { left: x, top: y };
+			options.duration *= pos.ratio;
+			delete pos.ratio;
+			if(pos.left == left) {
+				delete pos.left;
+			}
+			if(pos.top == top) {
+				delete pos.top;
+			}
+			return pos === {} ?
+				$this.stop() :
+				$this.stop().animate(pos, options);
 		},
 		setExplodeSound: function (s){
 			sound.create(s);
@@ -1231,22 +1335,20 @@ function getDirection(x1, y1, x2, y2){
 				var $this = $(this),
 				angle = $this.dir()*Math.PI/180,
 				duration = 100/(speed||1);
-				$this.animate({
-					left: '-='+Math.round(Math.sin(angle)*100),
-					top: '+='+Math.round(Math.cos(angle)*100)
-				}, {
-					duration: duration,
-					easing: "linear",
-					complete: function (){
-						if(limit > 0){
-							$this.goAhead(speed, limit - duration, fct);
+				$this.gotTo(
+					'-='+Math.sin(angle)*100,
+					'+='+Math.cos(angle)*100, {
+						duration: duration,
+						complete: function (){
+							if(limit > 0){
+								$this.goAhead(speed, limit - duration, fct);
+							}
+							else if(typeof(fct) === 'function'){
+								fct.call(this);
+							}
 						}
-						else if(typeof(fct) === 'function'){
-							fct.call(this);
-						}
-					},
-					step: $.fn.collisionTest
-				});
+					}
+				);
 			});
 		},
 		eightDirections: function (speed, controls){
@@ -1262,66 +1364,43 @@ function getDirection(x1, y1, x2, y2){
 			.on('reMove', function (){
 				var $this = $(this);
 				$this.trigger('control', [$this.data()]);
-				function move(dir, pos){
+				function move(dir, x, y){
 					return $this
 						.dir(dir)
-						.stop()
-						.animate(pos, {
+						.goTo(x, y, {
 							duration: 100,
-							easing: "linear",
 							complete: function (){
 								$this.trigger('reMove');
-							},
-							step: $.fn.collisionTest
+							}
 						});
 				}
 				if($this.data('up')){
 					if($this.data('left')){
-						return move(135, {
-							top: '-='+diagonale,
-							left: '-='+diagonale
-						});
+						return move(135, '-='+diagonale, '-='+diagonale);
 					}
 					else if($this.data('right')){
-						return move(225, {
-							top: '-='+diagonale,
-							left: '+='+diagonale
-						});
+						return move(225, '+='+diagonale, '-='+diagonale);
 					}
 					else {
-						return move(180, {
-							top: '-='+speed
-						});
+						return move(180, null, '-='+speed);
 					}
 				}
 				else if($this.data('down')){
 					if($this.data('left')){
-						return move(45, {
-							top: '+='+diagonale,
-							left: '-='+diagonale
-						});
+						return move(45, '-='+diagonale, '+='+diagonale);
 					}
 					else if($this.data('right')){
-						return move(315, {
-							top: '+='+diagonale,
-							left: '+='+diagonale
-						});
+						return move(315, '+='+diagonale, '+='+diagonale);
 					}
 					else {
-						return move(0, {
-							top: '+='+speed
-						});
+						return move(0, null, '+='+speed);
 					}
 				}
 				else if($this.data('left')){
-					return move(90, {
-						left: '-='+speed
-					});
+					return move(90, '-='+speed, null);
 				}
 				else if($this.data('right')){
-					return move(270, {
-						left: '+='+speed
-					});
+					return move(270, '+='+speed, null);
 				}
 				return $this.stop();
 			});
@@ -1353,19 +1432,15 @@ function getDirection(x1, y1, x2, y2){
 				var up = $this.data('up');
 				if(up || $this.data('down')){
 					var angle = ($this.dir()+(up ? 0 : 180))%360*Math.PI/180;
-					$this
-						.stop()
-						.animate({
-							left: '-='+Math.round(Math.sin(angle)*speed),
-							top: '+='+Math.round(Math.cos(angle)*speed)
-						}, {
+					$this.goTo(
+						'-='+Math.round(Math.sin(angle)*speed),
+						'+='+Math.round(Math.cos(angle)*speed), {
 							duration: 50,
-							easing: "linear",
 							complete: function (){
 								$this.trigger('reMove');
-							},
-							step: $.fn.collisionTest
-						});
+							}
+						}
+					);
 				}
 				return $this;
 			});
@@ -1656,17 +1731,14 @@ function getDirection(x1, y1, x2, y2){
 					if(top !== 0){
 						pos.top = (top<0 ? '-' : '+')+'='+Math.abs(top);
 					}
-					return $this
-					.stop()
-					.animate(pos, {
+					return $this.goTo(pos.left, pos.top, {
 						duration: 50,
-						easing: "linear",
 						complete: function (){
 							$this.trigger('reMove');
 						},
 						step: function (now, fx){
 							$.fn.unblock.call(this, null, 0, fx);
-							return $.fn.collisionTest.call(this, now, fx);
+							//return $.fn.collisionTest.call(this, now, fx);
 						}
 					});
 				}
