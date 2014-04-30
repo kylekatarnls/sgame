@@ -3,3 +3,6 @@
 //- require 'game'
 //- require 'includes/menu'
 //- require 'games/chat'
+//- require 'games/builder'
+//- require 'underscore'
+//- require 'modernizr'
