@@ -83,7 +83,7 @@ App::after(f° $request, $response
 
 Route::filter('auth', f°()
 	if (Auth::guest())
-		<Redirect::guest('login')
+		<Redirect::guest('/user/login')
 )
 
 
@@ -140,3 +140,4 @@ Route::filter('csrf', f°()
 */
 
 CrawledContent::observe(new CrawledContentObserver)
+Message::observe(new MessageObserver)

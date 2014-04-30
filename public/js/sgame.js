@@ -1780,9 +1780,7 @@ function getDirection(x1, y1, x2, y2){
 	});
 })([]);;
 
-var Mobile, Player, Positionable, Wall, b, cHeight, cWidth, height, width,
-  __hasProp = {}.hasOwnProperty,
-  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+var ajaxUrl, waitForNewMessages;
 
 $('.dropdown-toggle').click(function() {
   $('[aria-labelledby="' + $(this).attr('id') + '"]').slideToggle();
@@ -1798,108 +1796,26 @@ $(document).on('click', '.remember-me', function() {
   }
 });
 
-Positionable = (function() {
+ajaxUrl = '../..' + $('#chat [name="ajax-url"]').val();
 
-  Positionable.prototype.tag = 'div';
-
-  function Positionable(content, style, x, y) {
-    var classes, ctor, id;
-    this.x = x || 0;
-    this.y = y || 0;
-    ctor = this.constructor;
-    id = ctor.name.toLowerCase();
-    classes = [id];
-    while (typeof ctor.__super__ === 'object') {
-      ctor = ctor.__super__.constructor;
-      classes.push(ctor.name.toLowerCase());
-    }
-    this.jQueryObject = $('<' + this.tag + ' ' + ($('#' + id).length ? '' : id = 'id="' + id + '"') + ' class="' + classes.join(' ') + '">' + content + '</' + this.tag + '>').appendTo('#origin').css($.extend({
-      left: this.x + 'px',
-      top: this.y + 'px'
-    }, style || {
-      background: 'gray',
-      width: '32px',
-      height: '32px'
-    }));
-  }
-
-  return Positionable;
-
-})();
-
-Mobile = (function(_super) {
-
-  __extends(Mobile, _super);
-
-  function Mobile() {
-    return Mobile.__super__.constructor.apply(this, arguments);
-  }
-
-  Mobile.prototype.move = function(x, y) {
-    this.x += x;
-    this.y += y;
-    return this.jQueryObject.animate({
-      left: this.x,
-      top: this.y
+$('#chat [name="message"]').focus().keypress(function(e) {
+  if (e.keyCode === 13) {
+    ajax(ajaxUrl, {
+      message: $(this).val(),
+      _token: $('#chat [name="_token"]').val()
+    }, function(data) {
+      return console.log(data);
     });
-  };
-
-  return Mobile;
-
-})(Positionable);
-
-Player = (function(_super) {
-
-  __extends(Player, _super);
-
-  Player.prototype.tag = 'img';
-
-  function Player(x, y, w, h) {
-    Player.__super__.constructor.call(this, '', {
-      background: 'gray',
-      textAlign: 'center',
-      lineHeight: (h || 32) + 'px',
-      width: (w || 32) + 'px',
-      height: (h || 32) + 'px'
-    }, x, y);
-    this.jQueryObject.attr('src', 'https://www.google.fr/images/srpr/logo11w.png').attr('alt', 'Joueur').setWall('.wall').platform({
-      speed: 0.2,
-      jumpForce: 90,
-      gravityForce: 6
-    });
+    $(this).val('');
+    e.preventDefault();
+    e.stopPropagation();
+    return false;
   }
+});
 
-  return Player;
-
-})(Mobile);
-
-Wall = (function(_super) {
-
-  __extends(Wall, _super);
-
-  function Wall(x, y, w, h) {
-    Wall.__super__.constructor.call(this, '', {
-      background: 'silver',
-      width: (w || 32) + 'px',
-      height: (h || 32) + 'px'
-    }, x, y);
-    this.jQueryObject.addClass('wall');
-  }
-
-  return Wall;
-
-})(Positionable);
-
-cHeight = cWidth = 600;
-
-height = width = 64;
-
-new Wall(-cWidth / 2, -cHeight / 2, width, cHeight);
-
-new Wall(cWidth / 2 - width, -cHeight / 2, width, cHeight);
-
-new Wall(-cWidth / 2, -cHeight / 2, cWidth, height);
-
-new Wall(-cWidth / 2, cHeight / 2 - height, cWidth, height);
-
-b = new Player(-width / 2, -height / 2, width, height);
+waitForNewMessages = function() {
+  return ajax(ajaxUrl, {}, function(data) {
+    console.log(data);
+    return waitForNewMessages();
+  });
+};

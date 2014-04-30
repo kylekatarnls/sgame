@@ -65,6 +65,11 @@ Route::post('/user/signin', 'UserController@trySignin')->before('csrf')
 // Administration des utilisateurs
 Route::get('/user/list', 'UserController@listAll')
 
+//// Chat
+Route::get('/chat/{canal}', 'ChatController@html')->before('auth')
+Route::post('/chat/{canal}', 'ChatController@html')->before(array('csrf', 'auth'))
+Route::post('/chat/ajax/{canal}', 'ChatController@json')->before(array('csrf', 'auth'))
+
 // Gestion de l'erreur 404
 App::missing(f°
 	< BaseController::notFound()

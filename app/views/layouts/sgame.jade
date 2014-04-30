@@ -57,7 +57,14 @@ html(lang=lang())
 								li
 									a(href=e(URL::to('')))
 										=§('global.home')
-		block content
+			.container
+				if Session::has('alert')
+					include ../includes/alert
+					type = Session::get('alert-type', 'danger')
+					message = Session::get('alert')
+					+alert(type, message)
+				block content
+				block end-content
 
 		block js
 			!=script('sgame')

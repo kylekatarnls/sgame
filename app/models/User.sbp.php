@@ -43,6 +43,11 @@ User:Eloquent <<< UserInterface, RemindableInterface
 	s+ current
 		< ($user = Auth::user()) ? $user : new static;
 
+
+	+ messages
+		<>hasMany('message')
+
+
 	+ setPasswordAttribute $password
 		>attributes['password'] = Hash::make($password);
 

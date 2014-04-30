@@ -2,4 +2,4 @@
 //- require 'core'
 //- require 'game'
 //- require 'includes/menu'
-//- require 'games/mmo'
+//- require 'games/chat'

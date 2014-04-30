@@ -1,0 +1,21 @@
+extends layouts/sgame
+
+block content
+	h1.
+		Chat
+
+	#messages
+		each message in messages
+			.message
+				.date
+					=$message->created_at->format('l jS \\of F Y h:i:s A')
+				.avatar
+					!=$message->avatar
+				.content
+					=$message
+
+	!=Form::open('/chat/' . $canal, array('id' => 'chat'))
+		!=Form::hidden('ajax-url', '/chat/ajax/' . $canal)
+		!=Form::hidden('back-url', backUri('/chat/' . $canal))
+		!=Form::text('message', '', 'form-control', "Message")
+	!=Form::close()
