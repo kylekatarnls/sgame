@@ -22,8 +22,8 @@ Route::post('/', 'HomeController@searchResultForm')
 Route::pattern('q', '[^/]+')
 Route::pattern('resultsPerPage', '[1-9][0-9]*')
 Route::pattern('page', '[1-9][0-9]*')
-Route::get('/{q}', 'HomeController@searchResult')
-Route::get('/{page}/{q}/{resultsPerPage?}', 'HomeController@searchResult')
+#Route::get('/{q}', 'HomeController@searchResult')
+#Route::get('/{page}/{q}/{resultsPerPage?}', 'HomeController@searchResult')
 
 // Clic sur un lien sortant
 Route::model('crawledContent', 'CrawledContent')
@@ -72,5 +72,17 @@ Route::post('/chat/ajax/{canal}', 'ChatController@json')->before(array('csrf', '
 
 // Gestion de l'erreur 404
 App::missing(f°
+	$uri = trim(str_replace('/.', '/', '/' . __URI), '/')
+	$controllerName = preg_replace('#[^a-zA-Z0-9_/]#', '', $uri) . 'Controller'
+	$file = __DIR . '/controllers/' . $controllerName . '.php'
+	if \Sbp\Sbp::fileExists($file, $path)
+		include_once $path
+		$class = '\\'.strtr($controllerName, '/', '\\');
+		$controller = new $class
+		< $controller->getOutput()
+	$view = preg_replace('#[^a-zA-Z0-9._/-]#', '', $uri)
+	if file_exists(dirname(__DIR . '/views/' . $view))
+		$controller = new HtmlController
+		< $controller->getView($view)
 	< BaseController::notFound()
 )

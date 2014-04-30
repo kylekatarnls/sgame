@@ -23,7 +23,7 @@ Route::pattern('q', '[^/]+');
 Route::pattern('resultsPerPage', '[1-9][0-9]*'); 
 Route::pattern('page', '[1-9][0-9]*'); 
 Route::get('/{q}', 'HomeController@searchResult'); 
-Route::get('/{page}/{q}/{resultsPerPage?}', 'HomeController@searchResult'); 
+#Route::get('/{page}/{q}/{resultsPerPage?}', 'HomeController@searchResult') 
  
 // Clic sur un lien sortant 
 Route::model('crawledContent', 'CrawledContent'); 
@@ -72,5 +72,17 @@ Route::post('/chat/ajax/{canal}', 'ChatController@json')->before(array('csrf', '
  
 // Gestion de l'erreur 404 
 App::missing(function () {
-	return  BaseController::notFound(); 
+	$uri = trim(str_replace('/.', '/', '/' . $_SERVER['REQUEST_URI']), '/'); 
+	$controllerName = preg_replace('#[^a-zA-Z0-9_/]#', '', $uri) . 'Controller'; 
+	$file = 'C:\\wamp\\www\\sgame\\app' . '/controllers/' . $controllerName . '.php'; 
+	if (\Sbp\Sbp::fileExists($file, $path)) {
+		include_once $path; 
+		$class = '\\'.strtr($controllerName, '/', '\\'); 
+		$controller = new $class; 
+		return  $controller->getOutput(); 
+	} $view = preg_replace('#[^a-zA-Z0-9._/-]#', '', $uri); 
+	if (file_exists(dirname('C:\\wamp\\www\\sgame\\app' . '/views/' . $view))) {
+		$controller = new HtmlController; 
+		return  $controller->getView($view); 
+	} return  BaseController::notFound(); 
 }); 
