@@ -22,7 +22,7 @@ Route::post('/', 'HomeController@searchResultForm');
 Route::pattern('q', '[^/]+'); 
 Route::pattern('resultsPerPage', '[1-9][0-9]*'); 
 Route::pattern('page', '[1-9][0-9]*'); 
-Route::get('/{q}', 'HomeController@searchResult'); 
+#Route::get('/{q}', 'HomeController@searchResult') 
 #Route::get('/{page}/{q}/{resultsPerPage?}', 'HomeController@searchResult') 
  
 // Clic sur un lien sortant 

@@ -1,8 +1,13 @@
-//- require 'jquery-1.11.0.min'
-//- require 'core'
-//- require 'game'
-//- require 'includes/menu'
-//- require 'games/chat'
-//- require 'games/builder'
-//- require 'underscore'
-//- require 'modernizr'
+#(->
+	//- require 'jquery-1.11.0.min'
+	//- require 'core'
+	//- require 'game'
+	//- require 'includes/menu'
+	//- require 'games/chat'
+	//- require 'games/builder'
+	//- require 'underscore'
+	//- require 'modernizr'
+#)()
+
+#delete window.jQuery
+#delete window._
