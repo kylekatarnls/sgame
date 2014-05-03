@@ -123,6 +123,10 @@ function prop($prop, $method = null, $args = [])
 		(new Object)->$prop:
 		call_user_func_array([(new Object)->$prop, $method], $args);
 }
+function get_inline_script()
+{
+	return prop('cJavascript', 'html');
+}
 function get_args($gArg)
 {
 	$gArg = (array) $gArg;

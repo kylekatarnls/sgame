@@ -2,14 +2,35 @@
 
 namespace Hologame;
 
+use Closure, ReflectionClass;
+
 class Javascript extends Object
 {
 	protected $js = '', $delayJs = '';
 	const DELAY_OPEN = '(function ($){var f=function (){';
 	const DELAY_CLOSE = '};typeof($document)==="undefined"?$(f):$document.one("pagechange", f);})(jQuery);';
+	static public function javascriptEncore($value)
+	{
+		if($value instanceof Closure)
+		{
+			ob_start();
+			var_dump($value);
+			$ct = ob_get_contents();
+			ob_end_clean();
+			preg_match_all(
+				'#\["\$([^"]+)"\]#',
+				preg_replace('#^(?:\n|.)*\["parameter"\]=>\s*array\([1-9][0-9]*\)\s*(\{((?>[^\{\}]+)|(?-2))*\})(?:\n|.)*$#', '$1', $ct),
+				$matches
+			);
+			$params = $matches[1];
+			unset($matches, $ct);
+			return 'function (' . implode(', ', $params) . ') { ' . Jquery°Closure::execClosure($value, $params) . ' }';
+		}
+		return json_encode($value);
+	}
 	static public function params(array $params)
 	{
-		$params = get_array_or_raw('json_encode', $params);
+		$params = get_array_or_raw([__CLASS__, 'javascriptEncore'], $params);
 		return '('.implode(', ', $params).')';
 	}
 	static public function openRegex($code = '(.*)')

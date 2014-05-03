@@ -2,11 +2,11 @@
 
 function raw($string)
 {
-	return new Raw($string);
+	return new \Hologame\Raw($string);
 }
 function get_string_or_raw($callback, $string)
 {
-	if(is_a($string, 'Raw'))
+	if($string instanceof \Hologame\Raw)
 	{
 		return strval($string);
 	}

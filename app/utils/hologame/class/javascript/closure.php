@@ -2,35 +2,44 @@
 
 namespace Hologame;
 
+use Closure;
+
 class Jquery°Closure extends Object
 {
-	protected $js = '';
-	public function __construct($params)
+	protected $insctructions;
+	protected $name;
+	public function __construct(&$insctructions, $name)
 	{
-		list($selector) = $params;
-		$this->js = '$('.get_string_or_raw('json_encode', $selector).')';
+		$this->insctructions = &$insctructions;
+		$this->name = $name;
 	}
-	public function __destruct()
+	public function raw($js)
 	{
-		if(!empty($this->js))
-		{
-			$this->cJavascript->raw($this->js());
-		}
+		$this->insctructions .= $js;
 	}
-	public function __call($function, array $params)
+	public function __call($method, array $params)
 	{
-		$this->js .= '.'.$function.Javascript::params($params);
-		return $this;
+		$this->raw($this->name . '.' . call_user_func_array([new Javascript, $method], $params));
 	}
-	public function __toString()
+	public function getName()
 	{
-		return $this->js();
+		return $this->name;
 	}
-	public function js()
+	static public function execClosure($closure, array $params)
 	{
-		$js = $this->js.';';
-		$this->js = '';
-		return $js;
+		$insctructions = '';
+		$params = array_map(
+			function ($param) use(&$insctructions)
+			{
+				return new static($insctructions, raw($param));
+			},
+			$params
+		);
+		call_user_func_array(
+			Closure::bind($closure, new static($insctructions, raw('this')), __CLASS__),
+			$params
+		);
+		return $insctructions;
 	}
 }
 

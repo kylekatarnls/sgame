@@ -4,15 +4,27 @@ namespace Hologame;
 
 class Jquery°Call extends Object
 {
-	protected $js = '';
+	protected $js = '', $closure = null;
 	public function __construct($params)
 	{
-		list($selector) = $params;
+		if($params instanceof Jquery°Closure)
+		{
+			$this->closure = $params;
+			$selector = $params->getName();
+		}
+		else
+		{
+			list($selector) = (array) $params;
+		}
 		$this->js = '$('.get_string_or_raw('json_encode', $selector).')';
 	}
 	public function __destruct()
 	{
-		if(!empty($this->js))
+		if(!is_null($this->closure))
+		{
+			$this->closure->raw($this->js());
+		}
+		elseif(!empty($this->js))
 		{
 			$this->cJavascript->raw($this->js());
 		}
