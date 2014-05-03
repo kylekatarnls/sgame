@@ -36,12 +36,24 @@ User:Eloquent <<< UserInterface, RemindableInterface
 	* $fillable = array('email', 'password', 'flags');
 
 	/**
+	 * Token to remember auth login.
+	 *
+	 * @var array
+	 */
+	* $remember_token
+
+	/**
 	 * Return the method result for Auth::user()
 	 *
 	 * @return mixed
 	 */
 	s+ current
 		< ($user = Auth::user()) ? $user : new static;
+
+
+	+ messages
+		<>hasMany('message')
+
 
 	+ setPasswordAttribute $password
 		>attributes['password'] = Hash::make($password);
@@ -109,3 +121,12 @@ User:Eloquent <<< UserInterface, RemindableInterface
 	 */
 	+ isContributor
 		<>haveFlags(:CONTRIBUTOR);
+
+	+ getRememberToken
+		<>remember_token
+
+	+ setRememberToken $value
+		>remember_token = $value
+
+	+ getRememberTokenName
+		< 'remember_token'

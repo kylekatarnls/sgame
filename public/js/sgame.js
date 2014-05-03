@@ -1780,7 +1780,7 @@ function getDirection(x1, y1, x2, y2){
 	});
 })([]);;
 
-var Mobile, Player, Positionable, Wall, b, cHeight, cWidth, height, width,
+var Mobile, Player, Positionable, Wall, ajaxUrl, b, cHeight, cWidth, height, waitForNewMessages, width,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
@@ -1797,6 +1797,30 @@ $(document).on('click', '.remember-me', function() {
     return $(this).addClass('selected').next('input').val('on');
   }
 });
+
+ajaxUrl = '../..' + $('#chat [name="ajax-url"]').val();
+
+$('#chat [name="message"]').focus().keypress(function(e) {
+  if (e.keyCode === 13) {
+    ajax(ajaxUrl, {
+      message: $(this).val(),
+      _token: $('#chat [name="_token"]').val()
+    }, function(data) {
+      return console.log(data);
+    });
+    $(this).val('');
+    e.preventDefault();
+    e.stopPropagation();
+    return false;
+  }
+});
+
+waitForNewMessages = function() {
+  return ajax(ajaxUrl, {}, function(data) {
+    console.log(data);
+    return waitForNewMessages();
+  });
+};
 
 Positionable = (function() {
 

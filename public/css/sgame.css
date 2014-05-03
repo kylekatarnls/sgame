@@ -2,7 +2,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, nav, 
 	height: 100%;
 }
 body {
-	padding-top: 0px;
+	padding-top: 60px;
 	min-width: 350px;
 }
 .navbar {
@@ -114,6 +114,25 @@ form.login a {
 	margin: 0;
 	padding: 10px;
 	text-align: center;
+}
+#messages .message {
+	margin: 15px 0;
+	padding: 5px 6px;
+	background-color: #f2f2f2;
+}
+#messages .message .date {
+	float: right;
+	color: gray;
+}
+#messages .message .avatar {
+	float: left;
+}
+#messages .message .avatar div {
+	margin: -1px 4px -1px -1px;
+	padding: 1px 4px;
+}
+#messages .message .content {
+	margin-left: 24px;
 }
 button.remember-me {
 	filter: alpha(opacity=50);

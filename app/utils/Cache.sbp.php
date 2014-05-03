@@ -2,6 +2,8 @@
 
 Cache:\Illuminate\Support\Facades\Cache
 
+	use Wait
+
 	s+ push $key, $value, $minutes = null, $noDoublon = false
 		$array = static::get($key)
 		if ! is_array($array)

@@ -2,6 +2,8 @@
 
 BaseController:Controller
 
+	* $data = array()
+
 	/**
 	 * Setup the layout used by the controller.
 	 *
@@ -9,7 +11,7 @@ BaseController:Controller
 	 */
 	* setupLayout
 		if !is_null(>layout)
-			>layout = View::make(>layout)
+			>layout = >view(>layout)
 
 	* view $view = 'home', $data = array()
 		$jadeFile = app_path() . '/views/' . $view . '.jade'
@@ -23,7 +25,10 @@ BaseController:Controller
 				<new Illuminate\Http\Response($jade->render($jadeFile, View::withShared($data)))
 			catch BadMethodCallException $e
 				<static::notFound()
-		<View::make($view)->with($data)
+		try
+			<View::make($view)->with($data)
+		catch \InvalidArgumentException $e
+			<>notFound()
 
 	s+ response $view = 'home', $status = 200
 		$response = new Symfony\Component\HttpFoundation\Response('', $status)
@@ -35,4 +40,3 @@ BaseController:Controller
 
 	s+ wrongToken $view = 'errors/wrongToken', $status = 500
 		<static::response($view, $status)
-			
