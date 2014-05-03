@@ -1,0 +1,29 @@
+{
+	"id": "B4",
+	"gColumn": {
+		"name": {
+			"type": "text",
+			"max": "B1"
+		},
+		"password": {
+			"type": "bin",
+			"min": 20,
+			"max": 20
+		},
+		"mailHost": {
+			"type": "text",
+			"max": 255
+		},
+		"mailUser": {
+			"type": "text",
+			"max": 64
+		},
+		"register": {
+			"type": "datetime"
+		},
+		"logIn": {
+			"type": "datetime"
+		}
+	},
+	"unique": ["name"]
+}

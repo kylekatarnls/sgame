@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html lang="{{ lang }}">
+<head>
+	<title>{{ title|raw }}</title>
+	{% for meta in metas 
+		%}<meta{% for attribute in meta 
+			%} {{ attribute.name }}="{{ attribute.value }}"{%
+		endfor %}>
+	{% endfor 
+	%}{% for style in styles.head
+		%}<link rel="stylesheet" href="{{ style.href }}" media="{{ style.media }}">
+	{% endfor 
+	%}<!--[if gte IE 9]><style type="text/css">.gradient{filter:none}</style><![endif]-->
+	{% for script in scripts.head
+		%}<script type="text/javascript" src="{{ script }}"></script>
+	{% endfor %}
+	{{ style|raw }}
+	{{ headContent|raw }}
+</head>
+<body>
+	{{ body|raw }}
+	{{ inline_script|raw }}
+	{% for style in styles.body
+		%}<link rel="stylesheet" href="{{ style.href }}" media="{{ style.media }}">
+	{% endfor
+	%}{% for script in scripts.body
+		%}<script type="text/javascript" src="{{ script }}"></script>
+	{% endfor %}
+</body>
+</html>

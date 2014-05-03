@@ -1,0 +1,10 @@
+<div data-role="fieldcontain"{{ div|raw }}>
+	<select name="{{ name }}" id="{{ id }}" data-theme="" data-role="slider"{{ select|raw }}>
+		<option{% if value == (offValue ?: 'off') %} selected="selected"{% endif %} value="{{ offValue ?: 'off' }}"{{ offAttr|raw }}>
+			{{ off ?: 'Off' }}
+		</option>
+		<option{% if value == (onValue ?: 'on') %} selected="selected"{% endif %} value="{{ onValue ?: 'on' }}"{{ onAttr|raw }}>
+			{{ on ?: 'On' }}
+		</option>
+	</select>
+</div>

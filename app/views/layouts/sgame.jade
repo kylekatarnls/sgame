@@ -13,6 +13,7 @@ html(lang=lang())
 			+meta("format-detection", "telephone=no")
 		block css
 			!=style('sgame')
+			!=style('existepas')
 		block link
 			link(rel="shortcut icon", href=asset('favicon.ico'))
 		block head
@@ -57,7 +58,8 @@ html(lang=lang())
 								li
 									a(href=e(URL::to('')))
 										=§('global.home')
-		block content
+			block content
 
 		block js
 			!=script('sgame')
+			!=script('existepas')

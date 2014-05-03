@@ -1,0 +1,8 @@
+<div data-role="fieldcontain"{{ div|raw }}>
+	{% if label %}
+		<label for="{{ id }}"{{ text|raw }}>
+			{{ label|raw }}
+		</label>
+	{% endif %}
+	<input id="{{ id }}" name="{{ name }}" value="{{ value ?: 50 }}" min="{{ min ?: 0 }}" max="{{ min ?: 100 }}" data-highlight="{{ highlight ? 'true' : 'false' }}" type="range"{{ field|raw }}>
+</div>

@@ -100,5 +100,29 @@ App::down(function()
 |
 */
 
+include_once __DIR__ . '/../utils/hologame/functions.php';
+include_once __DIR__ . '/../utils/hologame/constants.php';
+define('HOLOGAME_NAMESPACE', 'Hologame');
+spl_autoload_register(function ($class)
+{
+	if(strpos($class, HOLOGAME_NAMESPACE . '\\') === 0 || strpos($class, HOLOGAME_NAMESPACE . 'Hologame°') === 0)
+	{
+		$dir = __DIR__ . '/../utils/hologame/class/';
+		$class = str_replace(['\\', '°'], '/', substr($class, strlen(HOLOGAME_NAMESPACE)));
+		$file = strtolower(ltrim($class, '/'));
+		if(file_exists($dir . $file . '.php'))
+		{
+			include_once $dir . $file . '.php';
+		}
+		elseif(file_exists($dir . $file . '/index.php'))
+		{
+			include_once $dir . $file . '/index.php';
+		}
+	}
+});
+sbp_add_plugin('jQuery', [
+	'#\$' . \Sbp\Sbp::PARENTHESES . '#' => '(new Hologame\\Jquery°Call$1)',
+	'$->' => '(new Hologame\\Jquery)->',
+]);
 sbp_include(app_path().'/filters.php');
 

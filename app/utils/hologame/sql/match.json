@@ -1,0 +1,20 @@
+{
+	"id": "B8",
+	"gColumn": {
+		"add": {
+			"type": "int",
+			"max": "B4"
+		},
+		"sub": {
+			"type": "int",
+			"max": "B4"
+		},
+		"register": {
+			"type": "datetime"
+		},
+		"state": {
+			"type": "int",
+			"max": "B1"
+		}
+	}
+}

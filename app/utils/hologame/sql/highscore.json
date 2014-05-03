@@ -1,0 +1,16 @@
+{
+	"id": "B4",
+	"gColumn": {
+		"name": {
+			"type": "text",
+			"max": "B1"
+		},
+		"score": {
+			"type": "int",
+			"max": "B2"
+		},
+		"date": {
+			"type": "datetime"
+		}
+	}
+}

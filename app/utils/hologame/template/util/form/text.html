@@ -1,0 +1,8 @@
+<div data-role="fieldcontain"{{ div|raw }}>
+	{% if label %}
+		<label for="{{ id }}"{{ text|raw }}>
+			{{ label|raw }}
+		</label>
+	{% endif %}
+	<input name="{{ name }}" id="{{ id }}" placeholder="{{ placeholder }}" value="{{ value }}" type="{{ type ?: 'text' }}"{{ field|raw }}>
+</div>

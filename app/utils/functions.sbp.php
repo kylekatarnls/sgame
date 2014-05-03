@@ -1,6 +1,6 @@
 <?
 
-f §
+@f §
 	$args = func_get_args()
 	if isset($args[1]) && is_numeric($args[1])
 		$translated = call_user_func_array('trans_choice', $args)
@@ -13,7 +13,7 @@ f §
 	< $translated
 
 
-f normalize $string, $lowerCase = true
+@f normalize $string, $lowerCase = true
 	$a = 'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûýýþÿŔŕ'
 	$b = 'aaaaaaaceeeeiiiidnoooooouuuuybsaaaaaaaceeeeiiiidnoooooouuuyybyRr'
 	utf8_decode(**$string)
@@ -25,7 +25,7 @@ f normalize $string, $lowerCase = true
 	< $string
 
 
-f array_maps $maps, array $array
+@f array_maps $maps, array $array
 	if !is_array($maps)
 		$maps = explode(',', $maps)
 
@@ -35,15 +35,15 @@ f array_maps $maps, array $array
 	< $array
 
 
-f scanUrl $url, $followLinks = false, $recursions = 0
+@f scanUrl $url, $followLinks = false, $recursions = 0
 	< Crawler::scanUrl($url, $followLinks, $recursions)
 
 
-f ip2bin $ip = null
+@f ip2bin $ip = null
 	< bin2hex(inet_pton(is_null($ip) ? Request::getClientIp() : $ip))
 
 
-f replace $replacement, $to, $string = null
+@f replace $replacement, $to, $string = null
 	if is_null($string)
 		if !is_array($replacement)
 			if !is_array($to)
@@ -84,7 +84,7 @@ f replace $replacement, $to, $string = null
 	< $string
 
 
-f accents2entities $string
+@f accents2entities $string
 	< strtr($string, array(
 		'é' => '&eacute;',
 		'è' => '&egrave;',
@@ -105,7 +105,7 @@ f accents2entities $string
 	))
 
 
-f utf8 $string
+@f utf8 $string
 	$string = str_replace('Ã ', '&agrave; ', $string)
 	if strpos($string, 'Ã') not false and strpos(utf8_decode($string), 'Ã') is false
 		$string = utf8_decode(accents2entities($string))
@@ -114,18 +114,18 @@ f utf8 $string
 	< $string
 
 
-f flashAlert $textKey, $type = 'danger'
+@f flashAlert $textKey, $type = 'danger'
 	Session::flash('alert', $textKey)
 	Session::flash('alert-type', $type)
 	if $type is 'danger'
 		Input::flash()
 
 
-f fileLastTime $file
+@f fileLastTime $file
 	< max(filemtime($file), filectime($file))
 
 
-f checkAssets $state = null
+@f checkAssets $state = null
 	static $_state = null
 	if !is_null($state)
 		$_state = !!$state
@@ -134,7 +134,7 @@ f checkAssets $state = null
 	< $_state
 
 
-f style
+@f style
 	$args = func_get_args()
 	if checkAssets()
 		$stylusFile = CssParser::stylusFile($args[0])
@@ -151,7 +151,7 @@ f style
 	< call_user_func_array(array('HTML', 'style'), $args)
 
 
-f script
+@f script
 	$args = func_get_args()
 	if checkAssets()
 		$coffeeFile = JsParser::coffeeFile($args[0])
@@ -168,7 +168,7 @@ f script
 	< call_user_func_array(array('HTML', 'script'), $args)
 
 
-f image $path, $alt = null, $width = null, $height = null, $attributes = array(), $secure = null
+@f image $path, $alt = null, $width = null, $height = null, $attributes = array(), $secure = null
 	$time = 0
 	$complete = f° $ext use &$path, &$asset, &$publicFile
 		$asset .= '.' . $ext
@@ -217,17 +217,17 @@ f image $path, $alt = null, $width = null, $height = null, $attributes = array()
 	< $image
 
 
-f lang
+@f lang
 	< Lang::locale()
 
 
-f starRate $id = '', $params = ''
+@f starRate $id = '', $params = ''
 	< (new StarPush($id))
 		->images(StarPush::GRAY_STAR, StarPush::BLUE_STAR, StarPush::GREEN_STAR)
 		->get($params)
 
 
-f array_undot $array
+@f array_undot $array
 	$results = array();
 	foreach $array as $key => $value
 		$dot = strpos($key, '.')
@@ -243,47 +243,46 @@ f array_undot $array
 	, $results)
 
 
-f backUri $currentUri
+@f backUri $currentUri
 	$uri = Request::server('REQUEST_URI')
 	if $uri === $currentUri
 		$uri = Request::server('HTTP_REFERER')
 	< $uri
 
 
-if !function_exists('http_negotiate_language')
-	f http_negotiate_language $available_languages, &$result = null
-		$http_accept_language = Request::server('HTTP_ACCEPT_LANGUAGE', '')
-		preg_match_all(
-			"/([[:alpha:]]{1,8})(-([[:alpha:]|-]{1,8}))?" .
-			"(\s*;\s*q\s*=\s*(1\.0{0,3}|0\.\d{0,3}))?\s*(,|$)/i",
-			$http_accept_language,
-			$hits,
-			PREG_SET_ORDER
-		)
-		$bestlang = $available_languages[0]
-		$bestqval = 0
-		foreach $hits as $arr
-			$langprefix = strtolower($arr[1])
-			if !empty($arr[3])
-				$langrange = strtolower($arr[3])
-				$language = $langprefix . "-" . $langrange
+@f http_negotiate_language $available_languages, &$result = null
+	$http_accept_language = Request::server('HTTP_ACCEPT_LANGUAGE', '')
+	preg_match_all(
+		"/([[:alpha:]]{1,8})(-([[:alpha:]|-]{1,8}))?" .
+		"(\s*;\s*q\s*=\s*(1\.0{0,3}|0\.\d{0,3}))?\s*(,|$)/i",
+		$http_accept_language,
+		$hits,
+		PREG_SET_ORDER
+	)
+	$bestlang = $available_languages[0]
+	$bestqval = 0
+	foreach $hits as $arr
+		$langprefix = strtolower($arr[1])
+		if !empty($arr[3])
+			$langrange = strtolower($arr[3])
+			$language = $langprefix . "-" . $langrange
 
-			else
-				$language = $langprefix
+		else
+			$language = $langprefix
 
-			$qvalue = 1.0
-			if !empty($arr[5])
-				$qvalue = floatval($arr[5])
+		$qvalue = 1.0
+		if !empty($arr[5])
+			$qvalue = floatval($arr[5])
 
-			if in_array($language, $available_languages) && ($qvalue > $bestqval)
-				$bestlang = $language
-				$bestqval = $qvalue
+		if in_array($language, $available_languages) && ($qvalue > $bestqval)
+			$bestlang = $language
+			$bestqval = $qvalue
 
-			else if in_array($langprefix, $available_languages) && (($qvalue*0.9) > $bestqval)
-				$bestlang = $langprefix
-				$bestqval = $qvalue*0.9
+		else if in_array($langprefix, $available_languages) && (($qvalue*0.9) > $bestqval)
+			$bestlang = $langprefix
+			$bestqval = $qvalue*0.9
 
-		< $bestlang
+	< $bestlang
 
 
 ?>

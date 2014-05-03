@@ -3,7 +3,18 @@
 HomeController:BaseController
 
 	+ searchBar
-		<>view('home')
+		<>view('home', [
+			'test' => $('#content pre')->click(function ($event)
+			{
+				$event->stopPropagation();
+				$($this)->fadeOut();
+			}) .
+			$->ajax({
+				url = '/page'
+				success = 'successCallback'
+				error = 'errorCallback'
+			})
+		])
 	
 	+ searchResultForm $page = 1, $q = null, $resultsPerPage = null
 		<>searchResult($page, $q, $resultsPerPage, true)

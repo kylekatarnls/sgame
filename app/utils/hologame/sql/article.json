@@ -1,0 +1,16 @@
+{
+	"id": "B4",
+	"gColumn": {
+		"date": {
+			"type": "datetime"
+		},
+		"name": {
+			"type": "text",
+			"max": "B2"
+		},
+		"content": {
+			"type": "text",
+			"max": "B3"
+		}
+	}
+}

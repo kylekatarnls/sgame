@@ -1,0 +1,33 @@
+{
+	"id": "B4",
+	"gColumn": {
+		"date": {
+			"type": "datetime"
+		},
+		"language": {
+			"type": "text",
+			"min": 2,
+			"max": 9
+		},
+		"group": {
+			"type": "text",
+			"max": "B1"
+		},
+		"idText": {
+			"type": "int",
+			"max": "B4"
+		},
+		"version": {
+			"type": "int",
+			"max": "B2"
+		},
+		"translation": {
+			"type": "text",
+			"max": "B2"
+		},
+		"score": {
+			"type": "int",
+			"max": "B3"
+		}
+	}
+}

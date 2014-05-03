@@ -11,6 +11,20 @@ sbp_include_once(app_path() . '/utils/functions.php')
 
 /*
 |--------------------------------------------------------------------------
+| Configuration de SBP
+|--------------------------------------------------------------------------
+*/
+
+@f __sbp_in $needle, $haystack = null
+	if func_num_args() is 1
+		< array_search(true, $neelde)
+	< is_array($haystack) ?
+		in_array($needle, $haystack) :
+		strpos($haystack, $needle) !== false
+
+
+/*
+|--------------------------------------------------------------------------
 | N'autoriser que les domaines de confiance si la config le précise
 |--------------------------------------------------------------------------
 */

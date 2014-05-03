@@ -1,0 +1,4 @@
+
+<form action="{{ action }}"{{ file ? ' enctype="multipart/form-data"' : '' }} method="{{ method ?: 'POST' }}"{{ form|raw }}>
+	{{ content|raw }}
+</form>

@@ -45,7 +45,7 @@ CrawledContent:Model
 				$join->on('crawled_content_key_word.key_word_id', '=', 'key_words.id')
 					->on('key_words.word', 'in', DB::raw('(' . implode(', ', array_maps(array('normalize', 'strtolower', array($calledClass, 'quote')), $values)) . ')'));
 			)
-        	->groupBy('crawled_contents.id')
+			->groupBy('crawled_contents.id')
 			->orderBy('score', 'desc');
 
 	/**

@@ -1,0 +1,14 @@
+<div data-role="fieldcontain"{{ div|raw }}>
+	{% if label %}
+		<label for="{{ id }}"{{ text|raw }}>
+			{{ label|raw }}
+		</label>
+	{% endif %}
+	<select id="{{ id }}" name="{{ name }}"{{ select|raw }}>
+		{% for option in gOption %}
+			<option value="{{ option.value ?: option.label }}"{% if (option.value ?: option.label) == value %} selected="selected"{% endif %}{{ option.attr|raw }}>
+				{{ option.label ?: option.value }}
+			</option>
+		{% endfor %}
+	</select>
+</div>

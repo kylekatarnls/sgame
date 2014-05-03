@@ -1,0 +1,54 @@
+<div class="large">
+	<h1 id="main-title">
+		{{ page_title|raw }}
+	</h1>
+	<div class="body">
+		{{ req|raw }}
+		{{ error|raw }}
+		<p class="user">
+			Administrateur connecté : <b>{{ user.name }}</b>
+		</p>
+		<hr class="clear" />
+		<div class="rel f-r">
+			{{ buttons|raw }}
+			<div class="side">
+				{{ language_selection|raw }}
+			</div>
+		</div>
+		{% if textList|length > 0 %}
+		{% set odd = true %}
+		<table id="text-list" class="h-list">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Texte</th>
+					<th>Contexte</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for data in textList %}
+					<tr class="title{{ data.host ? ' host' : '' }}">
+						<td colspan="3" class="file">{{ data.group }} <em style="font-size:0.7em;">{{ data.file }}</em></td>
+					</tr>
+					{% for text in data.gText %}
+						{% set odd = not(odd) %}
+						<tr class="{{ odd ? 'odd' : 'even' }}">
+							<td>{{ text[0] ?: '-' }}</td>
+							<td class="translate-text">{{ text[1] }}</td>
+							<td>{{ text[2] }}</td>
+						</tr>
+					{% endfor %}
+				{% endfor %}
+			</tbody>
+		</table>
+		{% else %}
+			{% if ftpForm %}
+				{{ ftpForm|raw }}
+			{% else %}
+			<p>
+				Aucun texte détecté
+			</p>
+			{% endif %}
+		{% endif %}
+	</div>
+</div>

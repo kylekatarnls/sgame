@@ -1,0 +1,9 @@
+<table class="chessboard">
+	{% for y in 1..(cols ?: rows) %}
+	<tr>
+		{% for x in 1..rows %}
+		<td class="{{ (x+y)%2 ? 'even' : 'odd' }}"></td>
+		{% endfor %}
+	</tr>
+	{% endfor %}
+</table>

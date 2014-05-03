@@ -1,0 +1,56 @@
+<!DOCTYPE HTML>
+<html lang="{{ lang }}">
+<head>
+	<title>{{ title|raw }}</title>
+	{% for meta in metas 
+		%}<meta{% for attribute in meta 
+			%} {{ attribute.name }}="{{ attribute.value }}"{%
+		endfor %}>
+	{% endfor 
+	%}{% for style in styles.head
+		%}<link rel="stylesheet" href="{{ style.href }}" media="{{ style.media }}">
+	{% endfor 
+	%}<!--[if gte IE 9]><style type="text/css">.gradient{filter:none}</style><![endif]-->
+	{% for script in scripts.head
+		%}<script type="text/javascript" src="{{ script }}"></script>
+	{% endfor %}
+</head>
+<body>
+	<div id="page" data-role="page">
+		<h1 id="main-title">
+			{{ page_title ? page_title|raw : title|raw }}
+		</h1>
+		<div class="h-960">
+			<div class="h-640">
+				<div class="h-320 h-c">
+					{{ header|raw }}
+					<div data-role="content">
+						{{ page|raw }}
+					</div>
+				</div>
+				<div class="h-320 h-r">
+					{% if hright%}
+						{{ hright|raw }}
+					{% else %}
+						{% include 'bloc/hright' %}
+					{% endif %}
+				</div>
+			</div>
+			<div class="h-320 h-l">
+				{% if hleft %}
+					{{ hleft|raw }}
+				{% else %}
+					{% include 'bloc/hleft' %}
+				{% endif %}
+			</div>
+		</div>
+		{{ inline_script|raw }}
+		{% for style in styles.body
+			%}<link rel="stylesheet" href="{{ style.href }}" media="{{ style.media }}">
+		{% endfor
+		%}{% for script in scripts.body
+			%}<script type="text/javascript" src="{{ script }}"></script>
+		{% endfor %}
+	</div>
+</body>
+</html>

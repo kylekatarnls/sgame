@@ -1,0 +1,8 @@
+<div data-role="fieldcontain"{{ div|raw }}>
+	{% if label %}
+		<label for="{{ id }}"{{ text|raw }}>
+			{{ label|raw }}
+		</label>
+	{% endif %}
+	<textarea name="{{ name }}" id="{{ id }}" placeholder="{{ placeholder }}"{{ field|raw }}>{{ value ?: content }}</textarea>
+</div>

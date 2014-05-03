@@ -1,0 +1,17 @@
+<div id="{{ id }}" data-role="fieldcontain"{{ div|raw }}>
+	<fieldset data-role="controlgroup" data-type="vertical"{{ fieldset|raw }}>
+		{% set label = label ?: legend %}
+		{% if label %}
+			<legend{{ legend|raw }}>
+				{{ label|raw }}
+			</legend>
+		{% endif %}
+		{% set gRadio = gRadio ?: (gOption ?: [{ 'value' : '' }]) %}
+		{% for radio in gRadio %}
+			<input{% if radio.value == (value ?: default) %} checked="checked"{% endif %} id="{{ radio.id ?: "radio-#{id}" }}" name="{{ radio.name ?: name }}" value="{{ radio.value }}" data-theme="c" type="radio"{{ radio.field|raw }}>
+			<label for="{{ radio.id }}"{{ radio.text|raw }}>
+				{{ radio.label|raw }}
+			</label>
+		{% endfor %}
+	</fieldset>
+</div>

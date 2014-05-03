@@ -1,0 +1,17 @@
+<div id="{{ id }}" data-role="fieldcontain"{{ div|raw }}>
+	<fieldset data-role="controlgroup" data-type="vertical"{{ fieldset|raw }}>
+		{% set label = label ?: legend %}
+		{% if label %}
+			<legend{{ legend|raw }}>
+				{{ label|raw }}
+			</legend>
+		{% endif %}
+		{% set gCheckbox = gCheckbox ?: (gOption ?: [{ 'id' : "checkbox-#{id}", 'name' : name, 'label' : label, 'field' : field, 'text' : text }]) %}
+		{% for checkbox in gCheckbox %}
+			<input id="{{ checkbox.id }}" name="{{ checkbox.name }}" value="{{ checkbox.value ?: 'on' }}"{{ checkbox.checked ? ' checked="checked"' : '' }} data-theme="c" type="checkbox"{{ checkbox.field|raw }}>
+			<label for="{{ checkbox.id }}"{{ checkbox.text|raw }}>
+				{{ checkbox.label|raw }}
+			</label>
+		{% endfor %}
+	</fieldset>
+</div>

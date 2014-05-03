@@ -1,0 +1,1 @@
+<input{% if (id ?: '') != '' %} id="{{ id }}"{% endif %}{% if (name ?: '') != '' %} name="{{ name }}"{% endif %} value="{{ value ?: label }}" type="submit"{{ field|raw }}>
