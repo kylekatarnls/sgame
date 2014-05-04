@@ -17,6 +17,10 @@ trait Trait°Object
 			'js' => 'Javascript',
 			'§' => 'Jquery',
 			'§°Call' => 'Jquery°Call',
+			'µ' => 'Jquery',
+			'µ°Call' => 'Jquery°Call',
+			'$' => 'Jquery',
+			'$°Call' => 'Jquery°Call',
 			'button°Call' => 'Html°Button',
 			'form' => 'Html°Form'
 		];
@@ -28,6 +32,8 @@ trait Trait°Object
 		switch($name)
 		{
 			case '§this':
+			case 'µthis':
+			case '$this':
 				return $this->§(raw('this'));
 		}
 		$shortcut = $this->shortcut($name);

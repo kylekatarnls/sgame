@@ -9,7 +9,7 @@ class Javascript extends Object
 	protected $js = '', $delayJs = '';
 	const DELAY_OPEN = '(function ($){var f=function (){';
 	const DELAY_CLOSE = '};typeof($document)==="undefined"?$(f):$document.one("pagechange", f);})(jQuery);';
-	static public function javascriptEncore($value)
+	static public function javascriptEncode($value)
 	{
 		if($value instanceof Closure)
 		{
@@ -28,9 +28,10 @@ class Javascript extends Object
 		}
 		return json_encode($value);
 	}
-	static public function params(array $params)
+	static public function params($params)
 	{
-		$params = get_array_or_raw([__CLASS__, 'javascriptEncore'], $params);
+		should_be_array_or_traversable($params);
+		$params = get_array_or_raw([__CLASS__, 'javascriptEncode'], $params);
 		return '('.implode(', ', $params).')';
 	}
 	static public function openRegex($code = '(.*)')

@@ -3,7 +3,6 @@
 namespace Hologame;
 
 use ArrayObject;
-use Traversable;
 
 class Html extends Object
 {
@@ -18,8 +17,9 @@ class Html extends Object
 	const URL_ATTRIBUTES = 'href src action';
 	const TAG_REG_EXP = '[a-z][a-z0-9:-]*';
 
-	public function __construct($tagName, Traversable $attributes = null)
+	public function __construct($tagName, $attributes = null)
 	{
+		should_be_array_or_traversable($attributes);
 		$this->className = new ArrayObject;
 		$this->attributes = new Html°Attributes;
 		$this->childNodes = new ArrayObject;
@@ -93,8 +93,9 @@ class Html extends Object
 			$this->attributes($attributes);
 		}
 	}
-	public function attributes(Traversable $attributes)
+	public function attributes($attributes)
 	{
+		should_be_array_or_traversable($attributes);
 		$this->checkTagName();
 		foreach($attributes as $name => $value)
 		{
@@ -102,7 +103,7 @@ class Html extends Object
 		}
 		return $this;
 	}
-	public function attr(Traversable $attributes)
+	public function attr($attributes)
 	{
 		return $this->attributes($attributes);
 	}
@@ -165,7 +166,7 @@ class Html extends Object
 	{
 		return $this->style($this->rawStyle($input, 'array'));
 	}
-	public function compiledAttributes(Traversable $input = null)
+	public function compiledAttributes($input = null)
 	{
 		$this->checkTagName();
 		if($input === null)
@@ -174,8 +175,9 @@ class Html extends Object
 		}
 		return self::htmlAttributes($input);
 	}
-	static public function htmlAttributes(Traversable $input)
+	static public function htmlAttributes($input)
 	{
+		should_be_array_or_traversable($input);
 		$attributes = '';
 		foreach($input as $name => $value)
 		{

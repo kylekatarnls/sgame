@@ -19,7 +19,7 @@ class Page°User°Connexion extends Page°User
 			{
 				if($this->cUser->isError('signIn', $key))
 				{
-					§($this->§('#'.$key)->parent()->error());
+					µ($this->§('#'.$key)->parent()->error());
 					switch($key)
 					{
 						case 'name':
@@ -168,7 +168,7 @@ class Page°User°Connexion extends Page°User
 		$this->setData('page', $this->getData('error', '').$form);
 		if($logInMode)
 		{
-			§($this->§('#'.$signInBlockId)->{$animation1[0]}(0));
+			µ($this->§('#'.$signInBlockId)->{$animation1[0]}(0));
 		}
 	}
 }

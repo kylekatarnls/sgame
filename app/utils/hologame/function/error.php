@@ -212,5 +212,14 @@ function php_error($errno, $errstr, $errfile, $errline)
 
 	error_block($error);
 }
+function should_be_array_or_traversable($value)
+{
+	if(is_array($value) or $value instanceof Traversable)
+	{
+		return true;
+	}
+	throw new \InvalidArgumentException("Must be an array or a Traversable object, you passed : " . var_export($value, true), 1);
+	return false;
+}
 
 ?>

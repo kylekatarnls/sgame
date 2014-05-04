@@ -3,11 +3,9 @@
 HomeController:BaseController
 
 	+ searchBar
-		$('#content pre')->click(function ($event)
-		{
-			$event->stopPropagation()
+		$('#content pre')->click(f°
 			$($this)->fadeOut()
-		})
+		)
 		<>view('home')
 	
 	+ searchResultForm $page = 1, $q = null, $resultsPerPage = null

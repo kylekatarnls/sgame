@@ -103,7 +103,7 @@ function £($string, $data = null, $file = 'page/index')
 	}
 	return $string;
 }
-function §()
+function µ()
 {
 	$gArg = func_get_args();
 	if(in_array(func_num_args(), [1, 2]))
@@ -120,8 +120,8 @@ function §()
 function prop($prop, $method = null, $args = [])
 {
 	return is_null($method) ?
-		(new Object)->$prop:
-		call_user_func_array([(new Object)->$prop, $method], $args);
+		(new \Hologame\Object)->$prop:
+		call_user_func_array([(new \Hologame\Object)->$prop, $method], $args);
 }
 function get_inline_script()
 {
@@ -154,6 +154,16 @@ function alias($old, $new)
 	else if(trait_exists($old, false) && !trait_exists($new, false))
 	{
 		eval('trait '.$new.' { use '.$old.'; }');
+		return true;
+	}
+	elseif(class_exists('\\Hologame\\' . $old, false) && !class_exists('\\Hologame\\' . $new, false))
+	{
+		eval('class \\Hologame\\'.$new.' extends \\Hologame\\'.$old.' {}');
+		return true;
+	}
+	else if(trait_exists('\\Hologame\\' . $old, false) && !trait_exists('\\Hologame\\' . $new, false))
+	{
+		eval('trait \\Hologame\\'.$new.' { use \\Hologame\\'.$old.'; }');
 		return true;
 	}
 	return false;
