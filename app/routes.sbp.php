@@ -63,7 +63,7 @@ Route::get('/user/logout', 'UserController@logout')
 Route::get('/user/signin', 'UserController@signin')
 Route::post('/user/signin', 'UserController@trySignin')->before('csrf')
 // Administration des utilisateurs
-Route::get('/user/list', 'UserController@listAll')
+#Route::get('/user/list', 'UserController@listAll')
 
 //// Chat
 Route::get('/chat/{canal}', 'ChatController@html')->before('auth')

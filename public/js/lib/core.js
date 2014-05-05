@@ -354,11 +354,30 @@ function evalDataJs(context, data, fct)
 		delete data.js;
 	}
 	if(fct){
-		fct.call(context,data);
+		fct.call(context, data);
 	}
 }
 
-function ajax(url,data,done,settings,fail)
+function cleanAlert($alert) {
+	setTimeout(function () {
+		$alert.animate({
+			height: 0,
+			opacity: 0
+		}, function () {
+			$alert.remove();
+		});
+	}, 4000);
+}
+
+cleanAlert($('.alert'));
+
+function pushAlert(msg, type) {
+	$alert = $('<div class="alert alert-' + (type || 'danger') + '">' + msg + '</div>');
+	$('#container').prepend($alert);
+	cleanAlert($alert);
+}
+
+function ajax(url, data, done, settings, fail)
 {
 	if(typeof(settings)==='function'){
 		var s=fail;
@@ -367,9 +386,9 @@ function ajax(url,data,done,settings,fail)
 	}
 	return $.ajax('/'+url,
 		$.extend({
-				type:'POST',
-				dataType:'JSON',
-				data:data
+				type: 'POST',
+				dataType: 'JSON',
+				data: data
 			},
 			settings||{}
 		)
