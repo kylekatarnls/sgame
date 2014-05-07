@@ -10,4 +10,4 @@ plugins = (input) ->
 		list = input.split(/\s+/g)
 		for plugin in list
 			plugins[plugin] = window[plugin]
-		delete window[plugin]
+			delete window[plugin]

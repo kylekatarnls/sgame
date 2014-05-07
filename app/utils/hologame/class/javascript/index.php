@@ -7,8 +7,8 @@ use Closure, ReflectionClass;
 class Javascript extends Object
 {
 	protected $js = '', $delayJs = '';
-	protected $wrapOpen = '';
-	protected $wrapClose = '';
+	static protected $wrapOpen = '';
+	static protected $wrapClose = '';
 	const DELAY_OPEN = '(function ($){var f=function (){';
 	const DELAY_CLOSE = '};typeof($document)==="undefined"?$(f):$document.one("pagechange", f);})(jQuery);';
 	static public function javascriptEncode($value)

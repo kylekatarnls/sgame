@@ -378,6 +378,7 @@ class Stylus
     private function import(&$lines, &$i, $extension = '.stylus')
     {
         $name = preg_replace('~@import\s*[\'"]([^\'"]+)[\'"].*$~', '$1', $lines[$i]);
+        $name = assetRessourceName($name);
 
         if (preg_match('~^(.+)(\..*)$~', $name, $matches)) {
             $name = $matches[1];
@@ -415,6 +416,7 @@ class Stylus
     private function importContent(&$lines, &$i, $extension = '.stylus')
     {
         $name = preg_replace('~@import\s*[\'"]([^\'"]+)[\'"].*$~', '$1', $lines[$i]);
+        $name = assetRessourceName($name);
 		if(strpos($name, 'http') === 0) {
        	    $contents = file_get_contents($name);
             $c = count($lines);

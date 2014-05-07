@@ -23,15 +23,14 @@ JsParser
 			'#(?<=^|[\n\r])([ \t]*)\/\/-\s*require\s*\(?\s*([\'"])(.*(?<!\\\\)(?:\\\\{2})*)\\2(?:[ \t]*,[ \t]*(' . :YES . '|' . :NO . '))?[ \t]*\)?[ \t]*(?=[\r\n]|$)#i',
 			f° $match use $coffeeFile, $firstFile, $jsOnly
 				list($all, $indent, $quote, $file) = $match;
-				$file = stripslashes($file)
+				$file **= stripslashes()
+				$file **= assetRessourceName()
 				$file = preg_match('#^(http|https|ftp|sftp|ftps):\/\/#', $file) ?
 					$file :
 					static::findFile($file)
 				$isCoffee = empty($match[4]) ?
 					ends_with($file, '.coffee') :
 					in_array(strtolower($match[4]), explode('|', :YES))
-				echo '<hr>'
-				var_dump($isCoffee, $file)
 				DependancesCache::add($firstFile, $file)
 				$code = str_replace(array("\r\n", "\r"), "\n", "\n" . ($isCoffee not $jsOnly ?
 					static::resolveRequire($file, $firstFile) :

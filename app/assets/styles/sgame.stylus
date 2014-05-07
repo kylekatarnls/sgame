@@ -5,7 +5,7 @@ login-menu-width = 242px
 odd-bg = #eef0f2
 even-bg = #f5f6f7
 
-@import "bootstrap.min.css"
+@import "bootstrap(.min).css"
 
 html
 body

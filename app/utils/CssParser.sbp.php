@@ -212,9 +212,10 @@ CssParser
 			$code = preg_replace_callback(
 				'#\[\[import(\s+\-p)?[\s:]\s*(\\"([^\\"]*)\\"|[^\\"\n\r]*)\]\]#',
 				f° $f use $dir, $fichier
-					if substr($f[0],-7) !== '.stylus'
-						< '/*!'.$f[0].'!*/';
 					trim(**$f[2], "\" \n\t");
+					assetRessourceName(**$f[2])
+					if substr($f[2],-7) !== '.stylus'
+						< '/*!'.$f[2].'!*/';
 					$file = $dir.'/'.$f[2];
 					if !file_exists($file)
 						$file = $dir.'/lib/'.$f[2];
@@ -242,6 +243,7 @@ CssParser
 				'#\/\*\!\[\[import(\s+\-p)?[\s:]\s*(\\"([^\\"]*)\\"|[^\\"\n\r]*)\]\]\!\*\/#',
 				f° $f use $dir
 					trim(**$f[2],"\" \n\t");
+					assetRessourceName(**$f[2])
 					$fgc = file_get_contents($dir.'/'.$f[2]);
 					// if(!empty($f[1]))
 					// 	try

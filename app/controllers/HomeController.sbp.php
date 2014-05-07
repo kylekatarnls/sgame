@@ -3,6 +3,9 @@
 HomeController:BaseController
 
 	+ searchBar
+		$('#content pre')->click(f°
+			$($this)->css('border-color', 'red')
+		)
 		<>view('home')
 	
 	+ searchResultForm $page = 1, $q = null, $resultsPerPage = null

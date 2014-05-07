@@ -134,38 +134,55 @@
 	< $_state
 
 
-@f style
-	$args = func_get_args()
+@f assetRessourceName($name)
+	< preg_replace('#\(([^,\(\)]*)(?:,([^,\(\)]*))?\)#', Config::get('app.debug') ? '$2' : '$1', $name)
+
+
+@f assetRessourceArgs $args, $extension, $inputFileFunction, $outputFileFunction = null
+	$args[0] **= assetRessourceName()
 	if checkAssets()
-		$stylusFile = CssParser::stylusFile($args[0])
-		$cssFile = CssParser::cssFile($args[0], $isALib)
+		$parser = ucfirst($extension) . 'Parser'
+		if ! function_exists($inputFileFunction)
+			if ! method_exists($parser, $inputFileFunction)
+				$inputFileFunction .= 'File'
+				$inputFileFunction = array($parser, $inputFileFunction)
+		if is_null($outputFileFunction)
+			$outputFileFunction = $extension . 'File'
+		if ! function_exists($outputFileFunction)
+			if ! method_exists($parser, $outputFileFunction)
+				$outputFileFunction .= 'File'
+			$outputFileFunction = array($parser, $outputFileFunction)
+		$inputFile = $inputFileFunction($args[0])
+		$outputFile = $outputFileFunction($args[0], $isALib)
 		$time = 0
-		if file_exists($stylusFile)
-			$time = DependancesCache::lastTime($stylusFile, 'fileLastTime')
-			if !file_exists($cssFile) || $time > fileLastTime($cssFile)
-				(new CssParser($stylusFile))->out($cssFile)
+		if file_exists($inputFile)
+			$time = DependancesCache::lastTime($inputFile, 'fileLastTime')
+			if !file_exists($outputFile) || $time > fileLastTime($outputFile)
+				(new $parser($inputFile))->out($outputFile)
 			$time -= 1363188938
-		$args[0] = 'css/' . ($isALib ? 'lib/' : '') . $args[0] . '.css' . ($time ? '?' . $time : '')
+		$args[0] = $extension . '/' . ($isALib ? 'lib/' : '') . $args[0] . '.' . $extension . ($time ? '?' . $time : '')
 	else
-		$args[0] = 'css/' . (!file_exists(app_path() . '/../public/css/' . $args[0] . '.css') ? 'lib/' : '') . $args[0] . '.css'
-	< call_user_func_array(array('HTML', 'style'), $args)
+		$args[0] = $extension . '/' . (!file_exists(app_path() . '/../public/' . $extension . '/' . $args[0] . '.' . $extension) ? 'lib/' : '') . $args[0] . '.' . $extension
+	< $args
+
+
+@f assetRessourceFile $file, $extension, $inputFileFunction, $outputFileFunction = null
+	$args = assetRessourceArgs(array($file), $extension, $inputFileFunction, $outputFileFunction)
+	< $args[0]
+
+
+@f assetRessource $args, $extension, $inputFileFunction, $outputFileFunction = null, $method = null
+	if is_null($method)
+		$method = $extension is 'css' ? 'style' : 'script'
+	< call_user_func_array(array('HTML', $method), assetRessourceArgs($args, $extension, $inputFileFunction, $outputFileFunction))
+
+
+@f style
+	< assetRessource(func_get_args(), 'css', 'stylus')
 
 
 @f script
-	$args = func_get_args()
-	if checkAssets()
-		$coffeeFile = JsParser::coffeeFile($args[0])
-		$jsFile = JsParser::jsFile($args[0], $isALib)
-		$time = 0;
-		if file_exists($coffeeFile)
-			$time = DependancesCache::lastTime($coffeeFile, 'fileLastTime')
-			if !file_exists($jsFile) || $time > fileLastTime($jsFile)
-				(new JsParser($coffeeFile))->out($jsFile)
-			$time -= 1363188938
-		$args[0] = 'js/' . ($isALib ? 'lib/' : '') . $args[0] . '.js' . ($time ? '?' . $time : '')
-	else
-		$args[0] = 'js/' . (!file_exists(app_path() . '/../public/js/' . $args[0] . '.js') ? 'lib/' : '') . $args[0] . '.js'
-	< call_user_func_array(array('HTML', 'script'), $args)
+	< assetRessource(func_get_args(), 'js', 'coffee')
 
 
 @f image $path, $alt = null, $width = null, $height = null, $attributes = array(), $secure = null
