@@ -125,8 +125,8 @@ if(! defined('HOLOGAME_NAMESPACE'))
 	\Hologame\Javascript::wrap('plugins(function () {', '});')
 }
 sbp_add_plugin('jQuery', [
-	'#\$' . \Sbp\Sbp::PARENTHESES . '#' => '(new Hologame\\Jquery°Call$1)',
-	'$->' => '(new Hologame\\Jquery)->',
+	'#\$' . \Sbp\Sbp::PARENTHESES . '#' => '(new \\Hologame\\Jquery°Call$1)',
+	'$->' => '(new \\Hologame\\Jquery)->',
 ]);
 sbp_include_once(app_path().'/filters.php');
 

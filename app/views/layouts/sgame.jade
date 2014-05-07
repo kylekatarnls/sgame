@@ -57,7 +57,7 @@ html.no-js(lang=lang())
 								li
 									a(href=e(URL::to('')))
 										=§('global.home')
-			.container
+			#container.container
 				if Session::has('alert')
 					include ../includes/alert
 					type = Session::get('alert-type', 'danger')

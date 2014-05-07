@@ -25,3 +25,7 @@ waitForNewMessages = ->
 				console.log(data)
 				waitForNewMessages()
 	)
+
+$('#content pre').click ->
+	ajax 'user/list'
+	$(@).text 'Chargement...'
