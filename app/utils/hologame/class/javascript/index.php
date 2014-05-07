@@ -7,6 +7,8 @@ use Closure, ReflectionClass;
 class Javascript extends Object
 {
 	protected $js = '', $delayJs = '';
+	protected $wrapOpen = '';
+	protected $wrapClose = '';
 	const DELAY_OPEN = '(function ($){var f=function (){';
 	const DELAY_CLOSE = '};typeof($document)==="undefined"?$(f):$document.one("pagechange", f);})(jQuery);';
 	static public function javascriptEncode($value)
@@ -27,6 +29,11 @@ class Javascript extends Object
 			return 'function (' . implode(', ', $params) . ') { ' . Jquery°Closure::execClosure($value, $params) . ' }';
 		}
 		return json_encode($value);
+	}
+	static public function wrap($open, $close)
+	{
+		static::$wrapOpen = $open;
+		static::$wrapClose = $close;
 	}
 	static public function params($params)
 	{
@@ -72,10 +79,10 @@ class Javascript extends Object
 	}
 	public function getContent()
 	{
-		return trim((empty($this->delayJs)?
+		return static::$wrapOpen . trim((empty($this->delayJs)?
 			'':
 			self::DELAY_OPEN.trim($this->delayJs,"\n").self::DELAY_CLOSE
-		).$this->js, "\n");
+		).$this->js, "\n") . static::$wrapClose;
 	}
 	public function out()
 	{

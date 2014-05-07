@@ -122,6 +122,7 @@ if(! defined('HOLOGAME_NAMESPACE'))
 			}
 		}
 	});
+	\Hologame\Javascript::wrap('plugins(function () {', '});')
 }
 sbp_add_plugin('jQuery', [
 	'#\$' . \Sbp\Sbp::PARENTHESES . '#' => '(new Hologame\\Jquery°Call$1)',
