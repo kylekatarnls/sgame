@@ -406,7 +406,7 @@ class Stylus
             array_values(array_filter(preg_replace('~^\s*}\s*$~', '', preg_split('~\r\n|\n|\r~', $contents)), 'strlen')) + array("\n")
         );
         $lines = array_values($lines);
-        $i -= ($isStylus ? 1 : 1 + $c - count($lines));
+        //$i -= 1 + count($lines) - $c;
     }
 
     /*

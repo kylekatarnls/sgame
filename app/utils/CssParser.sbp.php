@@ -208,28 +208,34 @@ CssParser
 		list($type, $i, $a) = >typeAndIndent($code, $options);
 
 		$dir = dirname($fichier = >fichier);
-		if strpos($code,'[[import') !== false
-			$code = preg_replace_callback(
-				'#\[\[import(\s+\-p)?[\s:]\s*(\\"([^\\"]*)\\"|[^\\"\n\r]*)\]\]#',
-				f° $f use $dir, $fichier
-					trim(**$f[2], "\" \n\t");
-					assetRessourceName(**$f[2])
-					if substr($f[2],-7) !== '.stylus'
-						< '/*!'.$f[2].'!*/';
-					$file = $dir.'/'.$f[2];
-					if !file_exists($file)
-						$file = $dir.'/lib/'.$f[2];
-					$fgc = file_get_contents($file);
-					DependancesCache::add($fichier, $file);
-					// if(!empty($f[1]))
-					// 	try
-					// 		$fgc=(new lessc)->parse($fgc);
-					// 	catch(Exception $e)
-					// 		$fgc="/* Le fichier ".$f[2]." n'a pas pu être compilé par LessCSS */\n".$fgc;
-					< "\n".$fgc."\n";
+		$code **= replace(array(
+			'#(?<=^|[\n\r])([ \t]*)@import\s+plugins[ \t]*(?=[\r\n]|$)#'
+				=> f° $match
+					$require = $match[1] . '@import '
+					< $require . implode("\"\n" . $require, PluginManager::getStyles()) . '"'
 				,
-				$code
-			);
+		))
+		if strpos($code,'[[import') !== false
+			$code **= replace(array(
+				'#\[\[import(\s+\-p)?[\s:]\s*(\\"([^\\"]*)\\"|[^\\"\n\r]*)\]\]#'
+					=> f° $f use $dir, $fichier
+						trim(**$f[2], "\" \n\t");
+						assetRessourceName(**$f[2])
+						if substr($f[2],-7) !== '.stylus'
+							< '/*!'.$f[2].'!*/';
+						$file = $dir.'/'.$f[2];
+						if !file_exists($file)
+							$file = $dir.'/lib/'.$f[2];
+						$fgc = file_get_contents($file);
+						DependancesCache::add($fichier, $file);
+						// if(!empty($f[1]))
+						// 	try
+						// 		$fgc=(new lessc)->parse($fgc);
+						// 	catch(Exception $e)
+						// 		$fgc="/* Le fichier ".$f[2]." n'a pas pu être compilé par LessCSS */\n".$fgc;
+						< "\n".$fgc."\n";
+					,
+			))
 
 		$code = >filterCssb($code, $options);
 
@@ -239,21 +245,20 @@ CssParser
 		if $i!=='x'
 			$code = preg_replace('#(?<=\n|\r)\h+(?=\H)#', $i, $code);
 		if strpos($code,'/*![[import') !== false
-			$code = preg_replace_callback(
-				'#\/\*\!\[\[import(\s+\-p)?[\s:]\s*(\\"([^\\"]*)\\"|[^\\"\n\r]*)\]\]\!\*\/#',
-				f° $f use $dir
-					trim(**$f[2],"\" \n\t");
-					assetRessourceName(**$f[2])
-					$fgc = file_get_contents($dir.'/'.$f[2]);
-					// if(!empty($f[1]))
-					// 	try
-					// 		$fgc=(new lessc)->parse($fgc);
-					// 	catch(Exception $e)
-					// 		$fgc="/* Le fichier ".$f[2]." n'a pas pu être compilé par LessCSS */\n".$fgc;
-					< "\n".$fgc."\n";
-				,
-				$code
-			);
+			$code **= replace(array(
+				'#\/\*\!\[\[import(\s+\-p)?[\s:]\s*(\\"([^\\"]*)\\"|[^\\"\n\r]*)\]\]\!\*\/#'
+					=> f° $f use $dir
+						trim(**$f[2],"\" \n\t");
+						assetRessourceName(**$f[2])
+						$fgc = file_get_contents($dir.'/'.$f[2]);
+						// if(!empty($f[1]))
+						// 	try
+						// 		$fgc=(new lessc)->parse($fgc);
+						// 	catch(Exception $e)
+						// 		$fgc="/* Le fichier ".$f[2]." n'a pas pu être compilé par LessCSS */\n".$fgc;
+						< "\n".$fgc."\n";
+					,
+			))
 		$code = str_replace('},', '}', $code);
 		if !Config::get('app.debug')
 			$code = preg_replace('#\s+#', ' ', $code);

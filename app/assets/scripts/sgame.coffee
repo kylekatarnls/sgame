@@ -1,8 +1,6 @@
-//- require 'jquery-1.11.0(.min)'
+//- require plugins
 //- require 'core'
 //- require 'game'
 //- require 'includes/menu'
 //- require 'games/chat'
 //- require 'games/builder'
-//- require 'underscore'
-//- require 'modernizr'

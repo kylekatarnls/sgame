@@ -19,37 +19,40 @@ JsParser
 	s+ resolveRequire $coffeeFile, $firstFile = null, $jsOnly = false
 		if is_null($firstFile)
 			$firstFile = $coffeeFile
-		< preg_replace_callback(
-			'#(?<=^|[\n\r])([ \t]*)\/\/-\s*require\s*\(?\s*([\'"])(.*(?<!\\\\)(?:\\\\{2})*)\\2(?:[ \t]*,[ \t]*(' . :YES . '|' . :NO . '))?[ \t]*\)?[ \t]*(?=[\r\n]|$)#i',
-			f° $match use $coffeeFile, $firstFile, $jsOnly
-				list($all, $indent, $quote, $file) = $match;
-				$file **= stripslashes()
-				$file **= assetRessourceName()
-				$file = preg_match('#^(http|https|ftp|sftp|ftps):\/\/#', $file) ?
-					$file :
-					static::findFile($file)
-				$isCoffee = empty($match[4]) ?
-					ends_with($file, '.coffee') :
-					in_array(strtolower($match[4]), explode('|', :YES))
-				DependancesCache::add($firstFile, $file)
-				$code = str_replace(array("\r\n", "\r"), "\n", "\n" . ($isCoffee not $jsOnly ?
-					static::resolveRequire($file, $firstFile) :
-					"`" . static::resolveRequire($file, $firstFile, true) . "\n`"
-				))
-				< $indent . str_replace("\n", "\n" . $indent, $code)
-			,
-			file_get_contents($coffeeFile)
-		)
+		< replace(file_get_contents($coffeeFile), array(
+			'#(?<=^|[\n\r])([ \t]*)\/\/-\s*require\s*plugins[ \t]*(?=[\r\n]|$)#'
+				=> f° $match
+					$require = $match[1] . '//- require '
+					< $require . implode("\n" . $require, array_map('json_encode', PluginManager::getScripts()))
+				,
+			'#(?<=^|[\n\r])([ \t]*)\/\/-\s*require\s*\(?\s*([\'"])(.*(?<!\\\\)(?:\\\\{2})*)\\2(?:[ \t]*,[ \t]*(' . :YES . '|' . :NO . '))?[ \t]*\)?[ \t]*(?=[\r\n]|$)#i'
+				=> f° $match use $coffeeFile, $firstFile, $jsOnly
+					list($all, $indent, $quote, $file) = $match;
+					$file **= stripslashes()
+					$file **= assetRessourceName()
+					$file = preg_match('#^(http|https|ftp|sftp|ftps):\/\/#', $file) ?
+						$file :
+						static::findFile($file)
+					$isCoffee = empty($match[4]) ?
+						ends_with($file, '.coffee') :
+						in_array(strtolower($match[4]), explode('|', :YES))
+					DependancesCache::add($firstFile, $file)
+					$code = str_replace(array("\r\n", "\r"), "\n", "\n" . ($isCoffee not $jsOnly ?
+						static::resolveRequire($file, $firstFile) :
+						"`" . static::resolveRequire($file, $firstFile, true) . "\n`"
+					))
+					< $indent . str_replace("\n", "\n" . $indent, $code)
+				,
+		))
 
 	+ parse $coffeeFile
 		DependancesCache::flush($coffeeFile)
 		try
 			$code = CoffeeScript\Compiler::compile(
-				$precompiled = static::resolveRequire($coffeeFile),
-				array(
-					'filename' => $coffeeFile,
-					'bare' => true
-				)
+				$precompiled = static::resolveRequire($coffeeFile), {
+					filename = $coffeeFile
+					bare = true
+				}
 			)
 		catch CoffeeScript\Error $e
 			file_put_contents(__DIR . '/../storage/logs/last-coffee-file-in-error.coffee', $precompiled)

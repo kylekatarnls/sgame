@@ -63,6 +63,10 @@ ResultsPerPage::init()
 */
 
 App::before(f° $request
+	addPlugin('jquery', 'jquery-1.11.0.min')
+	addPlugin('bootstrap', array( 'bootstrap.min.css', 'bootstrap.min'))
+	addPlugin('underscore')
+	addPlugin('modernizr')
 	Blade::extend(f° $value, $compiler
 		< replace(
 			array(

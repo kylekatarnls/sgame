@@ -134,7 +134,15 @@
 	< $_state
 
 
-@f assetRessourceName($name)
+@f addPlugin $name, $ressources = null
+	< PluginManager::addPlugin($name, $ressources)
+
+
+@f removePlugin $name
+	< PluginManager::removePlugin($name)
+
+
+@f assetRessourceName $name
 	< preg_replace('#\(([^,\(\)]*)(?:,([^,\(\)]*))?\)#', Config::get('app.debug') ? '$2' : '$1', $name)
 
 
