@@ -36,9 +36,36 @@ function is_lower($string)
 {
 	return ($string === strtolower($string));
 }
+function unix_path($path)
+{
+	return strtr($path, '\\', '/');
+}
+function windows_path($path)
+{
+	return strtr($path, '/', '\\');
+}
+function sp_path($path, $separator = DIRECTORY_SEPARATOR)
+{
+	return str_replace(array('/', '\\'), $separator, $path);
+}
 function end_separator($delimiter, $string, $keep_delimiter = false)
 {
-	$position = strrpos($string, $delimiter);
+	if(is_array($delimiter))
+	{
+		$position = false;
+		foreach($delimiter as $d)
+		{
+			$p = strrpos($string, $d);
+			if($p !== false && ($position === false || $p > $position))
+			{
+				$position = $p;
+			}
+		}
+	}
+	else
+	{
+		$position = strrpos($string, $delimiter);
+	}
 	if($position !== false)
 	{
 		$end = substr($string, $position+($keep_delimiter ? 0 : strlen($delimiter)));

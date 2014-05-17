@@ -10,7 +10,7 @@ class Dir extends Object
 		{
 			$dir = ROOT_DIR;
 		}
-		return rtrim($dir, '/');
+		return rtrim($dir, '/\\');
 	}
 	static public function exists($dir = null)
 	{
@@ -27,7 +27,7 @@ class Dir extends Object
 		$dir = self::getDir($dir);
 		if($isFile)
 		{
-			list($dir) = end_separator('/', $dir);
+			list($dir) = end_separator(array('/', '\\'), $dir);
 		}
 		if(empty($dir))
 		{
@@ -67,7 +67,7 @@ class Dir extends Object
 		$list = [];
 		foreach(scandir($dir) as $file) if(!in_array($file, ['.', '..']))
 		{
-			$path = $dir.'/'.$file;
+			$path = $dir.DIRECTORY_SEPARATOR.$file;
 			if(is_dir($path))
 			{
 				$list[] = substr($path, start($dir, $dirRoot) ? strlen($dirRoot) : 0);
@@ -76,7 +76,7 @@ class Dir extends Object
 		ksort($list);
 		return $list;
 	}
-	static public function getList($dir = null, $onlyFiles = true, $dirRoot = null, $basename = true)
+	static public function getList($dir = null, $onlyFiles = true, $dirRoot = null, $basename = true, $separator = DIRECTORY_SEPARATOR)
 	{
 		$dir = self::getDir($dir);
 		$dir = realpath($dir);
@@ -92,18 +92,18 @@ class Dir extends Object
 		$list = [];
 		foreach(scandir($dir) as $file) if(!in_array($file, ['.', '..']))
 		{
-			$path = $dir.'/'.$file;
-			$listPath = ($basename ?
+			$path = $dir.DIRECTORY_SEPARATOR.$file;
+			$listPath = sp_path($basename ?
 				substr($path, start($dir, $dirRoot) ? strlen($dirRoot) : 0):
 				$path
-			);
+			, $separator);
 			if(is_dir($path))
 			{
 				if($onlyFiles === false)
 				{
 					$list[] = $listPath;
 				}
-				$list = array_merge($list, self::getList($path, $onlyFiles, $dirRoot));
+				$list = array_merge($list, self::getList($path, $onlyFiles, $dirRoot, true, $separator));
 			}
 			else
 			{
@@ -113,7 +113,7 @@ class Dir extends Object
 		ksort($list);
 		return $list;
 	}
-	static public function each($callback, $dir = null, $onlyFiles = true)
+	static public function each($callback, $dir = null, $onlyFiles = true, $separator = DIRECTORY_SEPARATOR)
 	{
 		$result = [];
 		if(is_callable($callback) === false)
@@ -121,7 +121,7 @@ class Dir extends Object
 			throw new DirException("Callback invalide", 3);
 			return false;
 		}
-		foreach(self::getList($dir, $onlyFiles) as $file)
+		foreach(self::getList($dir, $onlyFiles, null, true, $separator) as $file)
 		{
 			$result[$file] = call_user_func($callback, $file);
 		}

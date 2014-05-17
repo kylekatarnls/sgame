@@ -40,9 +40,7 @@ CsvCommand:Command
 
 
 	- langFile $texts
-		ob_start();
-		var_export(array_undot($texts));
-		< "<?php\nreturn " . preg_replace("#(?<=\n|\t)  #", "\t", ob_get_clean()) . ";\n?>";
+		< "<?php\nreturn " . preg_replace("#(?<=\n|\t)  #", "\t", var_export(array_undot($texts), true)) . ";\n?>"
 
 
 	+ input $input
@@ -109,7 +107,7 @@ CsvCommand:Command
 					foreach $diff as $data
 						list($avant, $apres) = $data;
 						echo "   Avant : " . implode(', ', $avant) . "\n";
-						echo "   Après : " . implode(', ', $apres) . "\n\n";
+						echo "   Apres : " . implode(', ', $apres) . "\n\n";
 					$dir = app_path() . '/lang/';
 					echo (count($files, true) - count($files)) . " fichiers à remplacer :\n";
 					foreach $files as $file => $languages

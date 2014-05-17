@@ -138,8 +138,9 @@ CssParser
 	+ filterCssb $code, $options = false
 		list($type, $i, $a) = >typeAndIndent($code, $options);
 
-		$code = preg_replace_callback('#(?<![a-zA-Z0-9_-])image\s*\(\s*([\'"])([^\'"]+)\\1\s*\)#', f° $match
-			< 'url(' . $match[1] . image($match[2]) . $match[1] . ')';
+		$code = preg_replace_callback('#(?<![a-zA-Z0-9_-])image\s*\(\s*([\'"])([^\'"]+)\\1\s*(?:,\s*([\'"])([^\'"]*)\\3\s*(?:,\s*([0-9]+)\s*(?:,\s*([0-9]+)\s*)?)?)?\)#', f° $match
+			list($all, $srcQuote, $src) = $match;
+			< 'url(' . $srcQuote . image($src, array_get($match, 4), array_get($match, 5), array_get($match, 6)) . $srcQuote . ')';
 		, $code);
 
 		// CSSB - Avant
@@ -211,8 +212,8 @@ CssParser
 		$code **= replace(array(
 			'#(?<=^|[\n\r])([ \t]*)@import\s+plugins[ \t]*(?=[\r\n]|$)#'
 				=> f° $match
-					$require = $match[1] . '@import '
-					< $require . implode("\"\n" . $require, PluginManager::getStyles()) . '"'
+					$import = $match[1] . '@import "'
+					< $import . implode("\"\n" . $import, PluginManager::getStyles()) . '"'
 				,
 		))
 		if strpos($code,'[[import') !== false

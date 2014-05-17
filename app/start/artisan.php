@@ -23,5 +23,6 @@ foreach (array(
 	'PreUpdateCommand',
 	'UpdateCommand',
 	'TestCommand',
+	'TextsCommand',
 ) as $className)
 	Artisan::add(new $className);
