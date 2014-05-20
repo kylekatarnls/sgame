@@ -8,7 +8,7 @@ use Hologame\Dir
 TextsCommand:Command
 
 	EXTENSIONS = 'php jade html blade'
-	EXCLUDE = '/utils/hologame/ /storage/ /lang/ /commands/TextsCommand.sbp.php'
+	EXCLUDE = '/utils/hologame/ /storage/ /lang/ /commands/TextsCommand.sbp.php /tests/FunctionsTest.sbp.php'
 	FUNCTION_REGEX = '#§[\t ]*(\(((?>[^\(\)]+)|(?-2))*\))#'
 	COMMENT_PATTERN = '/\*§(.*)§\*/'
 	KEY_PATTERN = '([\'"])([a-zA-Z0-9._-]+)\\1'
@@ -70,9 +70,9 @@ TextsCommand:Command
 			$fileContent = file_get_contents(app_path() . $file)
 			$copyContent = $fileContent
 			$messages[$file] = array()
-			foreach $matches as $match
+			foreach array_reverse($matches) as $match
 				list($content, $offset) = $match
-				if preg_match('#' . :KEY_PATTERN . '[\s\S]*(' . :COMMENT_PATTERN . ')?#U', $content, $m)
+				if preg_match('#' . :KEY_PATTERN . '\s*(?=,|\))[\s\S]*(' . :COMMENT_PATTERN . ')#U', $content, $m) or preg_match('#' . :KEY_PATTERN . '\s*(?=,|\))#U', $content, $m)
 					$key = $m[2]
 					$text = §($key)
 					if $text not $key
@@ -90,10 +90,12 @@ TextsCommand:Command
 				else
 					$messages[$file][] = "    [ERROR] No key at " . $offset . " : " . $content . "\n"
 			if $fileContent not $copyContent
-				file_put_contents(app_path() . $file, preg_replace('#' . :COMMENT_PATTERN . '#U', '', $copyContent))
-				//file_put_contents(app_path() . $file, $fileContent)
+				if >option('clean')
+					$messages[$file] = array(">> Cleanup")
+					$fileContent = preg_replace('#' . :COMMENT_PATTERN . '#U', '', $copyContent)
+				file_put_contents(app_path() . $file, $fileContent)
 		foreach $messages as $file => $list
-			echo "\n\n" . $file . "\n--------------------\n" . implode("", $list)
+			>info("\n\n" . $file . "\n--------------------\n" . implode("", $list))
 
 	/**
 	 * Get the console command arguments.
@@ -112,5 +114,5 @@ TextsCommand:Command
 	 */
 	* getOptions
 		< array(
-			//array('example', null, InputOption::VALUE_OPTIONAL, 'An example option.', null),
+			array('clean', 'c', InputOption::VALUE_NONE, 'Clean comments.', null),
 		)

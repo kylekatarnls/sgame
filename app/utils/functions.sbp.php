@@ -200,6 +200,7 @@
 		$publicFile .= '.' . $ext
 		$path .='.' . $ext
 	;
+	$isMissing = false
 	$asset = app_path() . '/assets/images/' . $path
 	$publicFile = app_path() . '/../public/img/' . $path
 	if checkAssets()
@@ -210,6 +211,8 @@
 				$complete('jpg')
 			elseif file_exists($asset . '.gif') || file_exists($publicFile . '.gif')
 				$complete('gif')
+			else
+				$isMissing = true
 		if file_exists($asset)
 			$time = fileLastTime($asset)
 			if !file_exists($publicFile) || $time > fileLastTime($publicFile)
@@ -223,6 +226,17 @@
 				$complete('jpg')
 			elseif file_exists($publicFile . '.gif')
 				$complete('gif')
+			else
+				$isMissing = true
+	if $isMissing
+		$complete('png');
+		$properties = ""
+		foreach array('alt', 'width', 'height', 'secure') as $var
+			if $$var not null
+				$properties .= $var . '=' . $$var . "\n"
+		if ! empty($attributes)
+			$properties .= 'attributes=' . json_encode($attributes) . "\n"
+		file_put_contents($publicFile . '.txt', $properties)
 	$image = '/img/' . $path . ($time ? '?' . $time : '')
 	if ! is_null($alt) || ! is_null($width) || ! is_null($height) || $attributes !== array() || ! is_null($secure)
 		if is_array($alt)
