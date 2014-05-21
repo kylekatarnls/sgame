@@ -8,7 +8,7 @@
 			'class' => 'form-control',
 			'autocomplete' => 'off',
 			'autofocus' => 'autofocus',
-			'placeholder' => §('global.search.placeholder')
+			'placeholder' => §('global.search.placeholder'/*§Chercher une page§*/)
 		)) }}
 		{{ Form::hidden('resultsPerPage', $resultsPerPage) }}
 		<div class="input-group-btn">

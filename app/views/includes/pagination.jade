@@ -3,11 +3,11 @@ if nbPages > 1
 	ul.pagination
 		li(class=$currentPage == 1 ? "disabled" : "")
 			a(href=str_replace('%d', $currentPage-1, $pageUrl))
-				!=§('pagination.previous')
+				!=§('pagination.previous'/*§&laquo; Précédents§*/)
 		each i in range(1, nbPages)
 			li(class=$currentPage == $i ? "active" : "")
 				a(href=str_replace('%d', $i, $pageUrl))
 					=i
 		li(class=$currentPage == $nbPages ? "disabled" : "")
 			a(href=str_replace('%d', $currentPage+1, $pageUrl))
-				!=§('pagination.next')
+				!=§('pagination.next'/*§Suivants &raquo;§*/)

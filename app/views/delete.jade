@@ -2,12 +2,12 @@ extends layouts/insearch
 
 block content
 	h1
-		=§('global.delete-result')
+		=§('global.delete-result'/*§Supprimer ce résultat§*/)
 		.btn-group
 			a.btn.btn-default(href="/")
-				=§('global.cancel')
+				=§('global.cancel'/*§Annuler§*/)
 			a.btn.btn-danger(href="/delete/confirm/" . $result->id)
-				=§('global.confirm')
+				=§('global.confirm'/*§Confirmer§*/)
 
 	h3
 		=$result->title

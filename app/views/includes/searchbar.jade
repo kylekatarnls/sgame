@@ -2,7 +2,7 @@
 mixin searchbar(q, resultsPerPage)
 	!=Form::open('/')
 		.input-group
-			!=Form::text('q', $q, 'form-control', §('global.search.placeholder'), false)
+			!=Form::text('q', $q, 'form-control', §('global.search.placeholder'/*§Chercher une page§*/), false)
 			!=Form::hidden('resultsPerPage', $resultsPerPage)
 			.input-group-btn
 				button.btn.btn-default(type="submit")

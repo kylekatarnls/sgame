@@ -1,4 +1,4 @@
 
 mixin alert(type, message, replace = NULL)
 	div(class="alert alert-" . $type)
-		!=§($message, $replace ?: array())
+		!=§(/*@ dynamic @*/$message, $replace ?: array())

@@ -102,9 +102,10 @@ App::down(function()
 
 if(! defined('HOLOGAME_NAMESPACE'))
 {
+	define('HOLOGAME_EXCLUDE_FILES', 'translation');
+	define('HOLOGAME_NAMESPACE', 'Hologame');
 	include_once __DIR__ . '/../utils/hologame/functions.php';
 	include_once __DIR__ . '/../utils/hologame/constants.php';
-	define('HOLOGAME_NAMESPACE', 'Hologame');
 	spl_autoload_register(function ($class)
 	{
 		if(strpos($class, HOLOGAME_NAMESPACE . '\\') === 0 || strpos($class, HOLOGAME_NAMESPACE . 'Hologame°') === 0)

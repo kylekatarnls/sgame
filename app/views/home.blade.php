@@ -2,7 +2,7 @@
 
 @section('content')
 
-	<h1>{{ §('global.title') }}</h1>
+	<h1>{{ §('global.title'/*§InSearch§*/) }}</h1>
 
 	@if(isset($url))
 		@switch($state)

@@ -1,12 +1,12 @@
 extends layouts/insearch
 
 block title
-	params = array('title' => §('global.title'))
-	=§('global.history.title', $params)
+	params = array('title' => §('global.title'/*§InSearch§*/))
+	=§('global.history.title'/*§Historique des recherches§*/, $params)
 
 block content
 	h1.results
-		=§('global.history.count', $nbResults, array('title' => §('global.title')))
+		=§('global.history.count'/*§{0}:title - Aucune recherche enregistrée|{1}:title - Votre dernière recherche|[2,Inf]:title - :count recherches§*/, $nbResults, array('title' => §('global.title'/*§InSearch§*/)))
 
 	include includes/searchbar
 	+searchbar($q, $resultsPerPage)
@@ -19,7 +19,7 @@ block content
 				.history-time
 					=result->created_at->recentTime
 				.history-count-results
-					=§('global.history.results', $result->results)
+					=§('global.history.results'/*§[0,1]:count résultat|[2,Inf]:count résultats§*/, $result->results)
 				div
 					a(href="/1/" . $result->search_query)
 						=result->search_query

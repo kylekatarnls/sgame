@@ -1,3 +1,3 @@
 <div class="alert alert-{{ isset($type) ? $type : 'success' }}">
-	{{ §($message, $replace ?: array()) }}
+	{{ §(/*@ dynamic @*/$message, $replace ?: array()) }}
 </div>

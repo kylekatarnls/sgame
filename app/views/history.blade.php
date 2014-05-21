@@ -1,12 +1,12 @@
 @extends('layouts.insearch')
 
 @section('title')
-	{{ §('global.history.title', array('title' => §('global.title'))) }}
+	{{ §('global.history.title'/*§Historique des recherches§*/, array('title' => §('global.title'/*§InSearch§*/))) }}
 @stop
 
 @section('content')
 
-	<h1 class="results">{{ §('global.history.count', $nbResults, array( 'title' => §('global.title') )) }}</h1>
+	<h1 class="results">{{ §('global.history.count'/*§{0}:title - Aucune recherche enregistrée|{1}:title - Votre dernière recherche|[2,Inf]:title - :count recherches§*/, $nbResults, array( 'title' => §('global.title'/*§InSearch§*/) )) }}</h1>
 
 	@include('includes.searchbar')
 	
@@ -21,7 +21,7 @@
 					{{ $result->created_at->recentTime }}
 				</div>
 				<div class="history-count-results">
-					{{ §('global.history.results', $result->results) }}
+					{{ §('global.history.results'/*§[0,1]:count résultat|[2,Inf]:count résultats§*/, $result->results) }}
 				</div>
 				<div>
 					<a href="/1/{{ $result->search_query }}">

@@ -1,23 +1,23 @@
 extends layouts/insearch
 
 block title
-	params = array('title' => §('user.title', array('title' => §('global.title'))))
-	=§('user.list.title', $params)
+	params = array('title' => §('user.title'/*§:title - Espace Membre§*/, array('title' => §('global.title'/*§InSearch§*/))))
+	=§('user.list.title'/*§:title - Administration des utilisateurs§*/, $params)
 
 block content
 	h1
-		=§('user.list.title', $params)
+		=§('user.list.title'/*§:title - Administration des utilisateurs§*/, $params)
 
 	table#user-list
 		tr
 			th.first
-				=§('user.email')
+				=§('user.email'/*§Adresse e-mail§*/)
 			th
-				=§('user.contributor')
+				=§('user.contributor'/*§Contributeur§*/)
 			th
-				=§('user.moderator')
+				=§('user.moderator'/*§Modérateur§*/)
 			th
-				=§('user.administrator')
+				=§('user.administrator'/*§Administrateur§*/)
 
 		mixin flag(user, role)
 			method = 'is' . ucfirst($role)

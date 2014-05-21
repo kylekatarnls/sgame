@@ -10,7 +10,7 @@ TranslatableDateTime:Carbon
 
 	+ __get $name
 		$key = 'date.format.' . $name;
-		$format = §($key);
+		$format = §(/*@ dynamic @*/$key);
 		if $key !== $format
 			<>formatLocalized($format) ?: >format('date.altFormat.' . $name);
 		else
@@ -31,9 +31,9 @@ TranslatableDateTime:Carbon
 	 */
 	+ toRecentDateString
 		<>isToday() ?
-			§('date.today') : (
+			§('date.today'/*§aujourd'hui§*/) : (
 			>isYesterday() ?
-				§('date.yesterday') :
+				§('date.yesterday'/*§hier§*/)('date.yesterday'/*§hierICI§*/) :
 				>longDate
 			);
 
@@ -117,12 +117,12 @@ TranslatableDateTime:Carbon
 		if $delta == 0
 			$delta = 1;
 
-		<§('date.' .(
+		<§(/*@ dynamic @*/'date.' .(
 			$isNow ?
 				($isFuture ? 'fromNow' : 'ago') :
 				($isFuture ? 'after' : 'before')
 			), array(
-				'diff' => $delta . ' ' . §('date.' . $unit, $delta)
+				'diff' => $delta . ' ' . §(/*@ dynamic @*/'date.' . $unit, $delta)
 			)
 		);
 

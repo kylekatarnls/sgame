@@ -1,11 +1,11 @@
 extends layouts/insearch
 
 block title
-	params = array('title' => §('user.title', array('title' => §('global.title'))))
-	=§('user.login.title', $params)
+	params = array('title' => §('user.title'/*§:title - Espace Membre§*/, array('title' => §('global.title'/*§InSearch§*/))))
+	=§('user.login.title'/*§:title - Connexion§*/, $params)
 
 block content
 	h1
-		=§('user.login.title', $params)
+		=§('user.login.title'/*§:title - Connexion§*/, $params)
 
 	include includes/login

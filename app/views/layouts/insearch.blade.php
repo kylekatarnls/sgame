@@ -5,7 +5,7 @@
 	<head>
 		<title>
 			@section('title')
-				{{ §('global.title') }}
+				{{ §('global.title'/*§InSearch§*/) }}
 			@show
 		</title>
 		@section('meta')
@@ -34,7 +34,7 @@
 							</a>
 							<div class="header-option">
 								<ul class="dropdown-menu" role="menu" aria-labelledby="choice-per-page">
-									<li class="dropdown-header">{{ §('global.results-per-page') }}</li>
+									<li class="dropdown-header">{{ §('global.results-per-page'/*§Résultats par page§*/) }}</li>
 									@foreach($choiceResultsPerPage as $choice)
 										<li><a data-value="{{ $choice }}" href="{{ str_replace('%d', $choice, $resultsPerPageUrl) }}">{{ $choice }}</a></li>
 									@endforeach
@@ -52,7 +52,7 @@
 								<div class="input-group">
 									{{ Form::text('url', '', array(
 										'class' => 'form-control',
-										'placeholder' => §('global.add-url')
+										'placeholder' => §('global.add-url'/*§Ajouter une URL§*/)
 									)) }}
 									<div class="input-group-btn">
 										<button class="btn btn-default" type="submit">
@@ -64,7 +64,7 @@
 						</div>
 
 						<a class="brand" href="/" style="float:left;">
-							<img src="/img/advanced-search.png" alt="{{ §('global.title') }}">
+							<img src="/img/advanced-search.png" alt="{{ §('global.title'/*§InSearch§*/) }}">
 						</a>
 
 						{{ Form::open(array(
@@ -89,7 +89,7 @@
 						{{ Form::close() }}
 						<div class="nav-collapse collapse">
 							<ul class="nav">
-								<li><a href="{{{ URL::to('') }}}">{{ §('global.home'); }}</a></li>
+								<li><a href="{{{ URL::to('') }}}">{{ §('global.home'/*§Accueil§*/); }}</a></li>
 							</ul>
 						</div>
 					</div>
@@ -105,9 +105,9 @@
 
 		<div id="footer">
 			<p>
-				{{ §('global.footer') }}<br>
-				<a href="/most-popular/1">{{ §('global.most-popular') }}</a> |
-				<a href="/history/1">{{ §('global.history.link') }}</a>
+				{{ §('global.footer'/*§InSearch | Projet de fin d'année 2014§*/) }}<br>
+				<a href="/most-popular/1">{{ §('global.most-popular'/*§Pages les plus populaires§*/) }}</a> |
+				<a href="/history/1">{{ §('global.history.link'/*§Mes précédents recherches§*/) }}</a>
 			</p>
 		</div>
 

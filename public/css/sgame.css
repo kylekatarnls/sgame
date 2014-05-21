@@ -105,10 +105,12 @@ form.login a {
 	height: 100%;
 	margin: 0 auto 0px;
 	padding: 0 0 0px;
+	background-image: url('<img src="http://sgame/img/motif-bis.png" width="32" height="32" alt="">');
 }
 #footer {
 	height: 0px;
 	background-color: #e8e8e8;
+	background-image: url('<img src="http://sgame/img/motif.png" alt="Texte du motif">');
 }
 #footer p {
 	margin: 0;

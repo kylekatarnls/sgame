@@ -1,12 +1,12 @@
 extends layouts/insearch
 
 block title
-	params = array('title' => §('global.title'))
-	=§('global.results.title', $params)
+	params = array('title' => §('global.title'/*§InSearch§*/))
+	=§('global.results.title'/*§:title - Résultats§*/, $params)
 
 block content
 	h1
-		=§('global.results.count', $nbResults, array('title' => §('global.title')))
+		=§('global.results.count'/*§{0}:title - Aucun résultat|{1}:title - Un résultat|[2,Inf]:title - :count résultats§*/, $nbResults, array('title' => §('global.title'/*§InSearch§*/)))
 
 	include includes/searchbar
 	+searchbar($q, $resultsPerPage)
@@ -20,10 +20,10 @@ block content
 			=" "
 			!=$result->link($result->title)
 			if User::current()->isModerator()
-				a.remove(href="/delete/" . $result->id, title=§('global.delete-result'))
+				a.remove(href="/delete/" . $result->id, title=§('global.delete-result'/*§Supprimer ce résultat§*/))
 					span.glyphicon.glyphicon-trash
 		p
-			span.badge(title=§('global.popularity'))
+			span.badge(title=§('global.popularity'/*§Popularité§*/))
 				=result->count
 			=" "
 			!=result->content

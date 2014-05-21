@@ -105,10 +105,12 @@ form.login
 	height 100%
 	margin 0 auto neg-footer-height
 	padding 0 0 footer-height
+	background-image image('motif-bis', '', 32, 32)
 
 #footer
 	height footer-height
 	background-color #e8e8e8
+	background-image image('motif', 'Texte du motif')
 
 	p
 		margin 0

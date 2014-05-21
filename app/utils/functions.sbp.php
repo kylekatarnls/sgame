@@ -2,15 +2,45 @@
 
 @f §
 	$args = func_get_args()
-	if isset($args[1]) && is_numeric($args[1])
-		$translated = call_user_func_array('trans_choice', $args)
-		if ! isset($args[4]) && $args[0] is $translated
-			$translated = trans($args[0], $args[1], isset($args[2]) ? $args[2] : array(), isset($args[3]) ? $args[3] : 'messages', Language::altLang())
+	if isset($args[1])
+		if is_traversable($args[1]) && isset($args[1]['count'])
+			array_splice($args, 1, 0, $args[1]['count'])
+		if is_numeric($args[1])
+			$translated = call_user_func_array('trans_choice', $args)
+			if ! isset($args[4]) && $args[0] is $translated
+				$translated = trans($args[0], $args[1], isset($args[2]) ? $args[2] : array(), isset($args[3]) ? $args[3] : 'messages', Language::altLang())
 	else
 		$translated = call_user_func_array('trans', $args)
 		if isset($args[0]) && ! isset($args[3]) && $args[0] is $translated
 			$translated = trans($args[0], isset($args[1]) ? $args[1] : array(), isset($args[2]) ? $args[2] : 'messages', Language::altLang())
 	< $translated
+
+
+@f s $text, $replace = null, $count = null
+	static $selector = null
+	if ! is_traversable($replace) && (is_traversable($count) || is_null($count))
+		$replace <-> $count
+	if ! is_null($count) && is_array($replace) && ! isset($replace['count'])
+		$replace['count'] = $count
+	if isset($replace['count']) || ! is_null($count)
+		if is_null($selector)
+			$selector = new \Symfony\Component\Translation\MessageSelector
+		try
+			$text = $selector->choose($text, is_null($count) ? $replace['count'] : $count, Language::altLang())
+		catch InvalidArgumentException $e
+			echo '<div style="border:1px solid red;">'
+			var_dump(is_null($count) ? $replace['count'] : $count, $count, $replace)
+			echo '</div>'
+		echo '<hr />'
+	if ! empty($replace)
+		if ! is_traversable($replace)
+			$replace = array('count' => $replace)
+		$replace = with(new \Illuminate\Support\Collection($replace))->sortBy(f° $r
+			< mb_strlen($r) * -1
+		)
+		foreach $replace as $key => $value
+			$text = str_replace(':' . $key, $value, $text)
+	< $text
 
 
 @f normalize $string, $lowerCase = true

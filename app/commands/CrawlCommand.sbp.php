@@ -47,4 +47,4 @@ CrawlCommand:Command
 				$crawledContent->delete();
 			echo Crawler::getLog();
 		$urlCount += Crawler::countLinks();
-		echo §('crawler.crawled-url', $urlCount) . "\n";
+		echo §('crawler.crawled-url'/*§[0,1]:count URL scannée|[2,Inf]:count URLs scannées§*/, $urlCount) . "\n";

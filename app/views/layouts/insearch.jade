@@ -4,7 +4,7 @@ html(lang=lang())
 		meta(charset="UTF-8")
 		title
 			block title
-				=§('global.title')
+				=§('global.title'/*§InSearch§*/)
 		block section
 			mixin meta(name, content)
 				meta(name=name, content=content)
@@ -27,7 +27,7 @@ html(lang=lang())
 							.header-option
 								ul.dropdown-menu(role="menu", 'aria-labelledby'="choice-per-page")
 									li.dropdown-header
-										=§('global.results-per-page') 
+										=§('global.results-per-page'/*§Résultats par page§*/) 
 									each choice in choiceResultsPerPage
 										li
 											a('data-value'=choice, href=str_replace('%d', $choice, $resultsPerPageUrl))
@@ -51,14 +51,14 @@ html(lang=lang())
 									span.glyphicon.glyphicon-plus-sign
 								!=Form::open('/add-url')
 									.input-group
-										!=Form::text('url', '', 'form-control', §('global.add-url'))
+										!=Form::text('url', '', 'form-control', §('global.add-url'/*§Ajouter une URL§*/))
 										.input-group-btn
 											button.btn.btn-default(type="submit")
 												span.glyphicon.glyphicon-plus
 								!=Form::close()
 
 						a.brand(href="/", style="float:left;")
-							!=image("advanced-search", §('global.title'))
+							!=image("advanced-search", §('global.title'/*§InSearch§*/))
 
 						!=Form::open('/')
 							#languages.btn-group
@@ -78,7 +78,7 @@ html(lang=lang())
 							ul.nav
 								li
 									a(href=e(URL::to('')))
-										=§('global.home')
+										=§('global.home'/*§Accueil§*/)
 			.container
 				if Session::has('alert')
 					include ../includes/alert
@@ -89,13 +89,13 @@ html(lang=lang())
 				block end-content
 		#footer
 			p
-				=§('global.footer')
+				=§('global.footer'/*§InSearch | Projet de fin d'année 2014§*/)
 				br
 				a(href="/most-popular/1")
-					=§('global.most-popular')
+					=§('global.most-popular'/*§Pages les plus populaires§*/)
 				=" | "
 				a(href="/history/1")
-					=§('global.history.link')
+					=§('global.history.link'/*§Mes précédents recherches§*/)
 
 		block js
 			!=script('insearch')

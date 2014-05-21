@@ -95,5 +95,9 @@ function scanarray($needle, array $haystack, $i = 0)
 	}
 	return false;
 }
+function is_traversable($value)
+{
+	return is_array($value) or $value instanceof Traversable;
+}
 
 ?>

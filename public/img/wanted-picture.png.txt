@@ -1,0 +1,3 @@
+alt=Texte alternatif
+width=32
+height=32

@@ -214,7 +214,7 @@ function php_error($errno, $errstr, $errfile, $errline)
 }
 function should_be_array_or_traversable($value)
 {
-	if(is_array($value) or $value instanceof Traversable)
+	if(is_traversable($value))
 	{
 		return true;
 	}
