@@ -25,13 +25,7 @@
 	if isset($replace['count']) || ! is_null($count)
 		if is_null($selector)
 			$selector = new \Symfony\Component\Translation\MessageSelector
-		try
-			$text = $selector->choose($text, is_null($count) ? $replace['count'] : $count, Language::altLang())
-		catch InvalidArgumentException $e
-			echo '<div style="border:1px solid red;">'
-			var_dump(is_null($count) ? $replace['count'] : $count, $count, $replace)
-			echo '</div>'
-		echo '<hr />'
+		$text = $selector->choose($text, is_null($count) ? $replace['count'] : $count, Language::altLang())
 	if ! empty($replace)
 		if ! is_traversable($replace)
 			$replace = array('count' => $replace)

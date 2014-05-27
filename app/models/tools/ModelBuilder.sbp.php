@@ -48,7 +48,7 @@ ModelBuilder:Illuminate\Database\Eloquent\Builder
 		if is_null($remember)
 			$remember = :REMEMBER
 		if $remember
-			>remember($remember)
+			>query->remember($remember)
 		<$this
 
 ?>

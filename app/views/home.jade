@@ -3,35 +3,5 @@ extends layouts/sgame
 block content
 	#content
 		div(style="margin: 70px 20px; padding: 30px; background: #ffff98;")
-			counter = 2
-			p
-				!=s('{0}:title - Aucun résultat|{1}:title - Un résultat|[2,Inf]:title - :count résultats', 0)
-			p
-				!=s('{0}:title - Aucun résultat|{1}:title - Un résultat|[2,Inf]:title - :count résultats', 1)
-			p
-				!=s('{0}:title - Aucun résultat|{1}:title - Un résultat|[2,Inf]:title - :count résultats', 2)
-			hr
-			array = array('title' => 'A')
-			p
-				!=s('{0}:title - Aucun résultat|{1}:title - Un résultat|[2,Inf]:title - :count résultats', 0, $array)
-			p
-				!=s('{0}:title - Aucun résultat|{1}:title - Un résultat|[2,Inf]:title - :count résultats', 1, $array)
-			p
-				!=s('{0}:title - Aucun résultat|{1}:title - Un résultat|[2,Inf]:title - :count résultats', 2, $array)
-			hr
-			array0 = array('title' => 'A', 'count' => 0)
-			array1 = array('title' => 'A', 'count' => 1)
-			array2 = array('title' => 'A', 'count' => 2)
-			p
-				!=s('{0}:title - Aucun résultat|{1}:title - Un résultat|[2,Inf]:title - :count résultats', 0, $array2)
-			p
-				!=s('{0}:title - Aucun résultat|{1}:title - Un résultat|[2,Inf]:title - :count résultats', 1, $array0)
-			p
-				!=s('{0}:title - Aucun résultat|{1}:title - Un résultat|[2,Inf]:title - :count résultats', 2, $array1)
-			hr
-			p
-				!=s('{0}:title - Aucun résultat|{1}:title - Un résultat|[2,Inf]:title - :count résultats', $array0)
-			p
-				!=s('{0}:title - Aucun résultat|{1}:title - Un résultat|[2,Inf]:title - :count résultats', $array1)
-			p
-				!=s('{0}:title - Aucun résultat|{1}:title - Un résultat|[2,Inf]:title - :count résultats', $array2)
+			p.
+				Tests de traduction concluants

@@ -147,8 +147,8 @@ Crawler
 			$crawledContent->content = $content;
 			$crawledContent->language = $data['language'];
 			$crawledContent->save();
-			Cache::put('CrawledContent-'.$crawledContent->id.'-title', $title, CrawledContent::REMEMBER);
-			Cache::put('CrawledContent-'.$crawledContent->id.'-content', $content, CrawledContent::REMEMBER);
+			Cache::put('CrawledContent-'.$crawledContent->id.'-title', $title, ModelBuilder::REMEMBER);
+			Cache::put('CrawledContent-'.$crawledContent->id.'-content', $content, ModelBuilder::REMEMBER);
 			< :UPDATED;
 		else if CrawledContent::where('content', $data['content'])->where('title', $data['title'])->exists()
 			< :DUPLICATED;
