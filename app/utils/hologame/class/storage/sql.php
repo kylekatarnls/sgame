@@ -696,7 +696,6 @@ class Storage°Sql extends PDO
 			$this->wherCol($column, $value);
 		}
 		$exec = 'DELETE FROM '.$this->mQuote($this->mainTable).' '.$this->where;
-		debug($exec);
 		$return1 = $this->createIfNot('exec', $exec, $return2);
 		return ($return1 && $return2);
 	}

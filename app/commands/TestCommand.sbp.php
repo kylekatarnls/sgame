@@ -37,5 +37,5 @@ TestCommand:Command
 
 		$pwd = getcwd();
 		chdir(__DIR . '/../..');
-		echo shell_exec('php bin/phpunit.phar') . "\n";
+		echo shell_exec('php bin/phpunit.phar') . "\n"; // no-debug
 		chdir($pwd);

@@ -11,14 +11,14 @@ ResetCommand:Command
 	 *
 	 * @var string
 	 */
-	* $name = 'reset';
+	* $name = 'reset'
 
 	/**
 	 * The console command description.
 	 *
 	 * @var string
 	 */
-	* $description = 'Delete all ressources.';
+	* $description = 'Delete all ressources.'
 
 	/**
 	 * Create a new command instance.
@@ -26,7 +26,7 @@ ResetCommand:Command
 	 * @return void
 	 */
 	+ __construct
-		parent::__construct();
+		parent::__construct()
 
 	/**
 	 * Execute the console command.
@@ -34,5 +34,5 @@ ResetCommand:Command
 	 * @return void
 	 */
 	+ fire
-		CrawledContent::truncate();
-		echo "Ressources vidées\n";
+		CrawledContent::truncate()
+		>msg("Ressources vidées")

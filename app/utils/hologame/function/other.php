@@ -84,13 +84,11 @@ function £($string, $data = null, $file = 'page/index')
 		$storage=path('STORAGE', 'HOST');
 		if(!file_exists($storage))
 		{
-			echo '<div class="error">'.s("Le dossier de stockage n'existe pas : ").$storage.'</div>';
-			exit;
+			exit('<div class="error">'.s("Le dossier de stockage n'existe pas : ").$storage.'</div>'); // no-debug
 		}
 		if(!is_writable($storage))
 		{
-			echo '<div class="error">'.s("Le dossier de stockage n'est pas accessible en écriture : ").$storage.'</div>';
-			exit;
+			exit('<div class="error">'.s("Le dossier de stockage n'est pas accessible en écriture : ").$storage.'</div>'); // no-debug
 		}
 		throw $e;
 	}
@@ -148,22 +146,22 @@ function alias($old, $new)
 {
 	if(class_exists($old, false) && !class_exists($new, false))
 	{
-		eval('class '.$new.' extends '.$old.' {}');
+		eval('class '.$new.' extends '.$old.' {}'); // no-debug
 		return true;
 	}
 	else if(trait_exists($old, false) && !trait_exists($new, false))
 	{
-		eval('trait '.$new.' { use '.$old.'; }');
+		eval('trait '.$new.' { use '.$old.'; }'); // no-debug
 		return true;
 	}
 	elseif(class_exists('\\Hologame\\' . $old, false) && !class_exists('\\Hologame\\' . $new, false))
 	{
-		eval('class \\Hologame\\'.$new.' extends \\Hologame\\'.$old.' {}');
+		eval('class \\Hologame\\'.$new.' extends \\Hologame\\'.$old.' {}'); // no-debug
 		return true;
 	}
 	else if(trait_exists('\\Hologame\\' . $old, false) && !trait_exists('\\Hologame\\' . $new, false))
 	{
-		eval('trait \\Hologame\\'.$new.' { use \\Hologame\\'.$old.'; }');
+		eval('trait \\Hologame\\'.$new.' { use \\Hologame\\'.$old.'; }'); // no-debug
 		return true;
 	}
 	return false;

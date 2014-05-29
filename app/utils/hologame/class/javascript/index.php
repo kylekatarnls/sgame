@@ -16,7 +16,7 @@ class Javascript extends Object
 		if($value instanceof Closure)
 		{
 			ob_start();
-			var_dump($value);
+			var_dump($value); // no-debug
 			$ct = ob_get_contents();
 			ob_end_clean();
 			preg_match_all(

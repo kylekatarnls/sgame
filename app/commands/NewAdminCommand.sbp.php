@@ -11,14 +11,14 @@ NewAdminCommand:Command
 	 *
 	 * @var string
 	 */
-	* $name = 'admin:new';
+	* $name = 'admin:new'
 
 	/**
 	 * The console command description.
 	 *
 	 * @var string
 	 */
-	* $description = 'Create an admin';
+	* $description = 'Create an admin'
 
 	/**
 	 * Create a new command instance.
@@ -26,7 +26,7 @@ NewAdminCommand:Command
 	 * @return void
 	 */
 	+ __construct
-		parent::__construct();
+		parent::__construct()
 
 
 	+ getOptions
@@ -36,7 +36,7 @@ NewAdminCommand:Command
 			array('contributor', 'c', InputOption::VALUE_NONE, 'Is the user a contributor', null),
 			array('moderator', 'm', InputOption::VALUE_NONE, 'Is the user a moderator', null),
 			array('administrator', 'a', InputOption::VALUE_NONE, 'Is the user an administrator', null),
-		);
+		)
 
 
 	/**
@@ -54,6 +54,6 @@ NewAdminCommand:Command
 					(>option('moderator') ? User::MODERATOR : 0) |
 					(>option('administrator') ? User::ADMIN : 0)
 				),
-			));
+			))
 		catch Exception $e
-			echo $e->getFile() . ':' . $e->getLine() . "\n" . $e->getMessage() . "\n\n" . $e->getTraceAsString();
+			>msg("[ERROR] " . $e->getFile() . ':' . $e->getLine() . "\n" . $e->getMessage() . "\n\n" . $e->getTraceAsString())

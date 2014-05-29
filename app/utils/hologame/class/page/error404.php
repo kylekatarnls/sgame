@@ -38,7 +38,7 @@ class Page°Error404 extends Page°Default
 		if($this->image)
 		{
 			readfile(host_or_core('public/image/default.'.$this->image));
-			exit;
+			exit; // no-debug
 		}
 		else
 		{

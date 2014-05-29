@@ -1068,38 +1068,38 @@ class lessc {
 		if ($special_block) {
 			$this->indentLevel--;
 			if (isset($block->media)) {
-				echo $this->compileMedia($block);
+				echo $this->compileMedia($block); // no-debug
 			} elseif (isset($block->keyframes)) {
-				echo $block->tags[0]." ".
+				echo $block->tags[0]." ". // no-debug
 					$this->compileValue($this->reduce($block->keyframes));
 			} else {
 				list($name) = $block->tags;
-				echo $indent.$name;
+				echo $indent.$name; // no-debug
 			}
 
-			echo ' {'.(count($lines) > 0 ? $nl : "\n");
+			echo ' {'.(count($lines) > 0 ? $nl : "\n"); // no-debug
 		}
 
 		// dump it
 		if (count($lines) > 0) {
 			if (!$special_block && !$isRoot) {
-				echo $indent.implode(", ", $tags);
-				if (count($lines) > 1) echo " {".$nl;
-				else echo " { ";
+				echo $indent.implode(", ", $tags); // no-debug
+				if (count($lines) > 1) echo " {".$nl; // no-debug
+				else echo " { "; // no-debug
 			}
 
-			echo implode($nl, $lines);
+			echo implode($nl, $lines); // no-debug
 
 			if (!$special_block && !$isRoot) {
-				if (count($lines) > 1) echo "\n".$indent."}\n";
-				else echo " }\n";
-			} else echo "\n";
+				if (count($lines) > 1) echo "\n".$indent."}\n"; // no-debug
+				else echo " }\n"; // no-debug
+			} else echo "\n"; // no-debug
 		}
 
-		foreach ($blocks as $b) echo $b;
+		foreach ($blocks as $b) echo $b; // no-debug
 
 		if ($special_block) {
-			echo $indent."}\n";
+			echo $indent."}\n"; // no-debug
 		}
 
 		return ob_get_clean();
@@ -1306,8 +1306,7 @@ class lessc {
 			$args = array_map(array($this, "reduce"), (array)$args);
 			$mixins = $this->findBlocks($block, $path, $args);
 			if (is_null($mixins)) {
-				// echo "failed to find block: ".implode(" > ", $path)."\n";
-				break; // throw error here??
+				break;
 			}
 
 			foreach ($mixins as $mixin) {

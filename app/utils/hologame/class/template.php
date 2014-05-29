@@ -93,8 +93,7 @@ class Template extends Object
 		}
 		catch(Exception $e)
 		{
-			debug($e);
-			return 'Erreur Twig';
+			throw new Exception('Erreur Twig dans ' . $this->ffile, 1, $e);
 		}
 	}
 	public function __toString()

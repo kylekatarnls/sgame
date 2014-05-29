@@ -3,8 +3,8 @@
 HomeController:BaseController
 
 	+ searchBar
-		$('#content pre')->click(f°
-			$($this)->css('border-color', 'red')
+		$('#content > div')->click(f°
+			$($this)->css('border', '1px solid red')
 		)
 		<>view('home')
 	

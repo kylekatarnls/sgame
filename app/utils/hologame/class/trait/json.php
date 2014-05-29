@@ -18,7 +18,7 @@ trait Trait°Json
 		{
 			$this->setData('js', $js);
 		}
-		echo json_encode($this->data);
+		echo json_encode($this->data); // no-debug
 	}
 }
 

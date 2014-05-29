@@ -24,7 +24,7 @@ class Core extends Object
 			{
 				header('HTTP/1.1 301 Moved Permanently');
 				header('Location: '.($withProtocole ? '' : 'http://').trim($redirectTo, '/').'/'.$queryString);
-				exit;
+				exit; // no-debug
 			}
 		}
 	}
@@ -82,7 +82,7 @@ class Core extends Object
 					$this->§('#truc')
 						->machin('abc')
 						->truc();
-					echo $this->js->js;
+					echo $this->js->js; // no-debug
 				}
 		}
 	}

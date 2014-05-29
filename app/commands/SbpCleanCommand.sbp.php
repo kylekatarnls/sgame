@@ -11,14 +11,14 @@ SbpCleanCommand:Command
 	 *
 	 * @var string
 	 */
-	* $name = 'sbp:clean';
+	* $name = 'sbp:clean'
 
 	/**
 	 * The console command description.
 	 *
 	 * @var string
 	 */
-	* $description = 'Clean the SBP cache directory.';
+	* $description = 'Clean the SBP cache directory.'
 
 	/**
 	 * Create a new command instance.
@@ -26,7 +26,7 @@ SbpCleanCommand:Command
 	 * @return void
 	 */
 	+ __construct
-		parent::__construct();
+		parent::__construct()
 
 	/**
 	 * Execute the console command.
@@ -42,4 +42,4 @@ SbpCleanCommand:Command
 				$count++;
 				if unlink($directory . $file)
 					$success++;
-		echo $success . ' / ' . $count . "\n";
+		>msg($success . ' / ' . $count)

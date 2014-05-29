@@ -37,5 +37,5 @@ UpdateCommand:Command
 
 		$pwd = getcwd();
 		chdir(__DIR . '/../..');
-		echo shell_exec('php bin/composer.phar update') . "\n";
+		echo shell_exec('php bin/composer.phar update') . "\n"; //no-debug
 		chdir($pwd);

@@ -84,7 +84,7 @@ trait Core§Trait°Page
 		$this->setDataIfNot('title', £('{{ page_title|raw }} - {{ main_title|raw }}'));
 		$this->callData('title', 'strip_tags');
 		$this->setDataIfNot('inline_script', $this->js->html());
-		echo $this->cTemplate->render();
+		echo $this->cTemplate->render(); // no-debug
 	}
 	public function show()
 	{

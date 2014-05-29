@@ -1,11 +1,15 @@
 <?
 
 use Illuminate\Console\Command
+use Hologame\Dir
 
 BaseCommand:Command
 
+	CODE_FILE_EXTENSIONS = 'php jade html blade'
 	FUNCTION_REGEX = '#(?<![a-zA-Z0-9_\x7f-\xff]|::|->)function[\t ]*(\(((?>[^\(\)]+)|(?-2))*\))#'
 	STRING_REGEX = '#([\'"]).*(?<!\\\\)(?:\\\\\\\\)*\\1#U'
+	TAB_COLUMNS = 4
+	CONSOLE_HR = "\n--------------------\n"
 
 	s* $foregroundColors = {
 		black = '0;30'
@@ -91,6 +95,21 @@ BaseCommand:Command
 	* lastIndexOf $haystack, $needle
 		$pos = strrpos($haystack, $needle)
 		< $pos === false ? -1 : $pos
+
+	* scanApp $function, $exclude = null, $fileExtensions = null
+
+		< Dir::each(f° $file use $function, $exclude, $fileExtensions
+
+			if ! preg_match('#^' . implode('|', array_map('preg_quote', explode(' ', is_null($exclude) ? :EXCLUDE : $exclude))) . '#', $file)
+				$extension = ''
+				$pos = strrpos($file, '.')
+				if $pos not false
+					$extension = substr($file, $pos + 1)
+				$extensions = explode(' ', is_null($fileExtensions) ? :CODE_FILE_EXTENSIONS : $fileExtensions)
+				if $extension in $extensions
+					call_user_func($function, $file)
+
+		, app_path(), true, '/')
 
 	/**
 	 * Return true if the offset is in a quoted string within a content, false else.

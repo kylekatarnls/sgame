@@ -507,7 +507,7 @@ trait Trait°Object
 	public function forward($url)
 	{
 		header('Location: '.$url);
-		exit;
+		exit; // no-debug
 	}
 	public function showPage($page)
 	{
@@ -519,7 +519,7 @@ trait Trait°Object
 		{
 			$this->error404();
 		}
-		exit;
+		exit; // no-debug
 	}
 	public function error404()
 	{
@@ -531,7 +531,7 @@ trait Trait°Object
 		{
 			throw new ObjectException("Erreur 404 : Page introuvable", 7);
 		}
-		exit;
+		exit; // no-debug
 	}
 }
 

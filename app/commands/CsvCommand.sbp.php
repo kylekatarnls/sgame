@@ -12,14 +12,14 @@ CsvCommand:Command
 	 *
 	 * @var string
 	 */
-	* $name = 'csv';
+	* $name = 'csv'
 
 	/**
 	 * The console command description.
 	 *
 	 * @var string
 	 */
-	* $description = 'Import/export CSV language files.';
+	* $description = 'Import/export CSV language files.'
 
 	/**
 	 * Create a new command instance.
@@ -27,7 +27,7 @@ CsvCommand:Command
 	 * @return void
 	 */
 	+ __construct
-		parent::__construct();
+		parent::__construct()
 
 
 	+ getOptions
@@ -36,7 +36,7 @@ CsvCommand:Command
 			array('output', 'o', InputOption::VALUE_OPTIONAL, 'Output CSV file', null),
 			array('test', 't', InputOption::VALUE_NONE, 'Output CSV file', null),
 			array('languages', 'l', InputOption::VALUE_OPTIONAL, 'Output CSV file', null),
-		);
+		)
 
 
 	+ input $input
@@ -144,4 +144,4 @@ CsvCommand:Command
 			$input = >option('input')
 			< is_null($input) ? >output(>option('output')) : >input($input)
 		catch Exception $e
-			echo $e->getFile() . ':' . $e->getLine() . "\n" . $e->getMessage() . "\n\n" . $e->getTraceAsString()
+			>msg("[ERROR] " . $e->getFile() . ':' . $e->getLine() . "\n" . $e->getMessage() . "\n\n" . $e->getTraceAsString())

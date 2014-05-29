@@ -117,7 +117,7 @@ function size($octets, $unite = 'o', $precision = 3, $multiple = 1024)
 }
 function dirsize($path)
 {
-	$result = explode("\t", exec("du -s ".$path), 2);
+	$result = explode("\t", exec("du -s ".$path), 2); // no-debug
 	$size = floatval($result[0])*1024;
 	if($size === .0)
 	{
@@ -158,7 +158,7 @@ function ressource_href($url, $ext = null, $type = null, $directories = null)
 			return '/'.str_replace('%', $time_cache, $path).'/'.$url.'.'.$ext;
 		}
 		// On essaye de trouver des versions (jquery-3.2.1, jquery.a.b.c, jquery/index, etc.)
-		$result = shell_exec('ls '.$directory.'public/'.$type.'/'.$url.'*.'.$ext);
+		$result = shell_exec('ls '.$directory.'public/'.$type.'/'.$url.'*.'.$ext); // no-debug
 		$result = preg_split('#\s#', $result);
 		// On prend le premier fichier (qui commence par jquery)
 		$result = end_separator('/', $result[0]);

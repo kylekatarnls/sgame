@@ -6,12 +6,10 @@ use Hologame\Dir
 
 TextsCommand:BaseCommand
 
-	EXTENSIONS = 'php jade html blade'
 	EXCLUDE = '/utils/hologame/ /storage/ /lang/ /commands/TextsCommand.sbp.php /tests/FunctionsTest.sbp.php'
 	OPTION_REGEX = '#/\*@(.*)@\*/#'
 	COMMENT_PATTERN = '/\*§(.*)§\*/'
 	KEY_PATTERN = '([\'"])([a-zA-Z0-9._-]+)\\1'
-	TAB_COLUMNS = 4
 
 	/**
 	 * The console command name.
@@ -65,16 +63,9 @@ TextsCommand:BaseCommand
 		$devLocale = Config::get('app.dev-locale')
 		Language::setLocale($devLocale)
 
-		Dir::each(f° $file
-			if ! preg_match('#^' . implode('|', array_map('preg_quote', explode(' ', :EXCLUDE))) . '#', $file)
-				$extension = ''
-				$pos = strrpos($file, '.')
-				if $pos not false
-					$extension = substr($file, $pos + 1)
-				$extensions = explode(' ', :EXTENSIONS)
-				if $extension in $extensions
-					>getTexts($file, file_get_contents(app_path() . $file))
-		, app_path(), true, '/')
+		>scanApp(f° $file
+			>getTexts($file, file_get_contents(app_path() . $file))
+		)
 
 		$devLangDirectory = app_path() . '/lang/' . $devLocale
 		$texts = array()
@@ -170,7 +161,7 @@ TextsCommand:BaseCommand
 		else
 			$texts = array_undot($texts)
 			if ! empty($filesToUpdate)
-				>msg("\n\nModifications in languages files:\n--------------------\n")
+				>msg("\n\nModifications in languages files:" . :CONSOLE_HR)
 				foreach $filesToUpdate as $file
 					>msg(>putLangFile($devLocale, $file, $texts[$file]) ?
 						"    [SUCCESS] /lang/" . $devLocale . "/" . $file . ".php have been updated" :

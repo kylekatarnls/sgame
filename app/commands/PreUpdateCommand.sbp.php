@@ -35,4 +35,4 @@ PreUpdateCommand:Command
 	 */
 	+ fire
 
-		echo shell_exec('git pull') . "\n";
+		echo shell_exec('git pull') . "\n"; //no-debug

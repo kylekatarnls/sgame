@@ -24,7 +24,7 @@ html.no-js(lang=lang())
 						if User::current()->isAdministrator()
 							a.btn.header-option(href="/user/list")
 								span.glyphicon.glyphicon-wrench
-						if Auth::check()
+						if loggedIn
 							a.btn.header-option(href="/user/logout")
 								span.glyphicon.glyphicon-off
 						else

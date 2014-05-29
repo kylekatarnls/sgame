@@ -1,6 +1,6 @@
 <?
 
-BaseController:Controller
+a BaseController:Controller
 
 	* $data = array()
 
@@ -14,6 +14,7 @@ BaseController:Controller
 			>layout = >view(>layout)
 
 	* view $view = 'home', $data = array()
+		View::share('loggedIn', Auth::check())
 		$jadeFile = app_path() . '/views/' . $view . '.jade'
 		if(file_exists($jadeFile))
 			$jade = new Jade(array(

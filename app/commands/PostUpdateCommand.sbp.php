@@ -37,5 +37,5 @@ PostUpdateCommand:Command
 
 		$pwd = getcwd();
 		chdir(__DIR . '/../..');
-		echo shell_exec('php bin/composer.phar self-update') . "\n";
+		echo shell_exec('php bin/composer.phar self-update') . "\n"; //no-debug
 		chdir($pwd);

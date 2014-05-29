@@ -58,7 +58,7 @@ AssetsCompileCommand:Command
 			$count = 0
 			$plural = $asset . 's'
 			foreach >files($assetsDirectory, $plural) as $file
-				echo "     $file\n"
+				>msg("     $file")
 				$asset($file)
 				$count++
-			echo $count . " fichiers $plural copiés\n\n"
+			>msg($count . " fichiers $plural copiés\n")

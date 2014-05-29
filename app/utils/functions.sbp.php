@@ -9,7 +9,7 @@
 			$translated = call_user_func_array('trans_choice', $args)
 			if ! isset($args[4]) && $args[0] is $translated
 				$translated = trans($args[0], $args[1], isset($args[2]) ? $args[2] : array(), isset($args[3]) ? $args[3] : 'messages', Language::altLang())
-	else
+	if ! isset($translated)
 		$translated = call_user_func_array('trans', $args)
 		if isset($args[0]) && ! isset($args[3]) && $args[0] is $translated
 			$translated = trans($args[0], isset($args[1]) ? $args[1] : array(), isset($args[2]) ? $args[2] : 'messages', Language::altLang())

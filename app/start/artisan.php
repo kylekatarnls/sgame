@@ -12,17 +12,22 @@
 */
 
 // Lancement du crawling via ligne de commande (php artisan crawl)
-foreach (array(
-	'CrawlCommand',
-	'ResetCommand',
-	'SbpCleanCommand',
-	'AssetsCompileCommand',
-	'CsvCommand',
-	'NewAdminCommand',
-	'PostUpdateCommand',
-	'PreUpdateCommand',
-	'UpdateCommand',
-	'TestCommand',
-	'TextsCommand',
-) as $className)
+foreach (preg_split('#\s+#', trim("
+
+	Crawl
+	Reset
+	SbpClean
+	AssetsCompile
+	Csv
+	NewAdmin
+	PostUpdate
+	PreUpdate
+	Update
+	Test
+	Texts
+	Check
+
+")) as $className) {
+	$className .= 'Command';
 	Artisan::add(new $className);
+}
