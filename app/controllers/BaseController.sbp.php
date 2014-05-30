@@ -24,7 +24,7 @@ a BaseController:Controller
 			))
 			try
 				<new Illuminate\Http\Response($jade->render($jadeFile, View::withShared($data)))
-			catch BadMethodCallException $e
+			catch \BadMethodCallException $e
 				<static::notFound()
 		try
 			<View::make($view)->with($data)

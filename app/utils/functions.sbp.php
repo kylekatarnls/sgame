@@ -225,8 +225,10 @@
 		$path .='.' . $ext
 	;
 	$isMissing = false
-	$asset = app_path() . '/assets/images/' . $path
-	$publicFile = app_path() . '/../public/img/' . $path
+	$asset = unix_path(realpath(app_path() . '/assets/images') . '/' . $path)
+	$publicFile = unix_path(realpath(app_path() . '/../public/img') . '/' . $path)
+	if '/.' in $asset
+		throw new \InvalidArgumentException("The image path should not contain hidden directory or file (wich star with a dot).", 1);
 	if checkAssets()
 		if !file_exists($asset) && !file_exists($publicFile)
 			if file_exists($asset . '.png') || file_exists($publicFile . '.png')
@@ -260,6 +262,9 @@
 				$properties .= $var . '=' . $$var . "\n"
 		if ! empty($attributes)
 			$properties .= 'attributes=' . json_encode($attributes) . "\n"
+		$dirName = dirname($publicFile)
+		if ! file_exists($dirName)
+			mkdir($dirName, 0777, true)
 		file_put_contents($publicFile . '.txt', $properties)
 	$image = '/img/' . $path . ($time ? '?' . $time : '')
 	if ! is_null($alt) || ! is_null($width) || ! is_null($height) || $attributes !== array() || ! is_null($secure)

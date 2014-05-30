@@ -31,18 +31,30 @@ CheckCommand:BaseCommand
 		parent::__construct()
 
 	+ fire
-		if >option('verbose') && >option('mute')
-			>msg("[ERROR] verbose (v) and mute (m) are contradictory.")
-			exit // no-debug
+		if ! >option('mute')
+			if >option('verbose')
+				>msg("[ERROR] verbose (v) and mute (m) are contradictory.")
+				exit // no-debug
+			$mustBeWritable = array(
+				app_path() . '/../public/css',
+				app_path() . '/../public/js',
+				app_path() . '/../public/img',
+				app_path() . '/storage',
+				app_path() . '/utils/hologame/storage',
+			)
+			foreach $mustBeWritable as $directory
+				if ! is_writable($directory)
+					>msg("[NOTICE] " . realpath($directory) . " must be writable.")
 		$forbiddenFunctions = preg_split('#\s+#', :FORBIDDEN_FUNCTIONS)
 		$forbiddenFunctionsPattern = '(' . implode('|', $forbiddenFunctions) . ')'
 		$ok = true
 		>scanApp(f° $file use $forbiddenFunctionsPattern, &$ok
 
 			$fileContent = file_get_contents(app_path() . $file)
-			preg_match_all(>functionRegex('(?<!function\s)' . $forbiddenFunctionsPattern), $fileContent, $matches, PREG_OFFSET_CAPTURE | PREG_SET_ORDER)
-			preg_match_all('#(?<![a-zA-Z0-9_\x7f-\xff]|::|->)(echo|exit|print|(?<=[\*/])\s*debug)(?![a-zA-Z0-9_\x7f-\xff])#', $fileContent, $moreMatches, PREG_OFFSET_CAPTURE | PREG_SET_ORDER)  // no-debug
-			$matches **= array_merge($moreMatches)
+			$matches = >capture(array(
+				>functionRegex('(?<!function\s)' . $forbiddenFunctionsPattern),
+				'#(?<![a-zA-Z0-9_\x7f-\xff]|::|->)(echo|exit|print|(?<=[\*/])\s*debug)(?![a-zA-Z0-9_\x7f-\xff])#', // no-debug
+			), $fileContent)
 			if ! empty($matches)
 				$logMessages = array()
 				foreach $matches as $match

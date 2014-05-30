@@ -68,6 +68,13 @@ BaseCommand:Command
 	s* getBackgroundColors
 		< array_keys(static::$backgroundColors)
 
+	/**
+	 * Detect message type and execute info or error method with somme color (on a linux console).
+	 *
+	 * @param string $msg message to display in the console
+	 *
+	 * @return void
+	 */
 	* msg $msg
 		$types = {
 			warning = 'yellow'
@@ -82,20 +89,61 @@ BaseCommand:Command
 				<>$method(static::getColoredString($msg, $color))
 		<>info($msg)
 
+	/**
+	 * Convert an array into a PHP return syntax.
+	 *
+	 * @param array $texts texts to be converted
+	 *
+	 * @return string
+	 */
 	* langFile $texts
 		< "<?php\nreturn " . preg_replace("#(?<=\n|\t)  #", "\t", var_export(array_undot($texts), true)) . ";\n?>"
 
+	/**
+	 * Save texts (array) with a given language and a given fileName in the app/lang directory.
+	 *
+	 * @param string $language language of the texts
+	 * @param string $file file name (text group)
+	 * @param array $texts texts to be saved
+	 *
+	 * @return boolean
+	 */
 	* putLangFile $language, $file, $texts
 		< file_put_contents(app_path() . '/lang/' . $language . '/' . $file . '.php', >langFile($texts))
 
+	/**
+	 * Eqivalent of Javascript String.indexOf.
+	 *
+	 * @param string $haystack where to search
+	 * @param string $needle what to search
+	 *
+	 * @return int
+	 */
 	* indexOf $haystack, $needle
 		$pos = strpos($haystack, $needle)
 		< $pos === false ? -1 : $pos
 
+	/**
+	 * Eqivalent of Javascript String.lastIndexOf.
+	 *
+	 * @param string $haystack where to search
+	 * @param string $needle what to search
+	 *
+	 * @return int
+	 */
 	* lastIndexOf $haystack, $needle
 		$pos = strrpos($haystack, $needle)
 		< $pos === false ? -1 : $pos
 
+	/**
+	 * Scan the app directory and execute a function to each file.
+	 *
+	 * @param callable $function function to be executed with each file passed in it
+	 * @param string $exclude list of directories and files to exclude (in a string separated by spaces)
+	 * @param string $fileExtensions list of file extensions to be scanned (in a string separated by spaces)
+	 *
+	 * @return array
+	 */
 	* scanApp $function, $exclude = null, $fileExtensions = null
 
 		< Dir::each(f° $file use $function, $exclude, $fileExtensions
@@ -110,6 +158,22 @@ BaseCommand:Command
 					call_user_func($function, $file)
 
 		, app_path(), true, '/')
+
+	/**
+	 * Return elements and offsets that match to regex given or regex list given.
+	 *
+	 * @param string|array $regexList regex to be detected
+	 *
+	 * @return array
+	 */
+	* capture $regexList, $contents
+		$matches = array()
+		if ! is_traversable($regexList)
+			$regexList = array($regexList)
+		foreach $regexList as $regex
+			preg_match_all($regex, $fileContent, $moreMatches, PREG_OFFSET_CAPTURE | PREG_SET_ORDER)
+			$matches **= array_merge($moreMatches)
+		< $matches
 
 	/**
 	 * Return true if the offset is in a quoted string within a content, false else.

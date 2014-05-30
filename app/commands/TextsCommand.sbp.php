@@ -45,7 +45,7 @@ TextsCommand:BaseCommand
 	 * @return void
 	 */
 	* getTexts $file, $content, $baseOffset = 0
-		preg_match_all(>functionRegex('(?:§|s)'), $content, $matches, PREG_SET_ORDER | PREG_OFFSET_CAPTURE)
+		$matches = >capture(>functionRegex('(?:§|s)'), $content)
 		if ! empty($matches)
 			if ! isset(>texts[$file])
 				>texts[$file] = array()
