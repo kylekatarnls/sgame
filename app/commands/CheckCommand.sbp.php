@@ -31,10 +31,11 @@ CheckCommand:BaseCommand
 		parent::__construct()
 
 	+ fire
-		if ! >option('mute')
+		if >option('mute')
 			if >option('verbose')
 				>msg("[ERROR] verbose (v) and mute (m) are contradictory.")
-				exit // no-debug
+				return
+		else
 			$mustBeWritable = array(
 				app_path() . '/../public/css',
 				app_path() . '/../public/js',
@@ -72,8 +73,8 @@ CheckCommand:BaseCommand
 
 		)
 		if >option('mute')
-			exit($ok ? 'OK' : 'KO') // no-debug
-		if $ok
+			>msg($ok ? 'OK' : 'KO', true)
+		elseif $ok
 			>msg("Everything is good.\n")
 
 	/**

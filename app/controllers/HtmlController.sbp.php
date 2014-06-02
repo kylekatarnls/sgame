@@ -16,7 +16,8 @@ HtmlController:BaseController
 			< true
 		< false
 
-	+ getView $view = null
+	+ getView $view = null, $data = array()
+		View::share($data)
 		if ! is_null($view)
 			>setView($view)
 		if is_null(>view)

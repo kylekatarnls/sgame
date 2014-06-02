@@ -4,21 +4,21 @@ use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 
-PostUpdateCommand:Command
+PostUpdateCommand:BaseCommand
 
 	/**
 	 * The console command name.
 	 *
 	 * @var string
 	 */
-	* $name = 'post:update';
+	* $name = 'post:update'
 
 	/**
 	 * The console command description.
 	 *
 	 * @var string
 	 */
-	* $description = 'After All-in-one Update or Install.';
+	* $description = 'After All-in-one Update or Install.'
 
 	/**
 	 * Create a new command instance.
@@ -26,7 +26,7 @@ PostUpdateCommand:Command
 	 * @return void
 	 */
 	+ __construct
-		parent::__construct();
+		parent::__construct()
 
 	/**
 	 * Execute the console command.
@@ -35,7 +35,7 @@ PostUpdateCommand:Command
 	 */
 	+ fire
 
-		$pwd = getcwd();
-		chdir(__DIR . '/../..');
-		echo shell_exec('php bin/composer.phar self-update') . "\n"; //no-debug
-		chdir($pwd);
+		$pwd = getcwd()
+		chdir(__DIR . '/../..')
+		>msg(shell_exec('php bin/composer.phar self-update') . "\n", true) // no-debug
+		chdir($pwd)

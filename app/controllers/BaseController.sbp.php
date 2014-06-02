@@ -15,6 +15,8 @@ a BaseController:Controller
 
 	* view $view = 'home', $data = array()
 		View::share('loggedIn', Auth::check())
+		if ! View::hasShared('fromController')
+			View::share('fromController', true)
 		$jadeFile = app_path() . '/views/' . $view . '.jade'
 		if(file_exists($jadeFile))
 			$jade = new Jade(array(

@@ -20,12 +20,14 @@
 	static $selector = null
 	if ! is_traversable($replace) && (is_traversable($count) || is_null($count))
 		$replace <-> $count
+	if is_null($replace)
+		$replace = array()
 	if ! is_null($count) && is_array($replace) && ! isset($replace['count'])
 		$replace['count'] = $count
 	if isset($replace['count']) || ! is_null($count)
 		if is_null($selector)
 			$selector = new \Symfony\Component\Translation\MessageSelector
-		$text = $selector->choose($text, is_null($count) ? $replace['count'] : $count, Language::altLang())
+		$text = $selector->choose($text, is_null($count) ? $replace['count'] : $count, lang())
 	if ! empty($replace)
 		if ! is_traversable($replace)
 			$replace = array('count' => $replace)
@@ -65,6 +67,17 @@
 
 @f ip2bin $ip = null
 	< bin2hex(inet_pton(is_null($ip) ? Request::getClientIp() : $ip))
+
+
+@f alt
+	static $data = array()
+	$key = implode(';', func_get_args())
+	if ! isset($data[$key])
+		$data[$key] = 0
+	$i = &$data[$key]
+	$i++
+	$i %= func_num_args()
+	< array_get(func_get_args(), $i)
 
 
 @f replace $replacement, $to, $string = null
@@ -145,6 +158,10 @@
 		Input::flash()
 
 
+@f scanApp $function, $exclude = null, $fileExtensions = null, $directory = null, $filesOnly = true, $separator = '/'
+	< BaseCommand::staticScanApp($function, $exclude, $fileExtensions, $directory, $filesOnly, $separator)
+
+
 @f fileLastTime $file
 	< max(filemtime($file), filectime($file))
 
@@ -164,6 +181,20 @@
 
 @f removePlugin $name
 	< PluginManager::removePlugin($name)
+
+
+@f inWritableDirectory $file
+	$dirName = dirname($file)
+	if ! file_exists($dirName)
+		mkdir($dirName, 0777, true)
+	< $file
+
+
+@f shouldBeValidAsset $asset
+	if '/.' in $asset
+		throw new \InvalidArgumentException("The image path should not contain hidden directory or file (wich star with a dot).")
+		< false
+	< true
 
 
 @f assetRessourceName $name
@@ -190,7 +221,7 @@
 		if file_exists($inputFile)
 			$time = DependancesCache::lastTime($inputFile, 'fileLastTime')
 			if !file_exists($outputFile) || $time > fileLastTime($outputFile)
-				(new $parser($inputFile))->out($outputFile)
+				(new $parser($inputFile))->out(inWritableDirectory($outputFile))
 			$time -= 1363188938
 		$args[0] = $extension . '/' . ($isALib ? 'lib/' : '') . $args[0] . '.' . $extension . ($time ? '?' . $time : '')
 	else
@@ -227,8 +258,7 @@
 	$isMissing = false
 	$asset = unix_path(realpath(app_path() . '/assets/images') . '/' . $path)
 	$publicFile = unix_path(realpath(app_path() . '/../public/img') . '/' . $path)
-	if '/.' in $asset
-		throw new \InvalidArgumentException("The image path should not contain hidden directory or file (wich star with a dot).", 1);
+	shouldBeValidAsset($asset)
 	if checkAssets()
 		if !file_exists($asset) && !file_exists($publicFile)
 			if file_exists($asset . '.png') || file_exists($publicFile . '.png')
@@ -242,7 +272,7 @@
 		if file_exists($asset)
 			$time = fileLastTime($asset)
 			if !file_exists($publicFile) || $time > fileLastTime($publicFile)
-				copy($asset, $publicFile)
+				copy($asset, inWritableDirectory($publicFile))
 			$time -= 1363188938
 	else
 		if !file_exists($publicFile)
@@ -262,10 +292,7 @@
 				$properties .= $var . '=' . $$var . "\n"
 		if ! empty($attributes)
 			$properties .= 'attributes=' . json_encode($attributes) . "\n"
-		$dirName = dirname($publicFile)
-		if ! file_exists($dirName)
-			mkdir($dirName, 0777, true)
-		file_put_contents($publicFile . '.txt', $properties)
+		file_put_contents(inWritableDirectory($publicFile . '.txt'), $properties)
 	$image = '/img/' . $path . ($time ? '?' . $time : '')
 	if ! is_null($alt) || ! is_null($width) || ! is_null($height) || $attributes !== array() || ! is_null($secure)
 		if is_array($alt)

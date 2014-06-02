@@ -1,6 +1,4 @@
 extends ../layouts/insearch
 
 block content
-	params = array('title' => §('global.title'/*§InSearch§*/))
-	h1=§('global.not-found.title'/*§:title - Page introuvable§*/, $params)
-	p=§('global.not-found.description'/*§Il n'y a rien ici.§*/)
+	include ../includes/notFound

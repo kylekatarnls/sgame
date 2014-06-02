@@ -1,0 +1,63 @@
+pre.summary, p.no-image {
+	font-weight: bold;
+	color: red;
+}
+p.no-image, p.image {
+	cursor: pointer;
+}
+p.no-image, p.image, p.info {
+	padding: 0;
+	margin: 2px 0;
+}
+h3.directory {
+	margin: 10px 0 0;
+	padding: 2px 0;
+}
+h4.file {
+	margin: 0;
+	padding: 2px 0;
+}
+ul.files {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+ul.files li.file {
+	clear: both;
+	margin: 0;
+	padding: 3px 9px 9px;
+}
+ul.files li.file.odd {
+	background: #f8f8f8;
+}
+ul.files li.file.even {
+	background: #f0f0f0;
+}
+div.upload {
+	float: right;
+}
+div.upload label {
+	vertical-align: top;
+}
+div.upload label input[type="checkbox"] {
+	margin-right: 10px;
+}
+p.image img {
+	-o-box-shadow: 0 0 3px gray;
+	-ms-box-shadow: 0 0 3px gray;
+	-moz-box-shadow: 0 0 3px gray;
+	-imac-box-shadow: 0 0 3px gray;
+	-khtml-box-shadow: 0 0 3px gray;
+	-webkit-box-shadow: 0 0 3px gray;
+	box-shadow: 0 0 3px gray;
+	background: white;
+}
+p.info ul {
+	margin: 0 0 10px;
+}
+.retina {
+	color: green;
+}
+.no-retina {
+	color: red;
+}

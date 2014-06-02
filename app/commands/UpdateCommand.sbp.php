@@ -4,21 +4,21 @@ use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 
-UpdateCommand:Command
+UpdateCommand:BaseCommand
 
 	/**
 	 * The console command name.
 	 *
 	 * @var string
 	 */
-	* $name = 'update';
+	* $name = 'update'
 
 	/**
 	 * The console command description.
 	 *
 	 * @var string
 	 */
-	* $description = 'All-in-one Update.';
+	* $description = 'All-in-one Update.'
 
 	/**
 	 * Create a new command instance.
@@ -26,7 +26,7 @@ UpdateCommand:Command
 	 * @return void
 	 */
 	+ __construct
-		parent::__construct();
+		parent::__construct()
 
 	/**
 	 * Execute the console command.
@@ -35,7 +35,7 @@ UpdateCommand:Command
 	 */
 	+ fire
 
-		$pwd = getcwd();
-		chdir(__DIR . '/../..');
-		echo shell_exec('php bin/composer.phar update') . "\n"; //no-debug
-		chdir($pwd);
+		$pwd = getcwd()
+		chdir(__DIR . '/../..')
+		>msg(shell_exec('php bin/composer.phar update') . "\n", true) // no-debug
+		chdir($pwd)

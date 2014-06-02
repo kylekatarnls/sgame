@@ -5,7 +5,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 use Utils\Lang\CSV;
 
-CsvCommand:Command
+CsvCommand:BaseCommand
 
 	/**
 	 * The console command name.
@@ -36,6 +36,7 @@ CsvCommand:Command
 			array('output', 'o', InputOption::VALUE_OPTIONAL, 'Output CSV file', null),
 			array('test', 't', InputOption::VALUE_NONE, 'Output CSV file', null),
 			array('languages', 'l', InputOption::VALUE_OPTIONAL, 'Output CSV file', null),
+			array('language', 'b', InputOption::VALUE_OPTIONAL, 'Based language', null),
 		)
 
 
@@ -124,7 +125,7 @@ CsvCommand:Command
 		$languages = >option('languages')
 		if ! is_null($languages)
 			$languages = array_map('trim', explode(',', $languages))
-		$file = CSV::convert($languages)
+		$file = CSV::convert($languages, null, >option('language') ?: Config::get('app.dev-locale'))
 		if ! is_null($output)
 			>msg(rename($file, $output) ?
 				"Export réussi\n" :

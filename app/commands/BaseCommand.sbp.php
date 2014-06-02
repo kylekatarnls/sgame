@@ -1,11 +1,14 @@
 <?
 
 use Illuminate\Console\Command
+use Symfony\Component\Console\Input\ArgvInput
+use Symfony\Component\Console\Output\ConsoleOutput
 use Hologame\Dir
 
-BaseCommand:Command
+a BaseCommand:Command
 
 	CODE_FILE_EXTENSIONS = 'php jade html blade'
+	EXCLUDE = ''
 	FUNCTION_REGEX = '#(?<![a-zA-Z0-9_\x7f-\xff]|::|->)function[\t ]*(\(((?>[^\(\)]+)|(?-2))*\))#'
 	STRING_REGEX = '#([\'"]).*(?<!\\\\)(?:\\\\\\\\)*\\1#U'
 	TAB_COLUMNS = 4
@@ -41,7 +44,53 @@ BaseCommand:Command
 		light_gray = '47'
 	}
 
-	// Returns colored string
+	/**
+	 * Method that can be used instead of defaut ouput method of Command class.
+	 *
+	 * @var callable
+	 */
+	- $outputMethod = null
+
+	/**
+	 * Replace the default output method.
+	 *
+	 * @return string
+	 */
+	+ setOutputMethod $outputMethod
+		if ! is_callable($outputMethod)
+			throw new \InvalidArgumentException("The output method must be callable.", 1);
+		>outputMethod = $outputMethod
+
+	/**
+	 * Get command name (typed after "php artisan")
+	 *
+	 * @return string
+	 */
+	+ getName
+		<>name
+
+	/**
+	 * Get command result as string.
+	 *
+	 * @return string
+	 */
+	s+ getResult $options = ''
+		$command = new static
+		$pwd = getcwd()
+		chdir(__DIR . '/../..')
+		$output = shell_exec('php artisan ' . rtrim($command->getName() . ' ' . $options)) // no-debug
+		chdir($pwd)
+		< $output
+
+	/**
+	 * Returns colored string.
+	 *
+	 * @param string $string text to color in the console
+	 * @param string $foregroundColor color of the text
+	 * @param string $backgroundColor color of the background
+	 *
+	 * @return array
+	 */
 	s* getColoredString $string, $foregroundColor = null, $backgroundColor = null
 		if substr(__FILE, 0, 1) not '/'
 			< $string
@@ -60,11 +109,19 @@ BaseCommand:Command
 
 		< $coloredString
 
-	// Returns all foreground color names
+	/**
+	 * Returns all foreground color names.
+	 *
+	 * @return array
+	 */
 	s* getForegroundColors
 		< array_keys(static::$backgroundColors)
 
-	// Returns all background color names
+	/**
+	 * Returns all background color names.
+	 *
+	 * @return array
+	 */
 	s* getBackgroundColors
 		< array_keys(static::$backgroundColors)
 
@@ -75,7 +132,11 @@ BaseCommand:Command
 	 *
 	 * @return void
 	 */
-	* msg $msg
+	* msg $msg, $raw = false
+		if ! is_null(>outputMethod)
+			<>call_user_func(>outputMethod, $msg, $raw)
+		if $raw
+			<>output->writeln($msg)
 		$types = {
 			warning = 'yellow'
 			error = 'red'
@@ -144,20 +205,30 @@ BaseCommand:Command
 	 *
 	 * @return array
 	 */
-	* scanApp $function, $exclude = null, $fileExtensions = null
+	s+ staticScanApp $function, $exclude = null, $fileExtensions = null, $directory = null, $filesOnly = true, $separator = '/'
+
+		if is_null($directory)
+			$directory = app_path()
+
+		$exclude = is_null($exclude) ? :EXCLUDE : $exclude
+		$fileExtensions = is_null($fileExtensions) ? :CODE_FILE_EXTENSIONS : $fileExtensions
 
 		< Dir::each(f° $file use $function, $exclude, $fileExtensions
 
-			if ! preg_match('#^' . implode('|', array_map('preg_quote', explode(' ', is_null($exclude) ? :EXCLUDE : $exclude))) . '#', $file)
+			if empty($exclude) || ! preg_match('#^' . implode('|', array_map('preg_quote', explode(' ', $exclude))) . '#', $file)
 				$extension = ''
 				$pos = strrpos($file, '.')
 				if $pos not false
 					$extension = substr($file, $pos + 1)
-				$extensions = explode(' ', is_null($fileExtensions) ? :CODE_FILE_EXTENSIONS : $fileExtensions)
+				$extensions = explode(' ', $fileExtensions)
 				if $extension in $extensions
 					call_user_func($function, $file)
 
-		, app_path(), true, '/')
+		, $directory, $filesOnly, $separator)
+
+	// Non-static version
+	* scanApp $function, $exclude = null, $fileExtensions = null, $directory = null, $filesOnly = true, $separator = '/'
+		< static::staticScanApp($function, is_null($exclude) ? :EXCLUDE : $exclude, is_null($fileExtensions) ? :CODE_FILE_EXTENSIONS : $fileExtensions, $directory, $filesOnly, $separator)
 
 	/**
 	 * Return elements and offsets that match to regex given or regex list given.
@@ -171,7 +242,7 @@ BaseCommand:Command
 		if ! is_traversable($regexList)
 			$regexList = array($regexList)
 		foreach $regexList as $regex
-			preg_match_all($regex, $fileContent, $moreMatches, PREG_OFFSET_CAPTURE | PREG_SET_ORDER)
+			preg_match_all($regex, $contents, $moreMatches, PREG_OFFSET_CAPTURE | PREG_SET_ORDER)
 			$matches **= array_merge($moreMatches)
 		< $matches
 

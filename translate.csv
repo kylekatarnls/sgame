@@ -1,0 +1,79 @@
+﻿file;key;en;fr;tr
+crawler;crawled-url;"[0,1]:count URL crawled|[2,Inf]:count URLs crawled";"[0,1]:count URL scannée|[2,Inf]:count URLs scannées";":count URL tarandi"
+date;second;second|seconds;seconde|secondes;saniye
+date;minute;minute|minutes;minute|minutes;dakika
+date;hour;hour|hours;heure|heures;saat
+date;day;day|days;jour|jours;gün
+date;week;week|weeks;semaine|semaines;hafta
+date;month;month|months;mois;ay
+date;year;year|years;année|années;yil
+date;fromNow;":diff from now";"dans :diff";"dans :diff"
+date;ago;":diff ago";"il y a :diff";"il y a :diff"
+date;after;":diff after";":diff après";":diff après"
+date;before;":diff before";":diff avant";":diff avant"
+date;today;today;aujourd'hui;bugün
+date;yesterday;yesterday;hier;dün
+date;tomorrow;tomorrow;demain;yarin
+date;format.longDateTime;"%A %B %e %lh%M %p, %Y";"%A %e %B %Y à %kh%M";"%A %e %B %Y à %kh%M"
+date;format.shortDateTime;"%a %b %e %lh%M %p, %Y";"%a %e %b %Y à %kh%M";"%a %e %b %Y à %kh%M"
+date;format.rTime;"%lh%M %p";%kh%M;%kh%M
+date;format.longDate;"%A %B %e, %Y";"%A %e %B %Y";"%A %e %B %Y"
+date;format.shortDate;"%a %b %e, %Y";"%a %e %b %Y";"%a %e %b %Y"
+date;altFormat.longDateTime;"m/d/Y à h\hi A";"d/m/Y à H\hi";"d/m/Y à H\hi"
+date;altFormat.shortDateTime;"m/d/y à h\hi A";"d/m/y à H\hi";"d/m/y à H\hi"
+date;altFormat.rTime;"h\hi A";"H\hi";"H\hi"
+date;altFormat.longDate;m/d/Y;d/m/Y;d/m/Y
+date;altFormat.shortDate;m/d/y;d/m/y;d/m/y
+error;not-found.title;":title - Page Not Found";":title - Page introuvable";":title - Page introuvable"
+error;not-found.description;"There is nothing here";"Il n'y a rien ici.";"Il n'y a rien ici."
+error;wrong-token.title;":title - Expired session";":title - Session expirée";":title - Session expirée"
+error;wrong-token.description;"You can retry now.";"Vous pouvez réessayer maintenant.";"Vous pouvez réessayer maintenant."
+error;login.user-or-pass;"Please check your username or password.";"Veuillez vérifier votre nom d'utilisateur ou mot de passe.";"Veuillez vérifier votre nom d'utilisateur ou mot de passe."
+error;signin.not-created;;"Cette adresse e-mail est déjà enregistrée.";
+error;signin.wrong-password;;"Veuillez renseigner un mot de passe d'au moins 4 caractères.";
+error;signin.wrong-password-confirm;;"Veuillez renseigner deux mots de passe identiques.";
+error;signin.wrong-email;;"Veuillez renseigner une adresse e-mail valide.";
+global;title;InSearch;InSearch;InSearch
+global;home;Home;Accueil;Accueil
+global;results-per-page;"Results per page";"Résultats par page";"Résultats par page"
+global;search.placeholder;"Search a page";"Chercher une page";"Chercher une page"
+global;popularity;Popularity;Popularité;Popularité
+global;add-url;"Add an URL";"Ajouter une URL";"Ajouter une URL"
+global;url-added;"URL added : :url";"URL ajoutée : :url";"URL ajoutée : :url"
+global;url-updated;"URL updated : :url";"URL mise à jour : :url";"URL mise à jour : :url"
+global;url-not-found;"URL not found : :url";"URL introuvable : :url";"URL introuvable : :url"
+global;duplicated-content;"Duplicated Content found on URL : :url";"Contenu duppliqué détecté pour l'URL : :url";"Contenu duppliqué détecté pour l'URL : :url"
+global;results.title;":title - Results";":title - Résultats";":title - Résultats"
+global;results.count;"{0}:title - Any result|{1}:title - One result|[2,Inf]:title - :count results";"{0}:title - Aucun résultat|{1}:title - Un résultat|[2,Inf]:title - :count résultats";"{0}:title - Aucun résultat|{1}:title - Un résultat|[2,Inf]:title - :count résultats"
+global;confirm;;Confirmer;
+global;cancel;;Annuler;
+global;delete-result;;"Supprimer ce résultat";
+global;delete-succeed;;"Suppression réussie";
+global;most-popular;"Most popular pages";"Pages les plus populaires";"Pages les plus populaires"
+global;footer;"InSearch | 2014 Study project";"InSearch | Projet de fin d'année 2014";"InSearch | Projet de fin d'année 2014"
+global;history.title;":title - Researches history";"Historique des recherches";"Historique des recherches"
+global;history.link;"My previous researches";"Mes précédents recherches";"Mes précédents recherches"
+global;history.count;"{0}:title - Any researche recorded|{1}:title - Last researche|[2,Inf]:title - :count researches";"{0}:title - Aucune recherche enregistrée|{1}:title - Votre dernière recherche|[2,Inf]:title - :count recherches";"{0}:title - Aucune recherche enregistrée|{1}:title - Votre dernière recherche|[2,Inf]:title - :count recherches"
+global;history.results;"[0,1]:count result|[2,Inf]:count results";"[0,1]:count résultat|[2,Inf]:count résultats";"[0,1]:count résultat|[2,Inf]:count résultats"
+global;not-found.title;;":title - Page introuvable";":title - Page introuvable"
+global;not-found.description;;"Il n'y a rien ici.";"Il n'y a rien ici."
+global;wrong-token.title;;":title - Session expirée";":title - Session expirée"
+global;wrong-token.description;;"Vous pouvez réessayer maintenant.";"Vous pouvez réessayer maintenant."
+new;add;;"Texte à rajouter";
+pagination;previous;;"&laquo; Précédents";
+pagination;next;;"Suivants &raquo;";
+reminders;password;Password;"Passwords must be at least six characters and match the confirmation.";"Mot de passe"
+reminders;user;;"We can't find a user with that e-mail address.";
+reminders;token;;"This password reset token is invalid.";
+reminders;sent;;"Password reminder sent!";
+survey;property;;":key: :value";
+survey;preview;;Aperçu;
+survey;missing-image;;"Missing image";
+survey;replace;;"To be replaced";
+survey;image.title;;"Images survey";
+survey;display-toggle;;"Afficher/Masquer les infos détaillées";
+survey;help-count;;":count help|:count helps";
+survey;notice-count;;":count notice|:count notices";
+survey;warning-count;;":count warning|:count warnings";
+survey;error-count;;":count error|:count errors";
+survey;developement.title;;"Developement survey";

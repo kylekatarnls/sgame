@@ -4,6 +4,8 @@ JsParser
 
 	YES = 'yes|true|on|1'
 	NO = 'no|false|off|0'
+	// RAW_JS_REQUIRE = "`try{{code}\n}catch(e){ if(window['console']) console.error(e) }`"
+	RAW_JS_REQUIRE = "`{code}\n`"
 
 	* $coffeeFile
 
@@ -39,7 +41,7 @@ JsParser
 					DependancesCache::add($firstFile, $file)
 					$code = str_replace(array("\r\n", "\r"), "\n", "\n" . ($isCoffee not $jsOnly ?
 						static::resolveRequire($file, $firstFile) :
-						"`" . static::resolveRequire($file, $firstFile, true) . "\n`"
+						str_replace('{code}', static::resolveRequire($file, $firstFile, true), :RAW_JS_REQUIRE)
 					))
 					< $indent . str_replace("\n", "\n" . $indent, $code)
 				,

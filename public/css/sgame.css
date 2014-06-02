@@ -171,3 +171,7 @@ button.remember-me.selected {
 #origin .positionable {
 	position: absolute;
 }
+.toggle-next {
+	cursor: pointer;
+	font-size: .8em;
+}

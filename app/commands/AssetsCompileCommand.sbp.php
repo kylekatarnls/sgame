@@ -4,7 +4,7 @@ use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 
-AssetsCompileCommand:Command
+AssetsCompileCommand:BaseCommand
 
 	/**
 	 * The console command name.

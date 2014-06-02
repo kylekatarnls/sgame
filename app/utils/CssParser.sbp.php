@@ -30,12 +30,12 @@ CssParser
 			<	$tab.
 				'width '.>cp_unite($d[2])."\n".$tab.
 				'height '.>cp_unite($d[3]).$d[4];
-		$c = array(
-			'pos' => '',
-			'abs' => "position absolute\n".$tab,
-			'rel' => "position relative\n".$tab,
-			'fix' => "position fixed\n".$tab
-		);
+		$c = {
+			pos = ''
+			abs = "position absolute\n".$tab
+			rel = "position relative\n".$tab
+			fix = "position fixed\n".$tab
+		}
 		<	$tab.$c[$d[1]].
 			'left '.>cp_unite($d[2])."\n".$tab.
 			'top '.>cp_unite($d[3]).$d[4];
@@ -146,44 +146,44 @@ CssParser
 		// CSSB - Avant
 		if $type != 1
 			$code = preg_replace_callback('#(?<=^|\n|\r)(\h*)\[\[([\s\S]*)\]\]#mU', array($this, 'cssb'), $code);
-			$racv = array(
-				 'lm' => 'float:left;margin'
-				,'rm' => 'float:right;margin'
-				,'bm' => 'display:block;margin'
-				,'lp' => 'float:left;padding'
-				,'rp' => 'float:right;padding'
-				,'bp' => 'display:block;padding'
-				,'m0p' => 'display:block;margin:0;padding'
-			);
-			$rac = array(
-				 'abs' => 'position:absolute'
-				,'rel' => 'position:relative'
-				,'fix' => 'position:fixed'
-				,'db' => 'display:block'
-				,'dl' => 'display:block;float:left'
-				,'fl' => 'float:left'
-				,'dr' => 'display:block;float:right'
-				,'fr' => 'float:right'
-				,'di' => 'display:inline'
-				,'dn' => 'display:none'
-				,'fb' => 'font-weight:bold'
-				,'fi' => 'font-style:italic'
-				,'fbi' => 'font-weight:bold;font-style:italic'
-				,'fu' => 'text-decoration:underline'
-				,'fnu' => 'text-decoration:none'
-				,'bn' => 'border:none'
-				,'b1sb' => 'border:1px solid black'
-				,'b2sb' => 'border:2px solid black'
-				,'b3sb' => 'border:3px solid black'
-				,'cp' => 'cursor:pointer'
-				,'tal' => 'text-align:left'
-				,'tar' => 'text-align:right'
-				,'tac' => 'text-align:center'
-				,'taj' => 'text-align:justify'
-				,'oh' => 'overflow:hidden'
-				,'oa' => 'overflow:auto'
-				,'mp0' => 'margin:0;padding:0'
-			);
+			$racv = {
+				lm = 'float:left;margin'
+				rm = 'float:right;margin'
+				bm = 'display:block;margin'
+				lp = 'float:left;padding'
+				rp = 'float:right;padding'
+				bp = 'display:block;padding'
+				m0p = 'display:block;margin:0;padding'
+			}
+			$rac = {
+				abs = 'position:absolute'
+				rel = 'position:relative'
+				fix = 'position:fixed'
+				db = 'display:block'
+				dl = 'display:block;float:left'
+				fl = 'float:left'
+				dr = 'display:block;float:right'
+				fr = 'float:right'
+				di = 'display:inline'
+				dn = 'display:none'
+				fb = 'font-weight:bold'
+				fi = 'font-style:italic'
+				fbi = 'font-weight:bold;font-style:italic'
+				fu = 'text-decoration:underline'
+				fnu = 'text-decoration:none'
+				bn = 'border:none'
+				b1sb = 'border:1px solid black'
+				b2sb = 'border:2px solid black'
+				b3sb = 'border:3px solid black'
+				cp = 'cursor:pointer'
+				tal = 'text-align:left'
+				tar = 'text-align:right'
+				tac = 'text-align:center'
+				taj = 'text-align:justify'
+				oh = 'overflow:hidden'
+				oa = 'overflow:auto'
+				mp0 = 'margin:0;padding:0'
+			}
 			foreach $rac as $c => $r
 				$code = preg_replace('#(?<![a-zA-Z0-9-\:])'.$c.'\s*[;\n]#', $r.";\n", $code);
 			foreach $racv as $c => $r

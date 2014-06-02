@@ -144,3 +144,7 @@ button.remember-me
 
 	& .positionable
 		abs
+
+.toggle-next
+	cp
+	font-size .8em

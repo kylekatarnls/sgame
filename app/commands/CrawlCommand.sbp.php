@@ -1,29 +1,29 @@
 <?
 
-use Illuminate\Console\Command;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\InputArgument;
+use Illuminate\Console\Command
+use Symfony\Component\Console\Input\InputOption
+use Symfony\Component\Console\Input\InputArgument
 
-CrawlCommand:Command
+CrawlCommand:BaseCommand
 
 	/**
 	 * Si FOLLOW_LINKS = true le crawler scannera les liens qu'il trouve
 	 */
-	FOLLOW_LINKS = true;
+	FOLLOW_LINKS = true
 
 	/**
 	 * The console command name.
 	 *
 	 * @var string
 	 */
-	* $name = 'crawl';
+	* $name = 'crawl'
 
 	/**
 	 * The console command description.
 	 *
 	 * @var string
 	 */
-	* $description = 'Crawl all ressources and links contented in them.';
+	* $description = 'Crawl all ressources and links contented in them.'
 
 	/**
 	 * Create a new command instance.
@@ -31,7 +31,7 @@ CrawlCommand:Command
 	 * @return void
 	 */
 	+ __construct
-		parent::__construct();
+		parent::__construct()
 
 	/**
 	 * Execute the console command.

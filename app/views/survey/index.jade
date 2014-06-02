@@ -1,0 +1,70 @@
+extends ../layouts/sgame
+
+block append js
+	!=script('survey/index')
+
+block append css
+	!=style('survey/index')
+
+block content
+	if fromController
+
+		//- Developement tools
+		h2
+			=§('survey.developement.title'/*§Developement survey§*/)
+		p
+			=§('survey.error-count'/*§:count error|:count errors§*/, $check->log->error)
+			!=" &nbsp; | &nbsp; "
+			=§('survey.warning-count'/*§:count warning|:count warnings§*/, $check->log->warning)
+			!=" &nbsp; | &nbsp; "
+			=§('survey.notice-count'/*§:count notice|:count notices§*/, $check->log->notice)
+			!=" &nbsp; | &nbsp; "
+			=§('survey.help-count'/*§:count help|:count helps§*/, $check->log->help)
+			!=" &nbsp; | &nbsp; "
+			a.toggle-next
+				=§('survey.display-toggle'/*§Afficher/Masquer les infos détaillées§*/)
+		pre.summary
+			=check->summary
+		pre#check-details.toggleable
+			=check->details
+
+		//- Design tools
+		h2
+			=§('survey.image.title'/*§Images survey§*/)
+		!=Form::open('/survey', array('files' => true))
+			each files, directory in images
+				h3.directory
+					=directory ?: '/'
+				ul.files
+					each data, file in files
+						li(class=alt('file odd', 'file even'))
+							div.upload
+								!=Form::file('image[' . $file . ']', null, 'form-control')
+								label.form-control
+									!=Form::checkbox('to-be-replaced[' . $data['image'] . ']', 'on', ! empty($data['info']) && !empty($data['info']['to-be-replaced']) ? array('checked' => 'checked') : array())
+									=§('survey.replace'/*§To be replaced§*/)
+							h4.file
+								=file
+								!=" &nbsp; "
+								if empty($data['retina-image'])
+									sup.no-retina
+										=s("Retina (@2x) manquante")
+								else
+									sup.retina
+										=s("Retina (@2x) OK")
+							if $data['missing-image']
+								p.no-image
+									=§('survey.missing-image'/*§Missing image§*/)
+							else
+								p.image
+									!=image(data['image'], §('survey.preview'/*§Aperçu§*/))
+							unless empty($data['info'])
+								ul
+									each value, key in data['info']
+										if key !== 'to-be-replaced'
+											li
+												=§('survey.property'/*§:key: :value§*/, array( 'key' => $key, 'value' => $value))
+		!=Form::close()
+
+	else
+		include ../includes/notFound

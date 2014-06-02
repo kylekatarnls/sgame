@@ -34,7 +34,7 @@ Route::get('/delete/confirm/{crawledContent}', 'HomeController@deleteConfirm');
  
 // Ajout manuel d'une URL 
 Route::post('/add-url', 'HomeController@addUrl')->before('csrf'); 
-Route::get('/error/wrong-token', 'BaseController@wrongToken'); 
+Route::get('/error/wrong-token', 'HomeController@wrongToken'); 
  
 // Résultats les plus populaires 
 Route::get('/most-popular/{page}/{resultsPerPage?}', 'HomeController@mostPopular'); 
@@ -50,6 +50,10 @@ Route::post('/autocomplete', function() {
 // URLs accessibles uniquement en environement de développement 
 if (Config::get('app.debug')) {
     Route::get('/specs/1', 'DevController@specs'); 
+    Route::get('/specs', 'DevController@specs'); 
+    Route::get('/survey', 'DevController@survey'); 
+    Route::post('/survey', 'DevController@postSurvey'); 
+    Route::post('/survey/image/to-be-replaced', 'DevController@imageToBeReplaced'); 
 	Route::get('/lang/csv', function () {
 		return  Response::download(Utils\Lang\CSV::convert()); 
 	} ); 
@@ -83,6 +87,8 @@ App::missing(function () {
 	} $view = preg_replace('#[^a-zA-Z0-9._/-]#', '', $uri); 
 	if (file_exists(dirname('C:\\wamp\\www\\sgame\\app' . '/views/' . $view))) {
 		$controller = new HtmlController; 
-		return  $controller->getView($view); 
+		return  $controller->getView($view, array( 
+			'fromController' => false, 
+		)); 
 	} return  BaseController::notFound(); 
 }); 

@@ -1,0 +1,59 @@
+pre.summary
+p.no-image
+	fb
+	color red
+
+p.no-image
+p.image
+	cp
+
+p.no-image
+p.image
+p.info
+	padding 0
+	margin 2px 0
+
+h3.directory
+	margin 10px 0 0
+	padding 2px 0
+
+h4.file
+	margin 0
+	padding 2px 0
+
+ul.files
+	margin 0
+	padding 0
+	list-style none
+
+	li.file
+		clear both
+		margin 0
+		padding 3px 9px 9px
+
+		&.odd
+			background #f8f8f8
+
+		&.even
+			background #f0f0f0
+
+div.upload
+	fr
+	label
+		vertical-align top
+		input[type="checkbox"]
+			margin-right 10px
+
+p.image
+	img
+		[[box-shadow 0 0 3px gray]]
+		background white
+
+p.info ul
+	margin 0 0 10px
+
+.retina
+	color green
+
+.no-retina
+	color red
