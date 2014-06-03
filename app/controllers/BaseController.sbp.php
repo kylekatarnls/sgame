@@ -4,6 +4,11 @@ a BaseController:Controller
 
 	* $data = array()
 
+	s* commonData
+		View::share('loggedIn', Auth::check())
+		if ! View::hasShared('fromController')
+			View::share('fromController', true)
+
 	/**
 	 * Setup the layout used by the controller.
 	 *
@@ -14,9 +19,7 @@ a BaseController:Controller
 			>layout = >view(>layout)
 
 	* view $view = 'home', $data = array()
-		View::share('loggedIn', Auth::check())
-		if ! View::hasShared('fromController')
-			View::share('fromController', true)
+		static::commonData()
 		$jadeFile = app_path() . '/views/' . $view . '.jade'
 		if(file_exists($jadeFile))
 			$jade = new Jade(array(
@@ -34,6 +37,7 @@ a BaseController:Controller
 			<>notFound()
 
 	s+ response $view = 'home', $status = 200
+		static::commonData()
 		$response = new Symfony\Component\HttpFoundation\Response('', $status)
 		$response->setContent((new Jade)->render(app_path() . '/views/' . $view . '.jade', View::getShared()))
 		<$response

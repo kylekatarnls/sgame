@@ -375,14 +375,12 @@
 
 
 @f canonical
-	var_dump((empty($_SERVER['HTTPS']) ? 'http' : 'https') . '://' . Request::server('HTTP_HOST') . '/' . rtrim(Request::server('REQUEST_URI'), '/') . Request::server('QUERY_STRING'))
-	exit
-	$link = new \Hologame\HTML('link', {
+	$href = new \Hologame\Url((empty($_SERVER['HTTPS']) ? 'http' : 'https') . '://' . Request::server('HTTP_HOST') . '/' . trim(Request::server('REQUEST_URI'), '/') . Request::server('QUERY_STRING'), true)
+	$href->get->hl = lang()
+	< new \Hologame\HTML('link', {
 		rel = "canonical"
-		href = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . '://' . Request::server('HTTP_HOST') . '/' . rtrim(Request::server('REQUEST_URI'), '/') . Request::server('QUERY_STRING')
+		href = $href
 	})
-	$link->href->get->hl = lang()
-	< $link
 
 
 @f http_negotiate_language $available_languages, &$result = null

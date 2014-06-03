@@ -5,14 +5,18 @@ namespace Hologame;
 class Url
 {
 	protected $full = false, $protocole = 'http', $domaine = '', $directory = '', $file = '', $get, $hash = '';
-	public function __construct($url = null)
+	public function __construct($url = null, $full = null)
 	{
 		$this->domaine = $_SERVER['HTTP_HOST'];
 		$this->protocole = (!empty($_SERVER['HTTPS']) ? 'https' : 'http');
 		$this->get = new Url°Get;
-		if($url !== null)
+		if(!is_null($url))
 		{
 			$this->change($url);
+		}
+		if(!is_null($full))
+		{
+			$this->full = true;
 		}
 	}
 	public function change($url, $full = null)
@@ -31,7 +35,7 @@ class Url
 		{
 			list(, $this->domaine, $url) = $match;
 		}
-		if($full === true)
+		if(!is_null($full))
 		{
 			$this->full = true;
 		}
@@ -98,12 +102,12 @@ class Url
 	{
 		return $this->href();
 	}
-	public function href()
+	public function href($full = null)
 	{
 		$href = '';
 		$protocole = (empty($_SERVER['HTTPS']) ? 'http' : 'https');
 		$domaine = $_SERVER['HTTP_HOST'];
-		if($this->full || $this->protocole !== $protocole || $this->domaine !== $domaine)
+		if(is_null($full) ? $this->full : $full || $this->protocole !== $protocole || $this->domaine !== $domaine)
 		{
 			$href .= $this->protocole.'://'.$this->domaine;
 		}

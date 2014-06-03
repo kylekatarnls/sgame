@@ -237,7 +237,7 @@ class Html extends Object
 	{
 		$this->checkTagName();
 		$urlAttributes = explode(' ', self::URL_ATTRIBUTES);
-		if(in_array($name, $urlAttributes))
+		if(in_array($name, $urlAttributes) && (!is_object($value) || !$value instanceof Url))
 		{
 			$this->attributes[$name] = new Url($value);
 		}
