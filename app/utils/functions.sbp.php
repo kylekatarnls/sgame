@@ -294,7 +294,7 @@
 			$properties .= 'attributes=' . json_encode($attributes) . "\n"
 		file_put_contents(inWritableDirectory($publicFile . '.txt'), $properties)
 	$image = '/img/' . $path . ($time ? '?' . $time : '')
-	if ! is_null($alt) || ! is_null($width) || ! is_null($height) || $attributes !== array() || ! is_null($secure)
+	if ! is_null($alt) || ! is_null($width) || ! is_null($height) || $attributes not array() || ! is_null($secure)
 		if is_array($alt)
 			$attributes = $alt
 			$alt = null
@@ -308,6 +308,35 @@
 			$attributes['width'] = $width
 		if ! is_null($height)
 			$attributes['height'] = $height
+		$eimg = {
+			s = 'saturation'
+			l = 'luminosite'
+			t = 'teinte'
+			tr = 'transparence'
+			a = 'applique'
+			g = 'gaussien'
+			c = 'contraste'
+			li = 'limite'
+			rx = 'redimx'
+			ry = 'redimy'
+			sy = 'symetrie'
+		}
+		$eimgOther = array(
+			'rouge',
+			'vert',
+			'bleu',
+			'alpha',
+		)
+		$optionsEimg = array()
+		foreach array_keys($attributes) as $key
+			$prop = array_search($key, $eimg)
+			$prop ?:= $key
+			if isset($eimg[$prop]) || in_array($prop, $eimgOther)
+				$optionsEimg[] = $prop . $attributes[$key]
+				unset($attributes[$key])
+		if $optionsEimg not array()
+			$image = new \Hologame\Url('/eimg/' . substr($image, 5))
+			$image->get->params = implode('_', $optionsEimg)
 		$image = HTML::image($image, $alt, $attributes, $secure)
 	< $image
 
@@ -343,6 +372,17 @@
 	if $uri === $currentUri
 		$uri = Request::server('HTTP_REFERER')
 	< $uri
+
+
+@f canonical
+	var_dump((empty($_SERVER['HTTPS']) ? 'http' : 'https') . '://' . Request::server('HTTP_HOST') . '/' . rtrim(Request::server('REQUEST_URI'), '/') . Request::server('QUERY_STRING'))
+	exit
+	$link = new \Hologame\HTML('link', {
+		rel = "canonical"
+		href = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . '://' . Request::server('HTTP_HOST') . '/' . rtrim(Request::server('REQUEST_URI'), '/') . Request::server('QUERY_STRING')
+	})
+	$link->href->get->hl = lang()
+	< $link
 
 
 @f http_negotiate_language $available_languages, &$result = null

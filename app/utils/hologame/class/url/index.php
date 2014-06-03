@@ -17,7 +17,7 @@ class Url
 	}
 	public function change($url, $full = null)
 	{
-		if(start($url, '/'))
+		if(start($url, '/') && defined('HTTP_ROOT'))
 		{
 			$url = HTTP_ROOT . substr($url, 1);
 		}

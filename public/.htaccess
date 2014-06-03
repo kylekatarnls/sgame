@@ -10,6 +10,8 @@
 
     RewriteRule ^(.*)\.coffee$ $1.js [L]
 
+    RewriteRule ^/?eimg/(.+)$ eimg.php?fichier=$1 [L,QSA]
+
     # Handle Front Controller...
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f

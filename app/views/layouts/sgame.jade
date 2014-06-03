@@ -14,6 +14,7 @@ html.no-js(lang=lang())
 		block css
 			!=style('sgame')
 		block link
+			!=canonical()
 			link(rel="shortcut icon", href=asset('favicon.ico'))
 		block head
 	body
@@ -36,7 +37,8 @@ html.no-js(lang=lang())
 										include ../includes/login
 
 						a.brand(href="/", style="float:left;")
-							!=image("advanced-search", §('global.title'/*§InSearch§*/))
+							alt = §('global.title'/*§InSearch§*/)
+							!=image("advanced-search", $alt, 48, 48)
 
 						!=Form::open('/')
 							#languages.btn-group
