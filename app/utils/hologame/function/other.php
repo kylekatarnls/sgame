@@ -73,7 +73,7 @@ function £($string, $data = null, $file = 'page/index')
 		$file => $string,
 	]));
 	$twig = new Twig_Environment($loader, [
-		'cache' => path('STORAGE', 'HOST').'cache/template',
+		'cache' => path('STORAGE', 'CORE').'cache/template',
 	]);
 	try
 	{
@@ -81,7 +81,7 @@ function £($string, $data = null, $file = 'page/index')
 	}
 	catch(Exception $e)
 	{
-		$storage=path('STORAGE', 'HOST');
+		$storage=path('STORAGE', 'CORE');
 		if(!file_exists($storage))
 		{
 			exit('<div class="error">'.s("Le dossier de stockage n'existe pas : ").$storage.'</div>'); // no-debug

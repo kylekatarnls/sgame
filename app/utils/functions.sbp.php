@@ -8,7 +8,7 @@
 		if is_numeric($args[1])
 			$translated = call_user_func_array('trans_choice', $args)
 			if ! isset($args[4]) && $args[0] is $translated
-				$translated = trans($args[0], $args[1], isset($args[2]) ? $args[2] : array(), isset($args[3]) ? $args[3] : 'messages', Language::altLang())
+				$translated = trans_choice($args[0], $args[1], isset($args[2]) ? $args[2] : array(), isset($args[3]) ? $args[3] : 'messages', Language::altLang())
 	if ! isset($translated)
 		$translated = call_user_func_array('trans', $args)
 		if isset($args[0]) && ! isset($args[3]) && $args[0] is $translated
@@ -376,8 +376,13 @@
 
 @f canonical
 	$href = new \Hologame\Url((empty($_SERVER['HTTPS']) ? 'http' : 'https') . '://' . Request::server('HTTP_HOST') . '/' . trim(Request::server('REQUEST_URI'), '/') . Request::server('QUERY_STRING'), true)
-	$href->get->hl = lang()
-	< new \Hologame\HTML('link', {
+	if !isset($href->get->language)
+		$href->get->language = lang()
+	$ignore = array()
+	foreach $ignore as $key
+		if isset($href->get->{$key})
+			unset($href->get->{$key})
+	< new \Hologame\Html('link', {
 		rel = "canonical"
 		href = $href
 	})
