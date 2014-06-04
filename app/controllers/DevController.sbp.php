@@ -7,6 +7,9 @@ DevController:BaseController
 	+ specs
 		<>view('specs')
 
+	- init
+		set_time_limit(0)
+
 	- imgDiretory
 		< unix_path(realpath(app_path() . '/../public/img'))
 
@@ -32,7 +35,13 @@ DevController:BaseController
 		< $ok ? 'OK' : 'KO'
 
 	+ postSurvey
+		>init()
+		$data = null
 		$imgDiretory = >imgDiretory()
+		if Input::has('commit-message')
+			$data = (object) {
+				output = shell_exec("git push")
+			}
 		foreach Input::file('image') as $name => $file
 			if ! is_null($file)
 				$originalName = $file->getClientOriginalName()
@@ -81,9 +90,10 @@ DevController:BaseController
 							d:
 								imagepng($thumb, $path)
 								:;
-		<>survey()
+		<>survey($data)
 
-	+ survey
+	+ survey $data = null
+		>init()
 		$imgDiretory = >imgDiretory()
 		$extensions = preg_split('#\s+#', :IMAGE_SYSTEM_EXTENSIONS)
 		$list = array()
@@ -122,11 +132,14 @@ DevController:BaseController
 			var_dump($checkLog)
 
 		$('#check-details')->slideUp(0)
-		<>view('survey/index', array(
-			'check' => (object) array(
-				'summary' => >command('check'),
-				'details' => $check,
-				'log' => (object) $checkLog,
-			),
-			'images' => $list,
-		))
+		$check = {
+			summary = >command('check')
+			details = $check
+			log = (object) $checkLog
+		}
+		<>view('survey/index', {
+			check = (object) $check
+			git = new Git
+			images = $list
+			data = $data
+		})

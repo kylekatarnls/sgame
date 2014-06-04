@@ -28,6 +28,25 @@ block content
 		pre#check-details.toggleable
 			=check->details
 
+		//- Git status
+		h2#to-send
+			=s("To send")
+		if data
+			.alert.alert-success
+				=s("Modifications sent")
+			pre
+				=data->output
+		pre
+			=git->status
+		!=Form::open('/survey#to-send', 'git-commit')
+			!=Form::textarea('commit-message', '', 'form-control commit-message', s("Description of the modifications"))
+			.field
+				!=Form::text('username', '', 'form-control', s("Username"))
+			.field
+				!=Form::password('password', '', 'form-control', §('user.password'))
+			!=Form::submit(s("Send"), 'btn btn-primary')
+		!=Form::close()
+
 		//- Design tools
 		h2
 			=§('survey.image.title'/*§Images survey§*/)
@@ -64,6 +83,7 @@ block content
 										if key !== 'to-be-replaced'
 											li
 												=§('survey.property'/*§:key: :value§*/, array( 'key' => $key, 'value' => $value))
+							.cb
 		!=Form::close()
 
 	else

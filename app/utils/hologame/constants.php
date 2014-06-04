@@ -1,15 +1,15 @@
 <?php
 
-define('ROOT_DIR', realpath(__DIR__.'/../..').'/');
+define('ROOT_DIR', realpath(__DIR__.'/..').'/');
 
-define('CORE_DIR', realpath(__DIR__.'/..').'/');
+define('CORE_DIR', realpath(__DIR__).'/');
 // HOST_DIR : site/host_xx définit dans index.php
 
-define('RRIVATE_REL_DIR', 'private/');
-define('CLASS_REL_DIR', 'private/class/');
-define('STORAGE_REL_DIR', 'private/storage/');
-define('TEMPLATE_REL_DIR', 'private/template/');
-define('SQL_REL_DIR', 'private/sql/');
+define('RRIVATE_REL_DIR', '');
+define('CLASS_REL_DIR', 'class/');
+define('STORAGE_REL_DIR', 'storage/');
+define('TEMPLATE_REL_DIR', 'template/');
+define('SQL_REL_DIR', 'sql/');
 
 make_constants('TYPE_', ['NULL', 'PAGE', 'AJAX']);
 
