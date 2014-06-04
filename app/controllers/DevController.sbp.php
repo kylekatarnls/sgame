@@ -39,107 +39,150 @@ DevController:BaseController
 		$data = null
 		$imgDiretory = >imgDiretory()
 		if Input::has('commit-message')
+			$handle = fopen("php://stdin", "rw")
+			fputs($handle, 'git push')
+			$line = fgets($handle)
+			var_dump($line)
+			exit
+			/*
 			$data = (object) {
 				output = shell_exec("git push")
 			}
-		foreach Input::file('image') as $name => $file
-			if ! is_null($file)
-				$originalName = $file->getClientOriginalName()
-				list($baseName, $extension) = end_separator('.', $originalName)
-				strtolower(**$extension)
-				if $extension is 'jpeg'
-					$extension = 'jpg'
-				$file->move($imgDiretory, $name . '.' . $extension)
-				$path = $imgDiretory . '/' . $name . '.' . $extension
-				$imageSize = getimagesize($path)
-				$txtFile = $path . '.txt'
-				if ! file_exists($txtFile)
-					$txtFile = $imgDiretory . '/' . $name . '.txt'
+			*/
+		if Input::hasFile('image')
+			foreach Input::file('image') as $name => $file
+				if ! is_null($file)
+					$originalName = $file->getClientOriginalName()
+					list($baseName, $extension) = end_separator('.', $originalName)
+					strtolower(**$extension)
+					if $extension is 'jpeg'
+						$extension = 'jpg'
+					$path = $imgDiretory . '/' . $name . '.' . $extension
+					if file_exists($path)
+						$saveFile = $path . '.save'
+						rename($path, $saveFile)
+					$file->move($imgDiretory, $name . '.' . $extension)
+					$imageSize = getimagesize($path)
+					$txtFile = $path . '.txt'
 					if ! file_exists($txtFile)
-						$txtFile = $imgDiretory . '/' . $name . '.png.txt'
+						$txtFile = $imgDiretory . '/' . $name . '.txt'
 						if ! file_exists($txtFile)
-							$txtFile = $imgDiretory . '/' . $name . '.jpg.txt'
+							$txtFile = $imgDiretory . '/' . $name . '.png.txt'
 							if ! file_exists($txtFile)
-								$txtFile = $imgDiretory . '/' . $name . '.gif.txt'
-				if file_exists($txtFile)
-					$info = parse_ini_file($txtFile)
-					if $imageSize[0] is $info['width'] * 2 && $imageSize[1] is $info['height'] * 2
-						$retinaFile = $imgDiretory . '/' . $name . '@2x.' . $extension
-						rename($path, $retinaFile)
-						$extension :=
-							'gif' ::
-								$image = imagecreatefromgif($retinaFile)
-								:;
-							'jpg' ::
-								$image = imagecreatefromjpeg($retinaFile)
-								:;
-							'png' ::
-							d:
-								$image = imagecreatefrompng($retinaFile)
-								:;
-						$thumb = imagecreatetruecolor($info['width'], $info['height'])
-						imagecopyresampled($thumb, $image, 0, 0, 0, 0, $info['width'], $info['height'], $imageSize[0], $imageSize[1])
-						$extension :=
-							'gif' ::
-								imagegif($thumb, $path)
-								:;
-							'jpg' ::
-								imagejpeg($thumb, $path)
-								:;
-							'png' ::
-							d:
-								imagepng($thumb, $path)
-								:;
+								$txtFile = $imgDiretory . '/' . $name . '.jpg.txt'
+								if ! file_exists($txtFile)
+									$txtFile = $imgDiretory . '/' . $name . '.gif.txt'
+					if file_exists($txtFile)
+						$info = parse_ini_file($txtFile)
+						$width = array_get($info, 'width', 0)
+						$height = array_get($info, 'height', $width)
+						if isset($saveFile)
+							if ! $width
+								$imageInfo = getimagesize($saveFile)
+								$width = array_get($imageInfo, 0, 0)
+								$height = array_get($imageInfo, 1, $width)
+								unset($imageInfo)
+							if $imageSize[0] is $width * 2 && $imageSize[1] is $height * 2
+								$retinaFile = $imgDiretory . '/' . $name . '@2x.' . $extension
+								rename($path, $retinaFile)
+								rename($saveFile, $path)
+								unset($saveFile)
+							elseif $imageSize[0] * 2 is $width && $imageSize[1] * 2 is $height
+								$retinaFile = $imgDiretory . '/' . $name . '@2x.' . $extension
+								rename($saveFile, $retinaFile)
+								unset($saveFile)
+						else
+							if $imageSize[0] is $width * 2 && $imageSize[1] is $height * 2
+								$retinaFile = $imgDiretory . '/' . $name . '@2x.' . $extension
+								rename($path, $retinaFile)
+								$extension :=
+									'gif' ::
+										$image = imagecreatefromgif($retinaFile)
+										:;
+									'jpg' ::
+										$image = imagecreatefromjpeg($retinaFile)
+										:;
+									'png' ::
+									d:
+										$image = imagecreatefrompng($retinaFile)
+										:;
+								$thumb = imagecreatetruecolor($width, $height)
+								imagecopyresampled($thumb, $image, 0, 0, 0, 0, $width, $height, $imageSize[0], $imageSize[1])
+								$extension :=
+									'gif' ::
+										imagegif($thumb, $path)
+										:;
+									'jpg' ::
+										imagejpeg($thumb, $path)
+										:;
+									'png' ::
+									d:
+										imagepng($thumb, $path)
+										:;
+					if isset($saveFile)
+						unlink($saveFile)
 		<>survey($data)
 
 	+ survey $data = null
 		>init()
-		$imgDiretory = >imgDiretory()
-		$extensions = preg_split('#\s+#', :IMAGE_SYSTEM_EXTENSIONS)
-		$list = array()
-		scanApp(f° $path use $imgDiretory, $extensions, &$list
+		$tab = Input::get('tab')
+		$tab :=
+			"git" ::
+				$vars = {
+					git = new Git
+				}
+				:;
+			"img" ::
+				$imgDiretory = >imgDiretory()
+				$extensions = preg_split('#\s+#', :IMAGE_SYSTEM_EXTENSIONS)
+				$list = array()
+				scanApp(f° $path use $imgDiretory, $extensions, &$list
 
-			list($directory, $file) = end_separator('/', $path)
-			list($name, $extension) = end_separator('.', $file)
-			$isInfoFile = $extension is 'txt'
-			$isRetina = ends_with($name, '@2x')
-			if $isRetina
-				substr(**$name, 0, -3)
-			while(in_array($extension, $extensions))
-				list($name, $extension) = end_separator('.', $name)
-			if ! isset($list[$directory])
-				$list[$directory] = array()
-			if ! isset($list[$directory][$name])
-				$list[$directory][$name] = array()
-			if $isRetina
-				$list[$directory][$name]['retina-image'] = true
-			if $isInfoFile
-				$list[$directory][$name]['info'] = parse_ini_file($imgDiretory . $path)
-				if ! isset($list[$directory][$name]['image'])
-					list($list[$directory][$name]['image'], $removeTxt) = end_separator('.', ltrim($path, '/'))
-					$list[$directory][$name]['missing-image'] = true
-			else
-				$list[$directory][$name]['image'] = ltrim($path, '/')
-				$list[$directory][$name]['missing-image'] = false
+					list($directory, $file) = end_separator('/', $path)
+					list($name, $extension) = end_separator('.', $file)
+					$isInfoFile = $extension is 'txt'
+					$isRetina = ends_with($name, '@2x')
+					if $isRetina
+						substr(**$name, 0, -3)
+					while(in_array($extension, $extensions))
+						list($name, $extension) = end_separator('.', $name)
+					if ! isset($list[$directory])
+						$list[$directory] = array()
+					if ! isset($list[$directory][$name])
+						$list[$directory][$name] = array()
+					if $isRetina
+						$list[$directory][$name]['retina-image'] = true
+					elseif $isInfoFile
+						$list[$directory][$name]['info'] = parse_ini_file($imgDiretory . $path)
+						if ! isset($list[$directory][$name]['image'])
+							list($list[$directory][$name]['image'], $removeTxt) = end_separator('.', ltrim($path, '/'))
+							$list[$directory][$name]['missing-image'] = true
+					else
+						$list[$directory][$name]['image'] = ltrim($path, '/')
+						$list[$directory][$name]['missing-image'] = false
 
-		, '', :IMAGE_SYSTEM_EXTENSIONS, $imgDiretory)
+				, '', :IMAGE_SYSTEM_EXTENSIONS, $imgDiretory)
+				$vars = {
+					images = $list
+				}
+				:;
+			d:
+				$check = >command('check', '-v')
+				$checkLog = array()
+				foreach array('error', 'warning', 'notice', 'help') as $type
+					$checkLog[$type] = substr_count($check, '[' . strtoupper($type) . ']')
 
-		$check = >command('check', '-v')
-		$checkLog = array()
-		foreach array('error', 'warning', 'notice', 'help') as $type
-			$checkLog[$type] = substr_count($check, '[' . strtoupper($type) . ']')
-		if false
-			var_dump($checkLog)
+				$('#check-details')->slideUp(0)
+				$check = {
+					summary = >command('check')
+					details = $check
+					log = (object) $checkLog
+				}
+				$vars = {
+					check = (object) $check
+				}
 
-		$('#check-details')->slideUp(0)
-		$check = {
-			summary = >command('check')
-			details = $check
-			log = (object) $checkLog
-		}
-		<>view('survey/index', {
-			check = (object) $check
-			git = new Git
-			images = $list
+		<>view('survey/index', array_merge($vars, {
+			tab = $tab
 			data = $data
-		})
+		}))

@@ -47,9 +47,17 @@ div.upload
 			margin-right 10px
 
 p.image
+	rel
 	img
 		[[box-shadow 0 0 3px gray]]
 		background white
+	& .detail
+		db
+		abs 10 10
+		padding 2px 5px
+		[[box-shadow 0 0 3px gray]]
+		[[border-radius 3px]]
+		background #fafafa
 
 p.info ul
 	margin 0 0 10px

@@ -28,3 +28,28 @@ $(document).on('click', 'a.toggle-next', function() {
     return console.log(r);
   });
 });
+
+$(function() {
+  return $('p.image').hover(function() {
+    var $img, h, text, timeout, w;
+    $img = $(this).find('img');
+    w = $img.width();
+    h = $img.height();
+    timeout = $img.data('timeout-detail');
+    if (timeout) {
+      return clearTimeout(timeout);
+    } else {
+      $img.next('span.detail').remove();
+      text = w + ' x ' + h + ' &nbsp; Retina : ' + (w * 2) + ' x ' + (h * 2);
+      return $('<span class="detail">' + text + '</span>').fadeOut(0).fadeIn().insertAfter($img);
+    }
+  }, function() {
+    var $img;
+    $img = $(this).find('img');
+    return $img.data('timeout-detail', setTimeout(function() {
+      return $img.removeData('timeout-detail').next('span.detail').fadeOut(function() {
+        return $(this).remove();
+      });
+    }, 400));
+  });
+});
