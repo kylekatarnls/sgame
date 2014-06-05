@@ -21,6 +21,7 @@ ClassLoader::addDirectories(array(
 	app_path().'/models/tools',
 	app_path().'/database/seeds',
 	app_path().'/utils',
+	app_path().'/utils/git',
 
 ));
 

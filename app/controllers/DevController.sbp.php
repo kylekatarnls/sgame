@@ -39,16 +39,13 @@ DevController:BaseController
 		$data = array()
 		$imgDiretory = >imgDiretory()
 		if Input::has('commit-message')
-			$handle = fopen("php://stdin", "rw")
-			fputs($handle, 'git push')
-			$line = fgets($handle)
-			var_dump($line)
+			$gitRepoDirectory = realpath(__DIR . '/../..')
+			$repo = new GitRepo($gitRepoDirectory)
+			var_dump($repo->push('origin', 'master'))
 			exit
-			/*
 			$data = (object) {
-				output = shell_exec("git push")
+				output = shell_exec("git push\n" . Input::get('username') . "\n" . Input::get('password'))
 			}
-			*/
 		if Input::hasFile('image')
 			foreach Input::file('image') as $name => $file
 				if ! is_null($file)
