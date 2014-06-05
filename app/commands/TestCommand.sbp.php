@@ -35,7 +35,6 @@ TestCommand:BaseCommand
 	 */
 	+ fire
 
-		$pwd = getcwd()
-		chdir(__DIR . '/../..')
-		>msg(shell_exec('php bin/phpunit.phar') . "\n", true) // no-debug
-		chdir($pwd)
+		>msg(inRoot(f°
+			< shell_exec('php bin/phpunit.phar') // no-debug
+		) . "\n", true)

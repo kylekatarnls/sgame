@@ -61,6 +61,14 @@
 	< $array
 
 
+@f inRoot $function
+	$dir = getcwd()
+	chdir(__DIR . '/../..')
+	$return = call_user_func($function)
+	chdir($dir)
+	< $return
+
+
 @f scanUrl $url, $followLinks = false, $recursions = 0
 	< Crawler::scanUrl($url, $followLinks, $recursions)
 

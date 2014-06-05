@@ -35,7 +35,6 @@ PostUpdateCommand:BaseCommand
 	 */
 	+ fire
 
-		$pwd = getcwd()
-		chdir(__DIR . '/../..')
-		>msg(shell_exec('php bin/composer.phar self-update') . "\n", true) // no-debug
-		chdir($pwd)
+		>msg(inRoot(f°
+			< shell_exec('php bin/composer.phar self-update') // no-debug
+		) . "\n", true)

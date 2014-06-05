@@ -172,6 +172,9 @@ $document.on('click', '.h-button, .hold-focus', function ()
 		$button.removeClass('focus');
 	}, 600);
 })
+.on('click', '[data-confirm]', function () {
+	return confirm($(this).data('confirm'));
+})
 .on('click', '.logout', logOut)
 .bind('pageload', function (event, data)
 {

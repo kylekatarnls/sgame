@@ -35,4 +35,6 @@ PreUpdateCommand:BaseCommand
 	 */
 	+ fire
 
-		>msg(shell_exec('git pull') . "\n", true); // no-debug
+		>msg(inRoot(f°
+			< shell_exec('git pull')
+		) . "\n", true); // no-debug

@@ -52,7 +52,7 @@ p.image
 		[[box-shadow 0 0 3px gray]]
 		background white
 	& .detail
-		db
+		display block
 		abs 10 10
 		padding 2px 5px
 		[[box-shadow 0 0 3px gray]]
@@ -70,12 +70,15 @@ p.info ul
 
 .git-commit
 	& .field
-		fl
+		float left
 		width 50%
 	& .btn
 		width 100%
-		db
-		cb
+		display block
+		clear both
+
+.git-add
+	rel -4 2
 
 textarea.commit-message
 	height 100px

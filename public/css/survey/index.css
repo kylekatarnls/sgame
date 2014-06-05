@@ -95,7 +95,13 @@ p.info ul {
 .git-commit .btn {
 	width: 100%;
 	display: block;
+	clear: both;
 }
-.git-commit .btn cb textarea.commit-message {
+.git-add {
+	position: relative;
+	left: -4px;
+	top: 2px;
+}
+textarea.commit-message {
 	height: 100px;
 }

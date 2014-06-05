@@ -13,13 +13,23 @@ block content
 			a(href="?tab=dev")
 				=§('survey.developement.title'/*§Developement survey§*/)
 			!=" &nbsp; | &nbsp; "
+			a(href="?tab=img")
+				=§('survey.image.title'/*§Images survey§*/)
+			!=" &nbsp; | &nbsp; "
 			a(href="?tab=git")
 				=s("To send")
 			!=" &nbsp; | &nbsp; "
-			a(href="?tab=img")
-				=§('survey.image.title'/*§Images survey§*/)
+			a(href="?tab=update", data-confirm=s("Cette opération peut prendre plusieurs minutes."))
+				=s("Update")
 
 		case tab
+			when "update"
+				//- php artisan update
+				h2
+					=s("Update")
+				pre
+					=output
+
 			when "git"
 				//- Git status
 				h2#to-send
@@ -30,7 +40,7 @@ block content
 					pre
 						=data->output
 				pre
-					=git->status
+					!=Git::checkable($git->status)
 				!=Form::open('#', 'git-commit')
 					!=Form::textarea('commit-message', '', 'form-control commit-message', s("Description of the modifications"))
 					.field
@@ -52,7 +62,7 @@ block content
 							each data, file in files
 								li(class=alt('file odd', 'file even'))
 									div.upload
-										!=Form::file('image[' . $file . ']', null, 'form-control')
+										!=Form::file('image[' . ltrim($directory . '/', '/') . $file . ']', null, 'form-control')
 										label.form-control
 											!=Form::checkbox('to-be-replaced[' . $data['image'] . ']', 'on', ! empty($data['info']) && !empty($data['info']['to-be-replaced']) ? array('checked' => 'checked') : array())
 											=§('survey.replace'/*§To be replaced§*/)
@@ -71,6 +81,11 @@ block content
 									else
 										p.image
 											!=image(data['image'], §('survey.preview'/*§Aperçu§*/))
+
+									path = 'public/img/' . $data['image']
+									unless $git->statusCompare($path, "nothing to commit, working directory clean")
+										a.btn.btn-primary(href=("?tab=git&only=" . urlencode($path)))
+											=s("Send")
 									unless empty($data['info'])
 										ul
 											each value, key in data['info']

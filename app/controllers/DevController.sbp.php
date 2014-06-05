@@ -36,7 +36,7 @@ DevController:BaseController
 
 	+ postSurvey
 		>init()
-		$data = null
+		$data = array()
 		$imgDiretory = >imgDiretory()
 		if Input::has('commit-message')
 			$handle = fopen("php://stdin", "rw")
@@ -72,61 +72,80 @@ DevController:BaseController
 								$txtFile = $imgDiretory . '/' . $name . '.jpg.txt'
 								if ! file_exists($txtFile)
 									$txtFile = $imgDiretory . '/' . $name . '.gif.txt'
+					$continue = true
 					if file_exists($txtFile)
 						$info = parse_ini_file($txtFile)
 						$width = array_get($info, 'width', 0)
 						$height = array_get($info, 'height', $width)
+						$continue = false
 						if isset($saveFile)
 							if ! $width
 								$imageInfo = getimagesize($saveFile)
 								$width = array_get($imageInfo, 0, 0)
 								$height = array_get($imageInfo, 1, $width)
 								unset($imageInfo)
+							$retinaFile = $imgDiretory . '/' . $name . '@2x.' . $extension
 							if $imageSize[0] is $width * 2 && $imageSize[1] is $height * 2
-								$retinaFile = $imgDiretory . '/' . $name . '@2x.' . $extension
 								rename($path, $retinaFile)
 								rename($saveFile, $path)
 								unset($saveFile)
 							elseif $imageSize[0] * 2 is $width && $imageSize[1] * 2 is $height
-								$retinaFile = $imgDiretory . '/' . $name . '@2x.' . $extension
 								rename($saveFile, $retinaFile)
 								unset($saveFile)
+							else
+								if file_exists($retinaFile)
+									unlink($retinaFile)
+								$continue = true
 						else
-							if $imageSize[0] is $width * 2 && $imageSize[1] is $height * 2
-								$retinaFile = $imgDiretory . '/' . $name . '@2x.' . $extension
-								rename($path, $retinaFile)
-								$extension :=
-									'gif' ::
-										$image = imagecreatefromgif($retinaFile)
-										:;
-									'jpg' ::
-										$image = imagecreatefromjpeg($retinaFile)
-										:;
-									'png' ::
-									d:
-										$image = imagecreatefrompng($retinaFile)
-										:;
-								$thumb = imagecreatetruecolor($width, $height)
-								imagecopyresampled($thumb, $image, 0, 0, 0, 0, $width, $height, $imageSize[0], $imageSize[1])
-								$extension :=
-									'gif' ::
-										imagegif($thumb, $path)
-										:;
-									'jpg' ::
-										imagejpeg($thumb, $path)
-										:;
-									'png' ::
-									d:
-										imagepng($thumb, $path)
-										:;
+							$continue = true
+
+					if $continue
+						if $imageSize[0] is $width * 2 && $imageSize[1] is $height * 2
+							$retinaFile = $imgDiretory . '/' . $name . '@2x.' . $extension
+							rename($path, $retinaFile)
+							$extension :=
+								'gif' ::
+									$image = imagecreatefromgif($retinaFile)
+									:;
+								'jpg' ::
+									$image = imagecreatefromjpeg($retinaFile)
+									:;
+								'png' ::
+								d:
+									$image = imagecreatefrompng($retinaFile)
+									:;
+							$thumb = imagecreatetruecolor($width, $height)
+							imagecopyresampled($thumb, $image, 0, 0, 0, 0, $width, $height, $imageSize[0], $imageSize[1])
+							$extension :=
+								'gif' ::
+									imagegif($thumb, $path)
+									:;
+								'jpg' ::
+									imagejpeg($thumb, $path)
+									:;
+								'png' ::
+								d:
+									imagepng($thumb, $path)
+									:;
 					if isset($saveFile)
 						unlink($saveFile)
+
+					touch($path)
+
 		<>survey($data)
 
-	+ survey $data = null
+	+ survey $data = array()
 		>init()
 		$tab = Input::get('tab')
 		$tab :=
+			"update" ::
+				$output = inRoot(f°
+					< shell_exec('php artisan update') // no-debug
+				)
+				$vars = {
+					output = $output
+				}
+				:;
 			"git" ::
 				$vars = {
 					git = new Git
@@ -163,6 +182,7 @@ DevController:BaseController
 
 				, '', :IMAGE_SYSTEM_EXTENSIONS, $imgDiretory)
 				$vars = {
+					git = new Git
 					images = $list
 				}
 				:;
@@ -184,5 +204,5 @@ DevController:BaseController
 
 		<>view('survey/index', array_merge($vars, {
 			tab = $tab
-			data = $data
+			data = empty($data) ? null : $data
 		}))
