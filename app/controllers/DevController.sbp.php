@@ -39,13 +39,19 @@ DevController:BaseController
 		$data = array()
 		$imgDiretory = >imgDiretory()
 		if Input::has('commit-message')
-			$gitRepoDirectory = realpath(__DIR . '/../..')
-			$repo = new GitRepo($gitRepoDirectory)
-			var_dump($repo->push('origin', 'master'))
-			exit
+			$output = ""
+			$gitAdd = Input::get('git-add')
+			if ! empty($gitAdd)
+				array_keys(**$gitAdd)
+				$output = 
+					Git::add($gitAdd) .
+					Git::commit(Input::get('commit-message')) .
+					Git::push(Input::get('username'), Input::get('password'))
+				$output = implode("\n", Git::getCommands()) . "\n\n" . $output
 			$data = (object) {
-				output = shell_exec("git push\n" . Input::get('username') . "\n" . Input::get('password'))
+				output = $output
 			}
+			unset($output)
 		if Input::hasFile('image')
 			foreach Input::file('image') as $name => $file
 				if ! is_null($file)

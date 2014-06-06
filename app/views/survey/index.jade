@@ -39,14 +39,14 @@ block content
 						=s("Modifications sent")
 					pre
 						=data->output
-				pre
-					!=Git::checkable($git->status)
 				!=Form::open('#', 'git-commit')
+					pre
+						!=Git::checkable($git->status)
 					!=Form::textarea('commit-message', '', 'form-control commit-message', s("Description of the modifications"))
 					.field
-						!=Form::text('username', '', 'form-control', s("Username"))
+						!=Form::text('git-username', '', 'form-control', s("Username"))
 					.field
-						!=Form::password('password', '', 'form-control', §('user.password'))
+						!=Form::password('git-password', '', 'form-control', §('user.password'))
 					!=Form::submit(s("Send"), 'btn btn-primary')
 				!=Form::close()
 

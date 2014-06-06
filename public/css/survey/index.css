@@ -98,6 +98,13 @@ p.info ul {
 	clear: both;
 }
 .git-add {
+	font-weight: normal;
+	line-height: 14px;
+}
+.git-add:hover {
+	background: #ffff99;
+}
+.git-add input {
 	position: relative;
 	left: -4px;
 	top: 2px;

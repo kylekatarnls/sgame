@@ -78,7 +78,12 @@ p.info ul
 		clear both
 
 .git-add
-	rel -4 2
+	font-weight normal
+	line-height 14px
+	&:hover
+		background #ffff99
+	input
+		rel -4 2
 
 textarea.commit-message
 	height 100px
