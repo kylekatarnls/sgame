@@ -28,7 +28,7 @@ Git
 			< inRoot(f° use $command, $args
 
 				$command = 'git ' . $command . rtrim(' ' . implode(' ', $args))
-				static::$log[] = preg_replace('#:.+@github\.com#U', ':xxxx@github.com', $command)
+				static::$log[] = preg_replace('#:[^:@]+@github\.com#', ':xxxx@github.com', $command)
 				< shell_exec($command) // no-debug
 			)
 
