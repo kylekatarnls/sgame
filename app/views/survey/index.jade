@@ -47,6 +47,7 @@ block content
 							=s("Output")
 						pre
 							=data->output
+					hr
 				!=Form::open('#', 'git-commit')
 					pre
 						!=Git::checkable($git->status)
