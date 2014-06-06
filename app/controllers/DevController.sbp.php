@@ -46,7 +46,7 @@ DevController:BaseController
 				$output = 
 					Git::add($gitAdd) .
 					Git::commit(Input::get('commit-message')) .
-					Git::push(Input::get('username'), Input::get('password'))
+					Git::push(Input::get('git-username'), Input::get('git-password'))
 			$data = (object) {
 				input = implode("\n", Git::getCommands())
 				output = $output
@@ -143,7 +143,7 @@ DevController:BaseController
 		$tab :=
 			"update" ::
 				$output = inRoot(f°
-					< shell_exec('php artisan update') // no-debug
+					< trim(shell_exec('php artisan update')) // no-debug
 				)
 				$vars = {
 					output = $output
