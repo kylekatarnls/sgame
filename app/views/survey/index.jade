@@ -37,8 +37,16 @@ block content
 				if data
 					.alert.alert-success
 						=s("Modifications sent")
-					pre
-						=data->output
+					if isset($data->input)
+						h4
+							=s("Input")
+						pre
+							=data->input
+					if isset($data->output)
+						h4
+							=s("Output")
+						pre
+							=data->output
 				!=Form::open('#', 'git-commit')
 					pre
 						!=Git::checkable($git->status)

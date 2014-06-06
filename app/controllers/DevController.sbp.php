@@ -47,8 +47,8 @@ DevController:BaseController
 					Git::add($gitAdd) .
 					Git::commit(Input::get('commit-message')) .
 					Git::push(Input::get('username'), Input::get('password'))
-				$output = implode("\n", Git::getCommands()) . "\n\n" . $output
 			$data = (object) {
+				input = implode("\n", Git::getCommands())
 				output = $output
 			}
 			unset($output)
