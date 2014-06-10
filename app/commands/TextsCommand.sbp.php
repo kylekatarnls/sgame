@@ -84,13 +84,16 @@ TextsCommand:BaseCommand
 			$logMessages = array()
 			foreach array_reverse($matches) as $match
 				list($content, $offset) = $match
-				if >isInQuotes($fileContent, $offset)
+				if >isInQuotes($fileContent, $offset, $file)
 					if >option('verbose')
 						$logMessages[] = "    [NOTICE] A function has been detected in a quoted string at " . >offsetToPosition($fileContent, $offset) . ": " . $content . "\n"
+				elseif >isInComment($fileContent, $offset, $file)
+					if >option('verbose')
+						$logMessages[] = "    [NOTICE] A function has been detected in a comment at " . >offsetToPosition($fileContent, $offset) . ": " . $content . "\n"
 				elseif $content[0] is 's'
 					if preg_match(substr(:STRING_REGEX, 0, strrpos(:STRING_REGEX, '#')) . '\s*(?=,|\))#U', $content, $m)
 						>msg("\nA dev text has been found:\n" . $content)
-						$originalText = stripcslashes(addcslashes(substr($m[0], 1, -1), $m[1] is '"' ? "'" : '"'))
+						$originalText = stripcslashes(addcslashes(substr($m[1], 1, -1), $m[1] is '"' ? "'" : '"'))
 						$name = array_search($originalText, $texts)
 						$ok = true
 						if $name && ! >confirm("    The '" . $name . "' key match this text. Would you keep it? [Y/N]")

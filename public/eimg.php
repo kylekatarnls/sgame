@@ -32,7 +32,7 @@ define('RACINE',unix_path(realpath(__DIR__)).'/img/');
 $file = RACINE.g('fichier');
 if(!file_exists($file) || strpos($file = unix_path(realpath($file)), RACINE) !== 0)
 {
-	exit();
+	exit; // no-debug
 }
 define('FICHIER',$file);
 unset($file);
@@ -120,7 +120,7 @@ if(!file_exists(FICHIER_CACHE))
 // Erreur
 if(!file_exists(FICHIER_CACHE))
 {
-	exit();
+	exit; // no-debug
 }
 
 header("Expires: " . gmdate("D, d M Y H:i:s",time()+EXPIRATION*86400) . " GMT");

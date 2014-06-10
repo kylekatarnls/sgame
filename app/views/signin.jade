@@ -1,4 +1,4 @@
-extends layouts/insearch
+extends layouts/sgame
 
 block title
 	params = array('title' => §('user.title'/*§:title - Espace Membre§*/, array('title' => §('global.title'/*§InSearch§*/))))
@@ -25,7 +25,9 @@ block content
 		.input-group
 			button.remember-me.btn.btn-default(type="button")
 				=§('user.remember-me'/*§Se souvenir de moi§*/)
-			!=Form::hidden('remember-me');
+			!=Form::hidden('remember-me')
+		if viewExists("includes/signin/form")
+			include includes/signin/form
 		.input-group
 			button.btn.btn-default(type="submit")
 				=§('user.signin.signin'/*§S'inscrire§*/)

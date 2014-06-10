@@ -24,7 +24,7 @@ $(document)
 		data = {}
 		data[$(@).attr('name')] = if $(@).prop('checked') then '1' else '0'
 		ajax 'survey/image/to-be-replaced', data, (r) ->
-			console.log r
+			#console.log r
 
 
 $(->

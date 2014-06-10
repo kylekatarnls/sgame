@@ -1,5 +1,30 @@
 localStorage = localStorage||{};
 sessionStorage = sessionStorage||{};
+
+function empty(value) {
+	var type = typeof(value);
+	return (
+		type === 'undefined' ||
+		value === null ||
+		value === false ||
+		value === 0 ||
+		value === "0" ||
+		value === "" || (
+			type === 'object' && (
+				(
+					typeof(value.length) !== 'undefined' &&
+					value.length === 0
+				) || (
+					typeof(value.length) === 'undefined' &&
+					typeof(JSON) === 'object' &&
+					typeof(JSON.stringify) === 'function' &&
+					JSON.stringify(b) === '{}'
+				)
+			)
+		)
+	);
+}
+
 (function (w)
 {
 	w.$document = $(document);
@@ -53,7 +78,7 @@ sessionStorage = sessionStorage||{};
 		__empty:function (name)
 		{
 			var c=cookie.get(name);
-			return (c===null || c==='');
+			return empty(c);
 		}
 	};
 
@@ -174,6 +199,20 @@ $document.on('click', '.h-button, .hold-focus', function ()
 })
 .on('click', '[data-confirm]', function () {
 	return confirm($(this).data('confirm'));
+})
+.on('click', '[data-role="click-action"]', function () {
+	var $this = $(this);
+	var name = $this.data('name');
+	if(! empty(name)) {
+		$('[name="' + name + '"], #' + name).each(function (argument) {
+			var $target = $(this);
+			if($target.prop('value') !== undefined) {
+				$target.val($this.data('value'));
+			} else {
+				$target.text($this.data('value'));
+			}
+		});
+	}
 })
 .on('click', '.logout', logOut)
 .bind('pageload', function (event, data)
@@ -312,13 +351,7 @@ function settype(v, type)
 function array_value(arr, key, def, type, nullIfEmpty)
 {
 	var v = (typeof(arr[key]) === 'undefined' ? null : arr[key]);
-	if(
-		typeof(v) === 'undefined' ||
-		(
-			nullIfEmpty &&
-			(v === 0 || v === '' || v === false || v === [] || v === {} || v === '0')
-		)
-	)
+	if(typeof(v) === 'undefined' || nullIfEmpty && empty(v))
 	{
 		v = null;
 	}

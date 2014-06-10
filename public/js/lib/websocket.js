@@ -71,8 +71,8 @@
 		},
 		'error' : function (ev)
 		{
-			console.trace();
-			console.error(ev.data);
+			console.trace(); // no-debug
+			console.error(ev.data); // no-debug
 		}
 	}
 	wsOpen(ws_gEvt);

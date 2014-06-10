@@ -1,7 +1,5 @@
 if(typeof(window.translateTextOn)==='undefined')
 {
-	console.log('window.translateTextOn :');
-	console.log(window.translateTextOn);
 	window.translateTextOn=true;
 	var language=$('#language').val(), $submitButton;
 	function getLineData(elt){

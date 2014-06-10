@@ -1,0 +1,15 @@
+#messages
+	& .message
+		margin 15px 0
+		padding 5px 6px
+		background-color #f2f2f2
+		& .date
+			fr
+			color gray
+		& .avatar
+			fl
+			div
+				margin -1px 4px -1px -1px
+				padding 1px 4px
+		& .content
+			margin-left 24px

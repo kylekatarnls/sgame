@@ -631,8 +631,7 @@ function getDirection(x1, y1, x2, y2){
 							var iy = cssTop + (ix - cssLeft) / (y - cssTop);
 							if(ix + mWidth > tLeft && tLeft + tWidth < ix
 							&& iy + mHeight > tTop && tTop + tHeight < iy) {
-								console.log('ici');
-								console.log($target);
+								// debug : reprendre ici
 								x = ix;
 								y = iy;
 								ratio = (x - cssLeft) / (iniX - cssLeft);
@@ -645,8 +644,7 @@ function getDirection(x1, y1, x2, y2){
 							var ix = cssLeft + (iy - cssTop) / (x - cssLeft);
 							if(ix + mWidth > tLeft && tLeft + tWidth < ix
 							&& iy + mHeight > tTop && tTop + tHeight < iy) {
-								console.log('là');
-								console.log($target);
+								// debug : reprendre ici
 								x = ix;
 								y = iy;
 								ratio = (y - cssTop) / (iniY - cssTop);

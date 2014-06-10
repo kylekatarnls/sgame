@@ -1,0 +1,8 @@
+h4
+	=s("Choisis ta faction :", $params) . " "
+	span#faction
+!=Form::hidden('faction')
+each faction in Faction::all()
+	a.faction-icon.btn.btn-primary(data-role="click-action", data-name="faction", data-value=faction)
+		nom = §("faction." . $faction) // dynamic
+		!=image("faction/" . $faction, $nom, 64, 64)

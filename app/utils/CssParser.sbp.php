@@ -140,8 +140,9 @@ CssParser
 
 		$code = preg_replace_callback('#(?<![a-zA-Z0-9_-])image\s*\(\s*([\'"])([^\'"]+)\\1\s*(?:,\s*([\'"])([^\'"]*)\\3\s*(?:,\s*([0-9]+)\s*(?:,\s*([0-9]+)\s*)?)?)?\)#', f° $match
 			list($all, $srcQuote, $src) = $match;
-			< 'url(' . $srcQuote . image($src, array_get($match, 4), array_get($match, 5), array_get($match, 6)) . $srcQuote . ')';
+			< 'url(' . $srcQuote . imageSrc($src, array_get($match, 4), array_get($match, 5), array_get($match, 6)) . $srcQuote . ')';
 		, $code);
+			
 
 		// CSSB - Avant
 		if $type != 1
@@ -185,9 +186,9 @@ CssParser
 				mp0 = 'margin:0;padding:0'
 			}
 			foreach $rac as $c => $r
-				$code = preg_replace('#(?<![a-zA-Z0-9-\:])'.$c.'\s*[;\n]#', $r.";\n", $code);
+				$code = preg_replace('#(?<![a-zA-Z0-9-\:])'.$c.'\s*(?=;|\n|$)#', $r.";", $code)
 			foreach $racv as $c => $r
-				$code = preg_replace('#(?<![a-zA-Z0-9-\:])'.$c.'\s*:#U', $r.':', $code);
+				$code = preg_replace('#(?<![a-zA-Z0-9-\:])'.$c.'\s*(?=:|\s[0-9])#U', $r, $code)
 
 		// if($type!=2)
 		// 	try

@@ -76,44 +76,50 @@ class Dir extends Object
 		ksort($list);
 		return $list;
 	}
-	static public function getList($dir = null, $onlyFiles = true, $dirRoot = null, $basename = true, $separator = DIRECTORY_SEPARATOR)
+	static public function getList($dirList = null, $onlyFiles = true, $dirRootList = null, $basename = true, $separator = DIRECTORY_SEPARATOR)
 	{
-		$dir = self::getDir($dir);
-		$dir = realpath($dir);
-		if($dirRoot === null)
-		{
-			$dirRoot = $dir;
-		}
-		if(file_exists($dir) === false || is_dir($dir) === false)
-		{
-			throw new DirException("Dossier introuvable", 2);
-			return false;
+		if(! is_traversable($dirList)) {
+			$dirList = array($dirList);
 		}
 		$list = [];
-		foreach(scandir($dir) as $file) if(!in_array($file, ['.', '..']))
-		{
-			$path = $dir.DIRECTORY_SEPARATOR.$file;
-			$listPath = sp_path($basename ?
-				substr($path, start($dir, $dirRoot) ? strlen($dirRoot) : 0):
-				$path
-			, $separator);
-			if(is_dir($path))
+		foreach ($dirList as $index => $dir) {
+			$dir = self::getDir($dir);
+			$dir = realpath($dir);
+			$dirRoot = is_traversable($dirRootList) ? $dirRootList[$index] : $dirRootList;
+			if($dirRoot === null)
 			{
-				if($onlyFiles === false)
+				$dirRoot = $dir;
+			}
+			if(file_exists($dir) === false || is_dir($dir) === false)
+			{
+				throw new DirException("Dossier introuvable", 2);
+				return false;
+			}
+			foreach(scandir($dir) as $file) if(!in_array($file, ['.', '..']))
+			{
+				$path = $dir.DIRECTORY_SEPARATOR.$file;
+				$listPath = sp_path($basename ?
+					substr($path, start($dir, $dirRoot) ? strlen($dirRoot) : 0):
+					$path
+				, $separator);
+				if(is_dir($path))
+				{
+					if($onlyFiles === false)
+					{
+						$list[] = $listPath;
+					}
+					$list = array_merge($list, self::getList($path, $onlyFiles, $dirRoot, true, $separator));
+				}
+				else
 				{
 					$list[] = $listPath;
 				}
-				$list = array_merge($list, self::getList($path, $onlyFiles, $dirRoot, true, $separator));
-			}
-			else
-			{
-				$list[] = $listPath;
 			}
 		}
 		ksort($list);
 		return $list;
 	}
-	static public function each($callback, $dir = null, $onlyFiles = true, $separator = DIRECTORY_SEPARATOR)
+	static public function each($callback, $dir = null, $onlyFiles = true, $separator = DIRECTORY_SEPARATOR, $dirRootList = null, $basename = true)
 	{
 		$result = [];
 		if(is_callable($callback) === false)
@@ -121,7 +127,7 @@ class Dir extends Object
 			throw new DirException("Callback invalide", 3);
 			return false;
 		}
-		foreach(self::getList($dir, $onlyFiles, null, true, $separator) as $file)
+		foreach(self::getList($dir, $onlyFiles, $dirRootList, $basename, $separator) as $file)
 		{
 			$result[$file] = call_user_func($callback, $file);
 		}

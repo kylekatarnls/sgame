@@ -34,6 +34,7 @@ class Stylus
     private $functions;
     private $blocks;
     private $vars;
+    public $extension = '.stylus';
 
 
 
@@ -372,6 +373,53 @@ class Stylus
 
 
     /*
+     * import - imports the specified file in the contents
+     */
+
+    private function replaceImport($matches)
+    {
+        $extension = $this->extension;
+        // ~@import\s*[\'"]([^\'"]+)[\'"].*$~
+        list($all, $name) = $matches;
+
+        if(strpos($name, 'http://') === 0 || strpos($name, 'https://') === 0) {
+            $contents = file_get_contents($name);
+        } else {
+            $name = assetRessourceName($name);
+
+            if (preg_match('~^(.+)(\..*)$~', $name, $matches)) {
+                $name = $matches[1];
+                $extension = $matches[2];
+            }
+
+            $dir = $this->import_dir? $this->import_dir: $this->read_dir;
+            $publicDir = app_path().'/../public/css';
+            if(in_array($extension, array('.stylus', '.styl'))) {
+                $path = (file_exists($dir.'/'.$name.$extension) ? $dir : $publicDir).'/'.$name.$extension;
+                if(!file_exists($path)) {
+                    $path = $publicDir.'/lib/'.$name.$extension;
+                }
+                $file_handle = fopen($path, 'r') or StylusException::report('Could not open '.$path);
+                $contents = fread($file_handle, filesize($path)) or StylusException::report('Could not read '.$path);
+                fclose($file_handle);
+                DependancesCache::add($this->read_file, $path);
+                if(class_exists('CssParser') && isset(CssParser::$activeInstance)){
+                    $contents = CssParser::$activeInstance->filterCssb($contents);
+                }
+                //$contents = str_replace(array('*/', '/*'), array("*/\n", "\n/*"), $contents);
+                $contents = "\n" . trim(preg_replace_callback('#/\*[\s\S]*\*/#', function ($matches) {
+                    return "\n" . preg_replace('#(\r\n|\n|\r)#', " ", $matches[0]) . "\n";
+                }, $contents)) . "\n";
+            } else {
+                $contents = $all;
+            }
+        }
+        return $contents;
+    }
+
+
+
+    /*
      * import - imports the specified file
      */
 
@@ -400,13 +448,19 @@ class Stylus
             $contents = CssParser::$activeInstance->filterCssb($contents);
         }
         $contents = str_replace(array('*/', '/*'), array("*/\n", "\n/*"), $contents);
-        $c = count($lines);
-        array_splice(
-            $lines, $i, 1,
-            array_values(array_filter(preg_replace('~^\s*}\s*$~', '', preg_split('~\r\n|\n|\r~', $contents)), 'strlen')) + array("\n")
-        );
-        $lines = array_values($lines);
-        //$i -= 1 + count($lines) - $c;
+        if($isStylus) {
+            array_splice(
+                $lines, $i, 1,
+                array_values(array_filter(preg_replace('~^\s*}\s*$~', '', preg_split('~\r\n|\n|\r~', $contents)), 'strlen')) + array("\n")
+            );
+            $lines = array_values($lines);
+            $i--;
+        } else {
+            $this->blocks[] = array(
+                'raw' => true,
+                'contents' => $contents,
+            );
+        }
     }
 
     /*
@@ -417,12 +471,12 @@ class Stylus
     {
         $name = preg_replace('~@import\s*[\'"]([^\'"]+)[\'"].*$~', '$1', $lines[$i]);
         $name = assetRessourceName($name);
-		if(strpos($name, 'http') === 0) {
-       	    $contents = file_get_contents($name);
+        if(strpos($name, 'http://') === 0 || strpos($name, 'https://') === 0) {
+            $contents = file_get_contents($name);
             $c = count($lines);
             unset($lines[$i]);
-	        $lines = array_merge(array_values(array_filter(preg_replace('~^\s*}\s*$~', '', preg_split('~\r\n|\n|\r~', $contents)), 'strlen')), $lines);
-	        $i += count($lines) - $c;
+            $lines = array_merge(array_values(array_filter(preg_replace('~^\s*}\s*$~', '', preg_split('~\r\n|\n|\r~', $contents)), 'strlen')), $lines);
+            $i += count($lines) - $c;
         }
         else
         {
@@ -462,19 +516,15 @@ class Stylus
             if (! isset($block['contents']) || ! $block['contents']) {
                 continue;
             }
-
-            foreach ($block['names'] as $i => $name) {
-                $i && $this->file .= ', ';
-                $this->file .= $name;
+            if (isset($block['raw']) && $block['raw']) {
+                $this->file .= "\n" . (is_array($block['contents']) ? implode("\n", $block['contents']) : $block['contents']) . "\n";
+            } else {
+                $this->file .= implode(', ', $block['names']) . ' {'.PHP_EOL;
+                foreach ($block['contents'] as $i => $content) {
+                    $i && $this->file .= PHP_EOL;
+                    $this->file .= "\t".$content;
+                }
             }
-
-            $this->file .= ' {'.PHP_EOL;
-
-            foreach ($block['contents'] as $i => $content) {
-                $i && $this->file .= PHP_EOL;
-                $this->file .= "\t".$content;
-            }
-
             $this->file .= PHP_EOL.'}'.PHP_EOL;
         }
     }
@@ -546,24 +596,25 @@ class Stylus
 
     public function parseContent($contents)
     {
-            $lines = array_values(array_filter(preg_replace('~^\s*}\s*$~', '', preg_split('~\r\n|\n|\r~', $contents)), 'strlen'));
+        // $contents = preg_replace_callback('~(?<=^|\r|\n)@import[ \t]*[\'"]([^\'"]+)[\'"].*(?=$|\r|\n)~', array($this, 'replaceImport'), $contents);
+        $lines = array_values(array_filter(preg_replace('~^\s*}\s*$~', '', preg_split('~\r\n|\n|\r~', $contents)), 'strlen'));
 
-            for ($i=0; $i<count($lines); $i++) {
-                $line = $lines[$i];
+        for ($i=0; $i<count($lines); $i++) {
+            $line = $lines[$i];
 
-                if ($this->isFunctionDeclaration($line)) {
-                    $this->addFunction($lines, $i);
-                } else if ($this->isVariableDeclaration($lines, $i)) {
-                    $this->addVariable($line);
-                } else if ($this->isBlockDeclaration($lines, $i)) {
-                    $this->addBlock($lines, $i);
-                } else if ($this->isImport($line)) {
-                    $this->importContent($lines, $i);
-                }
+            if ($this->isFunctionDeclaration($line)) {
+                $this->addFunction($lines, $i);
+            } else if ($this->isVariableDeclaration($lines, $i)) {
+                $this->addVariable($line);
+            } else if ($this->isBlockDeclaration($lines, $i)) {
+                $this->addBlock($lines, $i);
+            } else if ($this->isImport($line)) {
+                $this->importContent($lines, $i);
             }
-            $this->convertBlocksToCSS();
+        }
+        $this->convertBlocksToCSS();
 
-            return $this->file;
+        return $this->file;
     }
 
 

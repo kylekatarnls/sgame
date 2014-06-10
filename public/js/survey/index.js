@@ -24,9 +24,7 @@ $(document).on('click', 'a.toggle-next', function() {
   var data;
   data = {};
   data[$(this).attr('name')] = $(this).prop('checked') ? '1' : '0';
-  return ajax('survey/image/to-be-replaced', data, function(r) {
-    return console.log(r);
-  });
+  return ajax('survey/image/to-be-replaced', data, function(r) {});
 });
 
 $(function() {

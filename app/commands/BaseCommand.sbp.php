@@ -7,7 +7,7 @@ use Hologame\Dir
 
 a BaseCommand:Command
 
-	CODE_FILE_EXTENSIONS = 'php jade html blade'
+	CODE_FILE_EXTENSIONS = 'php jade html blade js coffee'
 	EXCLUDE = ''
 	FUNCTION_REGEX = '#(?<![a-zA-Z0-9_\x7f-\xff]|::|->)function[\t ]*(\(((?>[^\(\)]+)|(?-2))*\))#'
 	STRING_REGEX = '#([\'"]).*(?<!\\\\)(?:\\\\\\\\)*\\1#U'
@@ -205,7 +205,7 @@ a BaseCommand:Command
 	 *
 	 * @return array
 	 */
-	s+ staticScanApp $function, $exclude = null, $fileExtensions = null, $directory = null, $filesOnly = true, $separator = '/'
+	s+ staticScanApp $function, $exclude = null, $fileExtensions = null, $directory = null, $filesOnly = true, $separator = '/', $dirRootList = null
 
 		if is_null($directory)
 			$directory = app_path()
@@ -224,11 +224,11 @@ a BaseCommand:Command
 				if $extension in $extensions
 					call_user_func($function, $file)
 
-		, $directory, $filesOnly, $separator)
+		, $directory, $filesOnly, $separator, $dirRootList)
 
 	// Non-static version
-	* scanApp $function, $exclude = null, $fileExtensions = null, $directory = null, $filesOnly = true, $separator = '/'
-		< static::staticScanApp($function, is_null($exclude) ? :EXCLUDE : $exclude, is_null($fileExtensions) ? :CODE_FILE_EXTENSIONS : $fileExtensions, $directory, $filesOnly, $separator)
+	* scanApp $function, $exclude = null, $fileExtensions = null, $directory = null, $filesOnly = true, $separator = '/', $dirRootList = null
+		< static::staticScanApp($function, is_null($exclude) ? :EXCLUDE : $exclude, is_null($fileExtensions) ? :CODE_FILE_EXTENSIONS : $fileExtensions, $directory, $filesOnly, $separator, $dirRootList)
 
 	/**
 	 * Return elements and offsets that match to regex given or regex list given.
@@ -253,12 +253,68 @@ a BaseCommand:Command
 	 *
 	 * @return boolean
 	 */
-	* isInQuotes $content, $offset
+	* isInQuotes $content, $offset, $extension = null
+		if ! is_null($extension)
+			list(, $extension) = end_separator('.', str_replace('.blade.php', '.blade', $extension))
+		$extension = empty($extension) ? "" : strval($extension)
 		$subContent = preg_replace(:STRING_REGEX, '', substr($content, 0, $offset))
+		$nextChar = substr($content, $offset, 1)
 		$subContent = preg_replace('#\?>.*<\?#U', ' ', $subContent)
-		$subContent = preg_replace('#(/\*[\s\S]*\*/|//.*(?=\n|\r|$))#U', ' ', $subContent)
+		$subContent = preg_replace('#(/\*[\s\S]*\*/|' . ($extension is 'coffee' ? '\\#' : '//') . '.*(?=\n|\r' . ($nextChar in array("\n", "\r") ? '|$' : '') . '))#U', ' ', $subContent)
 		$pos = max(>lastIndexOf($subContent, "'"), >lastIndexOf($subContent, '"'))
-		return $pos > -1 && $pos > max(>lastIndexOf($subContent, '{{'), >lastIndexOf($subContent, '<?'))
+		return (
+			$pos > -1 &&
+			$pos > max(
+				$extension in array('twig', 'blade') ? >lastIndexOf($subContent, '{{') : -1,
+				>lastIndexOf($subContent, '<?')
+			)
+		)
+
+	/**
+	 * Return true if the offset is in a comment within a content, false else.
+	 *
+	 * @param string $functionName name of the function to be detected
+	 *
+	 * @return boolean
+	 */
+	* isInComment $content, $offset, $extension = null
+		if ! is_null($extension)
+			list(, $extension) = end_separator('.', str_replace('.blade.php', '.blade', $extension))
+		$extension = empty($extension) ? "" : strval($extension)
+		$subContent = preg_replace(:STRING_REGEX, '', substr($content, 0, $offset))
+		$nextChar = substr($content, $offset, 1)
+		$subContent = preg_replace('#\?>.*<\?#U', ' ', $subContent)
+		$extension :=
+			'coffee' ::
+				$pattern = '#(/\*[\s\S]*\*/|\#.*(?=\n|\r' . ($nextChar in array("\n", "\r") ? '|$' : '') . '))#U'
+				:;
+			'css' ::
+				$pattern = '#(/\*[\s\S]*\*/)#U'
+				:;
+			'jade' ::
+				$pattern = '#(?<=^|\n|\r)(\t*)//-(.*)((?:\r\n|\n|\r)\\1.*)+#'
+				:;
+			'js' ::
+				$pattern = '#(/\*[\s\S]*\*/|//.*(?=\n|\r' . ($nextChar in array("\n", "\r") ? '|$' : '') . '))#U'
+				:;
+			d:
+				$pattern = '#(/\*[\s\S]*\*/|(?://|(?<=\r|\n)[\t ]*\#).*(?=\n|\r' . ($nextChar in array("\n", "\r") ? '|$' : '') . '))#U'
+				:;
+			
+		$subContent = preg_replace($pattern, ' ', $subContent)
+		$newLine = max(>lastIndexOf($subContent, "\n"), >lastIndexOf($subContent, "\r"))
+		return (
+			(
+				! $extension in array('coffee', 'css', 'jade', 'js') &&
+				substr($subContent, $newLine + 1, 1) is '#'
+			) ||
+			>lastIndexOf($subContent, $extension is 'coffee' ? '#' : '//') > $newLine ||
+			"/*" in $subContent ||
+			(
+				$extension is 'coffee' &&
+				'//-' in $subContent
+			)
+		)
 
 	/**
 	 * Return a regex wich permit to detect a function.

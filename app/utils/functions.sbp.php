@@ -159,6 +159,13 @@
 	< $string
 
 
+@f viewExists $view
+	foreach array("", ".jade", ".html", ".blade.php", ".php") as $extension
+		if file_exists(app_path() . "/views/" . $view . $extension)
+			< true
+	< false
+
+
 @f flashAlert $textKey, $type = 'danger'
 	Session::flash('alert', $textKey)
 	Session::flash('alert-type', $type)
@@ -256,7 +263,7 @@
 	< assetRessource(func_get_args(), 'js', 'coffee')
 
 
-@f image $path, $alt = null, $width = null, $height = null, $attributes = array(), $secure = null
+@f imageSrc $path, $alt = null, $width = null, $height = null, $attributes = array(), $secure = null
 	$time = 0
 	$complete = f° $ext use &$path, &$asset, &$publicFile
 		$asset .= '.' . $ext
@@ -301,56 +308,63 @@
 		if ! empty($attributes)
 			$properties .= 'attributes=' . json_encode($attributes) . "\n"
 		file_put_contents(inWritableDirectory($publicFile . '.txt'), $properties)
-	$image = '/img/' . $path . ($time ? '?' . $time : '')
-	if ! is_null($alt) || ! is_null($width) || ! is_null($height) || $attributes not array() || ! is_null($secure)
-		if is_array($alt)
-			$attributes = $alt
-			$alt = null
-		elseif is_array($width)
-			$attributes = $width
-			$width = null
-		elseif is_array($height)
-			$attributes = $height
-			$height = null
-		if ! is_null($width)
-			$attributes['width'] = $width
-		if ! is_null($height)
-			$attributes['height'] = $height
-		$eimg = {
-			s = 'saturation'
-			l = 'luminosite'
-			t = 'teinte'
-			tr = 'transparence'
-			a = 'applique'
-			g = 'gaussien'
-			c = 'contraste'
-			li = 'limite'
-			rx = 'redimx'
-			ry = 'redimy'
-			sy = 'symetrie'
-		}
-		$eimgOther = array(
-			'rouge',
-			'vert',
-			'bleu',
-			'alpha',
-		)
-		$optionsEimg = array()
-		foreach array_keys($attributes) as $key
-			$prop = array_search($key, $eimg)
-			$prop ?:= $key
-			if isset($eimg[$prop]) || in_array($prop, $eimgOther)
-				$optionsEimg[] = $prop . $attributes[$key]
-				unset($attributes[$key])
-		if $optionsEimg not array()
-			$image = new \Hologame\Url('/eimg/' . substr($image, 5))
-			$image->get->params = implode('_', $optionsEimg)
-		$image = HTML::image($image, $alt, $attributes, $secure)
-	< $image
+	< '/img/' . $path . ($time ? '?' . $time : '')
+
+
+@f image $path, $alt = null, $width = null, $height = null, $attributes = array(), $secure = null
+	$image = imageSrc($path, $alt, $width, $height, $attributes, $secure)
+	if is_array($alt)
+		$attributes = $alt
+		$alt = null
+	elseif is_array($width)
+		$attributes = $width
+		$width = null
+	elseif is_array($height)
+		$attributes = $height
+		$height = null
+	if ! is_null($width)
+		$attributes['width'] = $width
+	if ! is_null($height)
+		$attributes['height'] = $height
+	$eimg = {
+		s = 'saturation'
+		l = 'luminosite'
+		t = 'teinte'
+		tr = 'transparence'
+		a = 'applique'
+		g = 'gaussien'
+		c = 'contraste'
+		li = 'limite'
+		rx = 'redimx'
+		ry = 'redimy'
+		sy = 'symetrie'
+	}
+	$eimgOther = array(
+		'rouge',
+		'vert',
+		'bleu',
+		'alpha',
+	)
+	$optionsEimg = array()
+	foreach array_keys($attributes) as $key
+		$prop = array_search($key, $eimg)
+		$prop ?:= $key
+		if isset($eimg[$prop]) || in_array($prop, $eimgOther)
+			$optionsEimg[] = $prop . $attributes[$key]
+			unset($attributes[$key])
+	if $optionsEimg not array()
+		$image = new \Hologame\Url('/eimg/' . substr($image, 5))
+		$image->get->params = implode('_', $optionsEimg)
+	< HTML::image($image, $alt, $attributes, $secure)
 
 
 @f lang
 	< Lang::locale()
+
+
+@f jade $code
+	$jade = new Jade
+	< $jade->compile($code)
 
 
 @f starRate $id = '', $params = ''
