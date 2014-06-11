@@ -27,22 +27,28 @@ block content
 				//- php artisan update
 				h2
 					=s("Update")
-				pre
-					=output
+				if empty($output)
+
+					pre
+						=output
 
 			when "git"
 				//- Git status
 				h2#to-send
 					=s("To send")
 				if data
-					.alert.alert-success
-						=s("Modifications sent")
-					if isset($data->input)
+					if empty($data->output)
+						.alert.alert-danger
+							=s("Connection or authentification failed")
+					else
+						.alert.alert-success
+							=s("Modifications sent")
+					if ! empty($data->input)
 						h4
 							=s("Input")
 						pre
 							=data->input
-					if isset($data->output)
+					if ! empty($data->output)
 						h4
 							=s("Output")
 						pre

@@ -2,19 +2,48 @@
 
 use Hologame\Html
 
-Git
+GitHub
+	PROJECT = 'kylekatarnls/sgame'
+	PROTOCOLE = 'https'
+	DOMAIN = 'github.com'
+
+GitLab
+	PROJECT = 'KyleK/game-oriented-web-framework'
+	PROTOCOLE = 'https'
+	DOMAIN = 'gitlab.com'
+
+Git:GitLab
+
+	UPDATE_CONFIG = false // - /!\ true = Danger
+	UPDATE_BRANCH = false
+	MERGE_RETINA = true
+	COMPARE_SUFFIXE = 'Compare'
 
 	s- $log = array()
 
-	MERGE_RETINA = true
-	COMPARE_SUFFIXE = 'Compare'
-	PROJECT = 'kylekatarnls/sgame'
-
 	+ __construct
+
+		if :UPDATE_BRANCH
+			>branch("-u origin/master")
+		>remote('set-url --track origin ' . :PROTOCOLE . '://' . :DOMAIN . '/' . :PROJECT . '.git')
 
 	+ __get $command
 
 		< call_user_func(array($this, $command))
+
+	- hidePassword $text
+		< preg_replace('#(?<=:)[^:@]+(?=@' . preg_quote(:DOMAIN) . ')#', 'xxxx', $text)
+
+	- cmd $command, $args = array()
+
+		if ! is_array($args)
+			$args = array_slice(func_get_args(), 1)
+		< inRoot(f° use &$command, &$args
+
+			$command = 'git ' . $command . rtrim(' ' . implode(' ', $args))
+			static::$log[] = static::hidePassword($command)
+			< static::hidePassword(shell_exec($command)) // no-debug
+		)
 
 	+ __call $command, array $args
 
@@ -25,12 +54,7 @@ Git
 			$result = trim(preg_replace('`#[^\r\n]*(\r\n|\n|\r|$)`', '', $result))
 			< $result is $compareTo
 		else
-			< inRoot(f° use $command, $args
-
-				$command = 'git ' . $command . rtrim(' ' . implode(' ', $args))
-				static::$log[] = preg_replace('#:[^:@]+@github\.com#', ':xxxx@github.com', $command)
-				< shell_exec($command) // no-debug
-			)
+			<>cmd($command, $args)
 
 	s+ __callStatic $command, array $args
 		$class = get_called_class()
@@ -45,7 +69,7 @@ Git
 		if is_null($project)
 			$project = :PROJECT
 		$git = new static
-		< $git->push("--repo https://" . $username . ":" . $password . "@github.com/" . $project . ".git")
+		< $git->push((:UPDATE_CONFIG ? "-u " : "") . "--repo " . :PROTOCOLE . "://" . $username . ":" . $password . "@" . :DOMAIN . "/" . $project . ".git")
 
 	s+ addStatic $list = null
 		if ! is_null($list) && empty($list)
