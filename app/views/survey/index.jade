@@ -28,7 +28,9 @@ block content
 				h2
 					=s("Update")
 				if empty($output)
-
+					.alert.alert-danger
+						=s("Connection or authentification failed")
+				else
 					pre
 						=output
 
@@ -82,8 +84,12 @@ block content
 											!=Form::checkbox('to-be-replaced[' . $data['image'] . ']', 'on', ! empty($data['info']) && !empty($data['info']['to-be-replaced']) ? array('checked' => 'checked') : array())
 											=§('survey.replace'/*§To be replaced§*/)
 									h4.file
-										a.btn.btn-primary.more-btn(href=("?tab=img-history&img=" . $data['image']))
-											=s("Previous versions")
+										span.more-btn(style="margin-top: -2px;")
+											a.btn.btn-primary(href=("?tab=img-history&img=" . $data['image']))
+												=s("Previous versions")
+											br
+											a.btn.btn-danger(href=("/survey/image/delete?_token=" . csrf_token() . "&delete=" . $data['image']), data-confirm="Vous allez supprimer toutes les version (retina et non retina, JPG, PNG et GIF) de cette image.")
+												=s("Supprimer")
 										=file
 										!=" &nbsp; "
 										if empty($data['retina-image'])

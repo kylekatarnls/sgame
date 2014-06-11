@@ -132,4 +132,6 @@ button.remember-me
 	color #101098
 
 .more-btn
+	db
 	fr
+	tar

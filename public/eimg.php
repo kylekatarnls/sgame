@@ -116,7 +116,7 @@ if(!DEJA_EN_CACHE)
 			else
 			{
 				open_sesssion();
-				echo $_SESSION['simg'][SESSION_KEY];
+				echo $_SESSION['simg'][SESSION_KEY]; // no-debug
 			}
 		}
 		else
@@ -189,7 +189,7 @@ if(IMAGE_SESSION)
 {
 	header("Expires: " . gmdate("D, d M Y H:i:s",time()+EXPIRATION*86400) . " GMT");
 	header('Content-type: image/'.TYPE);
-	echo $_SESSION['simg-cache'][SESSION_KEY];
+	echo $_SESSION['simg-cache'][SESSION_KEY]; // no-debug
 }
 else
 {

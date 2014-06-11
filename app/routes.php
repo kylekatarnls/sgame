@@ -53,6 +53,7 @@ if (Config::get('app.debug')) {
     Route::get('/specs', 'DevController@specs'); 
     Route::get('/survey', 'DevController@survey'); 
     Route::post('/survey', 'DevController@postSurvey'); 
+    Route::get('/survey/image/delete', 'DevController@deleteImage')->before('csrf'); 
     Route::post('/survey/image/to-be-replaced', 'DevController@imageToBeReplaced'); 
 	Route::get('/lang/csv', function () {
 		return  Response::download(Utils\Lang\CSV::convert()); 

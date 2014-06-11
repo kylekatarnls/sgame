@@ -263,7 +263,7 @@
 	< assetRessource(func_get_args(), 'js', 'coffee')
 
 
-@f imageSrc $path, $alt = null, $width = null, $height = null, $attributes = array(), $secure = null
+@f imageSrc $path, $alt = null, $width = null, $height = null, $attributes = array(), $secure = null, $returnAsset = false
 	$time = 0
 	$complete = f° $ext use &$path, &$asset, &$publicFile
 		$asset .= '.' . $ext
@@ -308,7 +308,13 @@
 		if ! empty($attributes)
 			$properties .= 'attributes=' . json_encode($attributes) . "\n"
 		file_put_contents(inWritableDirectory($publicFile . '.txt'), $properties)
-	< '/img/' . $path . ($time ? '?' . $time : '')
+	< $returnAsset ?
+		$asset :
+		'/img/' . $path . ($time ? '?' . $time : '')
+
+
+@f imageAsset $path, $alt = null, $width = null, $height = null, $attributes = array(), $secure = null
+	< imageSrc($path, $alt, $width, $height , $attributes, $secure, true)
 
 
 @f image $path, $alt = null, $width = null, $height = null, $attributes = array(), $secure = null

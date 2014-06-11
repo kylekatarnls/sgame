@@ -146,7 +146,7 @@ form.login a {
 	height: 100%;
 	margin: 0 auto 0px;
 	padding: 0 0 0px;
-	//background-image: url("/img/motif-bis.jpg");
+	//background-image: url("/img/motif-bis.jpg?39306785");
 }
 #footer {
 	height: 0px;
@@ -192,5 +192,7 @@ button.remember-me.selected {
 	color: #101098;
 }
 .more-btn {
+	display: block;
 	float: right;
+	text-align: right;
 }

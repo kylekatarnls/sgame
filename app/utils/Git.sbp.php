@@ -17,6 +17,7 @@ Git:GitHub
 	UPDATE_CONFIG = false // - /!\ true = Danger
 	UPDATE_BRANCH = false
 	MERGE_RETINA = true
+	MERGE_ASSET = true
 	COMPARE_SUFFIXE = 'Compare'
 
 	s- $log = array()
@@ -100,6 +101,8 @@ Git:GitHub
 			})
 			if :MERGE_RETINA
 				$file = str_replace('@2x', '', $file)
+			if :MERGE_ASSET
+				$file = str_replace('app/assets/images/', 'public/img/', $file)
 			if !$only || $only is $file
 				$input->checked = "checked"
 			< $match[1] . (new Html('label', {

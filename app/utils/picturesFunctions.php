@@ -357,16 +357,7 @@ function symetrie($img,$type='')
 
 function couleur_principale($image)
 {
-	$x=imagesx($image);
-	$y=imagesy($image);
-	for($ix=0;$ix<$x;$ix++) for($iy=0;$iy<$y;$iy++)
-	{
-		$couleur=imagecolorat($image,$ix,$iy);
-		$rgba=imagecolorsforindex($image,$couleur);
-		if($rgba['alpha']<127)
-		{
-		}
-	}
+	return Color::fromImage($image);
 }
 
 ?>

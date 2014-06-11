@@ -2,6 +2,15 @@ extends layouts/sgame
 
 block content
 	#content
+		color = Color::fromAsset('search')
+		div(style=("margin: 20px; padding: 20px; background: " . $color . "; text-align: center; font-weight: bold; text-shadow: 0 1px 1px white, 0 -1px 1px white, 1px 0 1px white, -1px 0 1px white;"))
+			=color->hex()
+		color = Color::fromAsset('advanced-search')
+		div(style=("margin: 20px; padding: 20px; background: " . $color . "; text-align: center; font-weight: bold; text-shadow: 0 1px 1px white, 0 -1px 1px white, 1px 0 1px white, -1px 0 1px white;"))
+			=color->hex()
+		color = Color::fromAsset('motif')
+		div(style=("margin: 20px; padding: 20px; background: " . $color . "; text-align: center; font-weight: bold; text-shadow: 0 1px 1px white, 0 -1px 1px white, 1px 0 1px white, -1px 0 1px white;"))
+			=color->hex()
 		div(style="margin: 70px 20px; padding: 30px; background: #ffff98;")
 			p
 				!=image('faction/zombie', 'Zombie faction', 64, 64)

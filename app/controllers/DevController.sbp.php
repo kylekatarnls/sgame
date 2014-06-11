@@ -39,6 +39,18 @@ DevController:BaseController
 				$ok = false
 		< $ok ? 'OK' : 'KO'
 
+	+ deleteImage
+		Session::regenerateToken()
+		$image = Input::get('delete')
+		list($baseName, $extension) = end_separator('.', $image)
+		foreach array(>imgDirectory(), >imgAssetDiretory()) as $directory
+			foreach array('jpg', 'jpeg', 'png', 'gif') as $extension
+				foreach array('', '@2x') as $resolution
+					$file = $directory . '/' . $baseName . $resolution . '.' . $extension
+					if file_exists($file)
+						unlink($file)
+		< Redirect::to('/survey?tab=img')
+
 	+ postSurvey
 		>init()
 		$data = array()
@@ -69,8 +81,9 @@ DevController:BaseController
 				output = $output
 			}
 			unset($output)
-		if Input::hasFile('image')
-			foreach Input::file('image') as $name => $file
+		$files = Input::file('image')
+		if is_traversable($files)
+			foreach $files as $name => $file
 				if ! is_null($file)
 					$originalName = $file->getClientOriginalName()
 					list($baseName, $extension) = end_separator('.', $originalName)
@@ -82,6 +95,7 @@ DevController:BaseController
 						$saveFile = $path . '.save'
 						rename($path, $saveFile)
 					$file->move($imgAssetDirectory, $name . '.' . $extension)
+					copy($path, $imgDirectory . '/' . $name . '.' . $extension)
 					$imageSize = getimagesize($path)
 					$txtFile = $path . '.txt'
 					if ! file_exists($txtFile)
@@ -164,6 +178,7 @@ DevController:BaseController
 
 	+ survey $data = array()
 		>init()
+		$git = new Git
 		$tab = Input::get('tab')
 		$tab :=
 			"update" ::
@@ -176,7 +191,7 @@ DevController:BaseController
 				:;
 			"git" ::
 				$vars = {
-					git = new Git
+					git = $git
 				}
 				:;
 			"img" ::
@@ -210,12 +225,11 @@ DevController:BaseController
 
 				, '', :IMAGE_SYSTEM_EXTENSIONS, $imgDirectory)
 				$vars = {
-					git = new Git
+					git = $git
 					images = $list
 				}
 				:;
 			"img-history" ::
-				$git = new Git
 				$image =Input::get('img')
 				$path = 'public/img/' . $image
 				$commits = array_map(f° $value use &$git, &$image
