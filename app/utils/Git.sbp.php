@@ -2,17 +2,19 @@
 
 use Hologame\Html
 
+// Public
 GitHub
 	PROJECT = 'kylekatarnls/sgame'
 	PROTOCOLE = 'https'
 	DOMAIN = 'github.com'
 
+// Private
 GitLab
 	PROJECT = 'KyleK/game-oriented-web-framework'
 	PROTOCOLE = 'https'
 	DOMAIN = 'gitlab.com'
 
-Git:GitHub
+Git:GitLab
 
 	UPDATE_CONFIG = false // - /!\ true = Danger
 	UPDATE_BRANCH = false
