@@ -52,6 +52,17 @@ DevController:BaseController
 				output = $output
 			}
 			unset($output)
+		elseif Input::has('git-username', 'git-password')
+			$output = ""
+			$gitAdd = Input::get('git-add')
+			if ! empty($gitAdd)
+				array_keys(**$gitAdd)
+				$output = Git::push(Input::get('git-username'), Input::get('git-password'))
+			$data = (object) {
+				input = implode("\n", Git::getCommands())
+				output = $output
+			}
+			unset($output)
 		if Input::hasFile('image')
 			foreach Input::file('image') as $name => $file
 				if ! is_null($file)
