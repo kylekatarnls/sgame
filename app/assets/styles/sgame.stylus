@@ -130,3 +130,6 @@ button.remember-me
 
 #faction
 	color #101098
+
+.more-btn
+	fr

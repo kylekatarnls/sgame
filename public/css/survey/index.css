@@ -7,7 +7,7 @@ p.no-image, p.image {
 }
 p.no-image, p.image, p.info {
 	padding: 0;
-	margin: 2px 0;
+	margin: 0 440px 0 2px;
 }
 h3.directory {
 	margin: 10px 0 0;

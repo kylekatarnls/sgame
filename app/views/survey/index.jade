@@ -76,6 +76,8 @@ block content
 											!=Form::checkbox('to-be-replaced[' . $data['image'] . ']', 'on', ! empty($data['info']) && !empty($data['info']['to-be-replaced']) ? array('checked' => 'checked') : array())
 											=§('survey.replace'/*§To be replaced§*/)
 									h4.file
+										a.btn.btn-primary.more-btn(href=("?tab=img-history&img=" . $data['image']))
+											=s("Previous versions")
 										=file
 										!=" &nbsp; "
 										if empty($data['retina-image'])
@@ -103,6 +105,16 @@ block content
 														=§('survey.property'/*§:key: :value§*/, array( 'key' => $key, 'value' => $value))
 									.cb
 				!=Form::close()
+
+			when "img-history"
+				//- Design tools
+				h2
+					=§('survey.image.title'/*§Images survey§*/)
+				h3
+					=image
+				each commit in commits
+					pre
+						!=commit
 
 			default
 				//- Developement tools

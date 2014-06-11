@@ -191,3 +191,6 @@ button.remember-me.selected {
 #faction {
 	color: #101098;
 }
+.more-btn {
+	float: right;
+}

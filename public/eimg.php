@@ -8,6 +8,12 @@ function av($array, $key)
 	return is_array($array) && isset($array[$key]) ? $array[$key] : null;
 }
 
+function open_sesssion()
+{
+	session_name('simg');
+	session_start();
+}
+
 function g($key)
 {
 	return av($_GET, $key);
@@ -28,9 +34,22 @@ function get_extension($path)
 }
 
 define('RACINE',unix_path(realpath(__DIR__)).'/img/');
+$fichier=g('fichier');
+define('IMAGE_COMMIT', strpos($fichier, 'simg/commit/') === 0);
+if(IMAGE_COMMIT)
+{
+	$fichier = 'simg/' . substr($fichier, strlen('simg/commit/'));
+}
+define('CHEMIN',$fichier);
+unset($fichier);
+define('IMAGE_SESSION',strpos(CHEMIN, 'simg/') === 0);
 
-$file = RACINE.g('fichier');
-if(!file_exists($file) || strpos($file = unix_path(realpath($file)), RACINE) !== 0)
+$file = RACINE.CHEMIN;
+if(IMAGE_SESSION)
+{
+	define('SESSION_KEY',substr(CHEMIN,5));
+}
+elseif(!file_exists($file) || strpos($file = unix_path(realpath($file)), RACINE) !== 0)
 {
 	exit; // no-debug
 }
@@ -49,8 +68,9 @@ define('PARAMS',implode('_',$params));
 
 define('FICHIER_CACHE',DOSSIER_CACHE.'/'.substr(FICHIER, strrpos(FICHIER, '/') + 1).'--'.sha1(FICHIER).'-'.PARAMS.'.'.EXTENSION);
 define('FICHIER_SOURCE',FICHIER);
+define('DEJA_EN_CACHE',IMAGE_SESSION ? isset($_SESSION['simg-cache'][SESSION_KEY]) : file_exists(FICHIER_CACHE));
 
-if(!file_exists(FICHIER_CACHE))
+if(!DEJA_EN_CACHE)
 {
 	$rac=array(
 		 's'=>'saturation'
@@ -84,16 +104,43 @@ if(!file_exists(FICHIER_CACHE))
 
 	if(empty($p))
 	{
-		header("Expires: " . gmdate("D, d M Y H:i:s",time()+EXPIRATION*86400) . " GMT");
-		header("Last-Modified: " . gmdate("D, d M Y H:i:s",filemtime(FICHIER_SOURCE)) . " GMT");
-		header('Content-type: image/'.TYPE);
-		readfile(FICHIER_SOURCE);
+		if(IMAGE_SESSION)
+		{
+			header("Expires: " . gmdate("D, d M Y H:i:s",time()+EXPIRATION*86400) . " GMT");
+			header('Content-type: image/'.TYPE);
+			if(IMAGE_COMMIT)
+			{
+				chdir(__DIR__ . '/..');
+				passthru('git show ' . preg_replace('#/#', ':public/img/', SESSION_KEY, 1));
+			}
+			else
+			{
+				open_sesssion();
+				echo $_SESSION['simg'][SESSION_KEY];
+			}
+		}
+		else
+		{
+			header("Expires: " . gmdate("D, d M Y H:i:s",time()+EXPIRATION*86400) . " GMT");
+			//header("Last-Modified: " . gmdate("D, d M Y H:i:s",filemtime(FICHIER_SOURCE)) . " GMT");
+			header('Content-type: image/'.TYPE);
+			readfile(FICHIER_SOURCE);
+		}
+		exit;
 	}
 	$f1='imagecreatefrom'.TYPE;
 	$f2='image'.TYPE;
-	if(av($p,'redimx')>0 || av($p,'redimy')>0)
+	if(IMAGE_SESSION)
+	{
+		open_sesssion();
+		$source=imageretouche(imagecreatefromstring($_SESSION['simg'][SESSION_KEY]),$p);
+	}
+	else
 	{
 		$source=imageretouche($f1(FICHIER_SOURCE),$p);
+	}
+	if(av($p,'redimx')>0 || av($p,'redimy')>0)
+	{
 		$sx=imagesx($source);
 		$sy=imagesy($source);
 		if(av($p,'redimx')<1)
@@ -110,21 +157,45 @@ if(!file_exists(FICHIER_CACHE))
 	}
 	else
 	{
-		$image=imageretouche($f1(FICHIER_SOURCE),$p);
+		$image=&$source;
 	}
-	$f2($image,FICHIER_CACHE);
+	if(IMAGE_SESSION)
+	{
+		ob_start();
+		$f2($image);
+		if(empty($_SESSION['simg-cache']))
+		{
+			$_SESSION['simg-cache'] = array();
+		}
+		$_SESSION['simg-cache'][SESSION_KEY] = ob_get_contents();
+		ob_end_clean();
+	}
+	else
+	{
+		$f2($image,FICHIER_CACHE);
+	}
 	imagedestroy($image);
 	unset($image);
 }
 
 // Erreur
-if(!file_exists(FICHIER_CACHE))
+if(!IMAGE_SESSION && !file_exists(FICHIER_CACHE))
 {
 	exit; // no-debug
 }
 
-header("Expires: " . gmdate("D, d M Y H:i:s",time()+EXPIRATION*86400) . " GMT");
-header("Last-Modified: " . gmdate("D, d M Y H:i:s",filemtime(FICHIER_CACHE)) . " GMT");
-header('Content-type: image/'.TYPE);
-readfile(FICHIER_CACHE);
+
+if(IMAGE_SESSION)
+{
+	header("Expires: " . gmdate("D, d M Y H:i:s",time()+EXPIRATION*86400) . " GMT");
+	header('Content-type: image/'.TYPE);
+	echo $_SESSION['simg-cache'][SESSION_KEY];
+}
+else
+{
+	header("Expires: " . gmdate("D, d M Y H:i:s",time()+EXPIRATION*86400) . " GMT");
+	//header("Last-Modified: " . gmdate("D, d M Y H:i:s",filemtime(FICHIER_CACHE)) . " GMT");
+	header('Content-type: image/'.TYPE);
+	readfile(FICHIER_CACHE);
+}
 ?>

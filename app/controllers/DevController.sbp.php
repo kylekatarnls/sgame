@@ -1,5 +1,7 @@
 <?
 
+use Hologame\Html
+
 DevController:BaseController
 
 	IMAGE_SYSTEM_EXTENSIONS = 'png jpg jpeg gif ico txt'
@@ -10,7 +12,10 @@ DevController:BaseController
 	- init
 		set_time_limit(0)
 
-	- imgDiretory
+	- imgAssetDiretory
+		< unix_path(realpath(app_path() . '/assets/images'))
+
+	- imgDirectory
 		< unix_path(realpath(app_path() . '/../public/img'))
 
 	- command $name, $options = ''
@@ -18,10 +23,10 @@ DevController:BaseController
 		< trim(str_replace("\n\n", "\n", call_user_func(array($name, 'getResult'), $options)))
 
 	+ imageToBeReplaced
-		$imgDiretory = >imgDiretory()
+		$imgDirectory = >imgDirectory()
 		$ok = true
 		foreach Input::get('to-be-replaced') as $name => $checked
-			$file = $imgDiretory . '/' . $name . '.txt'
+			$file = $imgDirectory . '/' . $name . '.txt'
 			$data = file_exists($file) ? parse_ini_file($file) : array()
 			if $checked
 				$data['to-be-replaced'] = '1'
@@ -37,7 +42,8 @@ DevController:BaseController
 	+ postSurvey
 		>init()
 		$data = array()
-		$imgDiretory = >imgDiretory()
+		$imgDirectory = >imgDirectory()
+		$imgAssetDirectory = >imgAssetDiretory()
 		if Input::has('commit-message')
 			$output = ""
 			$gitAdd = Input::get('git-add')
@@ -71,21 +77,21 @@ DevController:BaseController
 					strtolower(**$extension)
 					if $extension is 'jpeg'
 						$extension = 'jpg'
-					$path = $imgDiretory . '/' . $name . '.' . $extension
+					$path = $imgAssetDirectory . '/' . $name . '.' . $extension
 					if file_exists($path)
 						$saveFile = $path . '.save'
 						rename($path, $saveFile)
-					$file->move($imgDiretory, $name . '.' . $extension)
+					$file->move($imgAssetDirectory, $name . '.' . $extension)
 					$imageSize = getimagesize($path)
 					$txtFile = $path . '.txt'
 					if ! file_exists($txtFile)
-						$txtFile = $imgDiretory . '/' . $name . '.txt'
+						$txtFile = $imgDirectory . '/' . $name . '.txt'
 						if ! file_exists($txtFile)
-							$txtFile = $imgDiretory . '/' . $name . '.png.txt'
+							$txtFile = $imgDirectory . '/' . $name . '.png.txt'
 							if ! file_exists($txtFile)
-								$txtFile = $imgDiretory . '/' . $name . '.jpg.txt'
+								$txtFile = $imgDirectory . '/' . $name . '.jpg.txt'
 								if ! file_exists($txtFile)
-									$txtFile = $imgDiretory . '/' . $name . '.gif.txt'
+									$txtFile = $imgDirectory . '/' . $name . '.gif.txt'
 					$continue = true
 					if file_exists($txtFile)
 						$info = parse_ini_file($txtFile)
@@ -98,25 +104,32 @@ DevController:BaseController
 								$width = array_get($imageInfo, 0, 0)
 								$height = array_get($imageInfo, 1, $width)
 								unset($imageInfo)
-							$retinaFile = $imgDiretory . '/' . $name . '@2x.' . $extension
+							$retinaFile = $imgAssetDirectory . '/' . $name . '@2x.' . $extension
 							if $imageSize[0] is $width * 2 && $imageSize[1] is $height * 2
 								rename($path, $retinaFile)
 								rename($saveFile, $path)
+								copy($retinaFile, $imgDirectory . '/' . $name . '@2x.' . $extension)
 								unset($saveFile)
 							elseif $imageSize[0] * 2 is $width && $imageSize[1] * 2 is $height
 								rename($saveFile, $retinaFile)
+								copy($retinaFile, $imgDirectory . '/' . $name . '@2x.' . $extension)
 								unset($saveFile)
 							else
 								if file_exists($retinaFile)
 									unlink($retinaFile)
+								if file_exists($imgDirectory . '/' . $name . '@2x.' . $extension)
+									unlink($imgDirectory . '/' . $name . '@2x.' . $extension)
 								$continue = true
 						else
 							$continue = true
 
 					if $continue
 						if $imageSize[0] is $width * 2 && $imageSize[1] is $height * 2
-							$retinaFile = $imgDiretory . '/' . $name . '@2x.' . $extension
+							$retinaFile = $imgAssetDirectory . '/' . $name . '@2x.' . $extension
 							rename($path, $retinaFile)
+							copy($retinaFile, $imgDirectory . '/' . $name . '@2x.' . $extension)
+							touch($retinaFile, time(), time())
+							DependancesCache::flush($retinaFile)
 							$extension :=
 								'gif' ::
 									$image = imagecreatefromgif($retinaFile)
@@ -144,7 +157,8 @@ DevController:BaseController
 					if isset($saveFile)
 						unlink($saveFile)
 
-					touch($path)
+					touch($path, time(), time())
+					DependancesCache::flush($path)
 
 		<>survey($data)
 
@@ -166,10 +180,10 @@ DevController:BaseController
 				}
 				:;
 			"img" ::
-				$imgDiretory = >imgDiretory()
+				$imgDirectory = >imgDirectory()
 				$extensions = preg_split('#\s+#', :IMAGE_SYSTEM_EXTENSIONS)
 				$list = array()
-				scanApp(f° $path use $imgDiretory, $extensions, &$list
+				scanApp(f° $path use $imgDirectory, $extensions, &$list
 
 					list($directory, $file) = end_separator('/', $path)
 					list($name, $extension) = end_separator('.', $file)
@@ -186,7 +200,7 @@ DevController:BaseController
 					if $isRetina
 						$list[$directory][$name]['retina-image'] = true
 					elseif $isInfoFile
-						$list[$directory][$name]['info'] = parse_ini_file($imgDiretory . $path)
+						$list[$directory][$name]['info'] = parse_ini_file($imgDirectory . $path)
 						if ! isset($list[$directory][$name]['image'])
 							list($list[$directory][$name]['image'], $removeTxt) = end_separator('.', ltrim($path, '/'))
 							$list[$directory][$name]['missing-image'] = true
@@ -194,10 +208,36 @@ DevController:BaseController
 						$list[$directory][$name]['image'] = ltrim($path, '/')
 						$list[$directory][$name]['missing-image'] = false
 
-				, '', :IMAGE_SYSTEM_EXTENSIONS, $imgDiretory)
+				, '', :IMAGE_SYSTEM_EXTENSIONS, $imgDirectory)
 				$vars = {
 					git = new Git
 					images = $list
+				}
+				:;
+			"img-history" ::
+				$git = new Git
+				$image =Input::get('img')
+				$path = 'public/img/' . $image
+				$commits = array_map(f° $value use &$git, &$image
+
+					trim(**$value)
+					htmlspecialchars(**$value)
+					preg_match('#commit\s+([a-z0-9]+)\s#', $value, $match)
+					$key = $match[1] . '/' . $image
+					$src = '/eimg/simg/commit/' . $key
+					$style = {
+						float = 'right'
+					}
+					$tag = new Html('img', {
+						src = $src
+						style = $style
+					})
+					< $tag . $value
+				, preg_split('#[\n\r](?=commit)#', $git->log($path)))
+				$vars = {
+					git = $git
+					image = $image
+					commits = $commits
 				}
 				:;
 			d:
