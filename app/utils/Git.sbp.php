@@ -12,7 +12,7 @@ GitLab
 	PROTOCOLE = 'https'
 	DOMAIN = 'gitlab.com'
 
-Git:GitLab
+Git:GitHub
 
 	UPDATE_CONFIG = false // - /!\ true = Danger
 	UPDATE_BRANCH = false
@@ -25,7 +25,9 @@ Git:GitLab
 
 		if :UPDATE_BRANCH
 			>branch("-u origin/master")
+			array_pop(static::$log)
 		>remote('set-url --track origin ' . :PROTOCOLE . '://' . :DOMAIN . '/' . :PROJECT . '.git')
+		array_pop(static::$log)
 
 	+ __get $command
 
