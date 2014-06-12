@@ -14,7 +14,7 @@ GitLab
 	PROTOCOLE = 'https'
 	DOMAIN = 'gitlab.com'
 
-Git:GitHub
+Git:GitLab
 
 	UPDATE_CONFIG = false // - /!\ true = Danger
 	UPDATE_BRANCH = false
