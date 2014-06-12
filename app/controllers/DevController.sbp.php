@@ -1,6 +1,7 @@
 <?
 
 use Hologame\Html
+use Hologame\Javascript
 
 DevController:BaseController
 
@@ -50,6 +51,21 @@ DevController:BaseController
 					if file_exists($file)
 						unlink($file)
 		< Redirect::to('/survey?tab=img')
+
+	+ diff
+		$file = realpath(app_path() . '/../' . Input::get('file'))
+		$git = new Git
+		if $file && strpos($file, realpath(app_path() . '/..')) === 0
+			$diff = $git->diff($file)
+			substr(**$diff, strpos($diff, "\n@@") + 1)
+			$data = {
+				diff = $diff
+			}
+		else
+			$data = {
+				js = (new Javascript)->pushAlert(s("File not found"))->out()
+			}
+		< $data
 
 	+ postSurvey
 		>init()

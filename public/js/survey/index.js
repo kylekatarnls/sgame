@@ -24,7 +24,43 @@ $(document).on('click', 'a.toggle-next', function() {
   var data;
   data = {};
   data[$(this).attr('name')] = $(this).prop('checked') ? '1' : '0';
-  return ajax('survey/image/to-be-replaced', data, function(r) {});
+  return ajax('survey/image/to-be-replaced', data, function(res) {});
+}).on('click', '.git-diff', function() {
+  var $diff, $link;
+  $link = $(this);
+  $diff = $link.next('.diff');
+  if ($diff.hasClass('open')) {
+    $diff.removeClass('open').html('');
+  } else {
+    $diff.addClass('open').html('\nLoading...');
+    ajax('survey/diff', {
+      file: $link.attr('href')
+    }, function(res) {
+      var html;
+      console.log(res);
+      if (res.diff) {
+        html = '';
+        $.each(res.diff.split(/\n/g), function() {
+          var classAttr;
+          classAttr = (function() {
+            switch (this.charAt(0)) {
+              case '@':
+                return ' class="comment-line"';
+              case '+':
+                return ' class="add-line"';
+              case '-':
+                return ' class="remove-line"';
+              default:
+                return '';
+            }
+          }).call(this);
+          return html += '<div' + classAttr + '>' + this + '</div>';
+        });
+        return $diff.html(html);
+      }
+    });
+  }
+  return false;
 });
 
 $(function() {

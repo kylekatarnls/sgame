@@ -5,7 +5,7 @@ html.no-js(lang=lang())
 		title
 			block title
 				=§('global.title'/*§InSearch§*/)
-		block section
+		block meta
 			mixin meta(name, content)
 				meta(name=name, content=content)
 			+meta("viewport", "width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, target-densitydpi=device-dpi")

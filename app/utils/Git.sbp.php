@@ -14,7 +14,7 @@ GitLab
 	PROTOCOLE = 'https'
 	DOMAIN = 'gitlab.com'
 
-Git:GitLab
+Git:GitHub
 
 	UPDATE_CONFIG = false // - /!\ true = Danger
 	UPDATE_BRANCH = false
@@ -107,9 +107,14 @@ Git:GitLab
 				$file = str_replace('app/assets/images/', 'public/img/', $file)
 			if !$only || $only is $file
 				$input->checked = "checked"
+			$link = strpos($file, 'public/img/') is 0 ? '' : new Html('a', {
+				className = 'git-diff'
+				href = $file
+				content = '[' . s("Differences") . ']'
+			})
 			< $match[1] . (new Html('label', {
 				className = "git-add"
 				content = "&nbsp; " . $input . $match[2] .  " &nbsp;"
-			}))
+			})) . $link . jade('span.diff')
 
 		, htmlspecialchars($output))

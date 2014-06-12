@@ -424,13 +424,19 @@ function ajax(url, data, done, settings, fail)
 		$.extend({
 				type: 'POST',
 				dataType: 'JSON',
-				data: data
+				data: data,
+				success: function (data){
+					console.log(data);
+					evalDataJs(this, data, done);
+				},
+				error: fail||function (xhr, status, error){
+					console.log(JSON.parse(xhr.responseText));
+					throw 'Ajax error ' + status + ' : ' + error;
+				}
 			},
 			settings||{}
 		)
-	).done(function (data){
-		evalDataJs(this, data, done);
-	}).fail(fail||function (){});
+	);
 }
 
 function intval(n){

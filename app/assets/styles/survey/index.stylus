@@ -85,5 +85,14 @@ p.info ul
 	input
 		rel -4 2
 
+.comment-line
+	color gray
+
+.add-line
+	background #a9ffa9
+
+.remove-line
+	background #ffb9b9
+
 textarea.commit-message
 	height 100px

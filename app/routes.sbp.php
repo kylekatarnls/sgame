@@ -55,6 +55,7 @@ if Config::get('app.debug')
     Route::post('/survey', 'DevController@postSurvey')
     Route::get('/survey/image/delete', 'DevController@deleteImage')->before('csrf')
     Route::post('/survey/image/to-be-replaced', 'DevController@imageToBeReplaced')
+    Route::post('/survey/diff', 'DevController@diff')
 	Route::get('/lang/csv', f°
 		< Response::download(Utils\Lang\CSV::convert())
 	)

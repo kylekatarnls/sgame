@@ -7,6 +7,10 @@
 * @var callable $e
 * @var callable $slug
 */
+if(defined('WHOOPS_PRETTY_TEMPLATE_CALLED'))
+{
+  define('WHOOPS_PRETTY_TEMPLATE_CALLED', true);
+}
 if(!isset($_e))
 {
   $_e = $e;

@@ -65,7 +65,9 @@ if(App::bound("whoops"))
 {
 	ob_start(function ($content)
 	{
-		return str_replace("\\n", "\n", preg_replace('#^<!DOCTYPE\shtml>.+<!DOCTYPE\shtml>#', '<!DOCTYPE html>', str_replace("\n", "\\n", $content)));
+		return defined('WHOOPS_PRETTY_TEMPLATE_CALLED') ?
+			str_replace("\\n", "\n", preg_replace('#^<!DOCTYPE\shtml>.+<!DOCTYPE\shtml>#', '<!DOCTYPE html>', str_replace("\n", "\\n", $content))) :
+			$content;
 	});
 }
 
