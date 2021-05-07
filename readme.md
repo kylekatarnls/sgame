@@ -1,3 +1,3 @@
 ## SGame
 
-SGame is a Game-Oriented Web Framework. It stricly separate all the different task and automate the most comon ones.
+SGame is a Game-Oriented Web Framework. It stricly separates all the different tasks and automate the more common ones.
